@@ -3,260 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADM - Gestão & Ranking</title>
+    <title>Gestão de Prova - DH PE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#003399">
     <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}</script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        /* ESTILO GERAL (TELA) */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { background: #f4f4f4; color: #333; padding-bottom: 50px; }
-
-        /* NAV E ABAS */
-        .admin-nav { background: #001233; color: white; padding: 15px 20px; border-bottom: 4px solid #ffcc00; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-        .tabs { display: flex; background: white; padding: 10px; gap: 10px; justify-content: center; box-shadow: 0 5px 10px rgba(0,0,0,0.05); }
-        .tab-btn { padding: 12px 25px; border: none; background: #eee; border-radius: 20px; font-weight: bold; color: #666; cursor: pointer; flex: 1; max-width: 200px; font-size: 13px; }
-        .tab-btn.active { background: #003399; color: white; }
-
-        .container { max-width: 900px; margin: 20px auto; padding: 0 15px; }
-        .painel-section { display: none; }
-        .painel-section.active { display: block; }
-
-        /* --- ESTILOS DA ABA GESTÃO (FINANCEIRO) --- */
-        .filtro-etapa { background: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; }
-        .cards-resumo { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        .kpi-card { background: white; padding: 20px; border-radius: 15px; text-align: center; border-top: 4px solid #ddd; }
-        .kpi-card.money { border-top-color: #27ae60; }
-        .kpi-card.users { border-top-color: #003399; }
-        .kpi-valor { font-size: 24px; font-weight: 900; color: #333; display: block; margin-top: 5px; }
-        .kpi-label { font-size: 10px; text-transform: uppercase; color: #888; font-weight: bold; }
-        .lista-inscritos { background: white; border-radius: 15px; overflow: hidden; }
-        .piloto-row { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #f0f0f0; }
-        .status-badge { font-size: 10px; padding: 4px 8px; border-radius: 6px; font-weight: bold; }
-        .pago { background: #d4edda; color: #155724; }
-        .pendente { background: #fff3cd; color: #856404; }
-
-        /* --- ESTILOS DA ABA RANKING (CARD) --- */
-        .ranking-layout { display: flex; flex-direction: column; gap: 20px; }
-        .controls-card { background: white; padding: 20px; border-radius: 15px; }
-        select { width: 100%; padding: 15px; border-radius: 10px; border: 2px solid #003399; font-weight: bold; font-size: 16px; background: #f9fbfd; margin-bottom: 10px; }
         
-        .preview-wrapper {
-            background: #222; padding: 20px; border-radius: 20px; 
-            display: flex; justify-content: center; align-items: flex-start;
-            overflow: hidden; height: 600px; /* Altura da janela de preview */
-            position: relative;
-        }
+        .no-print { /* Coisas que somem na impressão */ }
 
-        /* O CARD MÁGICO (1080x1920) */
-        #area-print {
-            width: 1080px; height: 1920px;
-            background: #001233;
-            border: 20px solid #ffcc00;
-            display: flex; flex-direction: column;
-            padding: 80px 60px;
-            box-sizing: border-box;
+        .navbar { background: #001233; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #ffcc00; }
+        .container { max-width: 900px; margin: 20px auto; padding: 15px; }
+
+        .card-controle { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .card-controle h3 { color: #003399; margin-bottom: 15px; text-transform: uppercase; }
+        
+        select { width: 100%; padding: 12px; border: 2px solid #003399; border-radius: 8px; font-weight: bold; margin-bottom: 10px; font-size: 16px; }
+        
+        .btn-imprimir { width: 100%; background: #27ae60; color: white; border: none; padding: 15px; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 16px; text-transform: uppercase; }
+        .btn-voltar { background: #666; margin-top: 10px; }
+
+        /* TABELA DE PILOTOS */
+        .tabela-container { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #003399; color: white; text-align: left; padding: 12px; font-size: 12px; text-transform: uppercase; }
+        td { padding: 12px; border-bottom: 1px solid #eee; font-size: 14px; }
+        tr:nth-child(even) { background: #f9f9f9; }
+        
+        .status-bolinha { height: 10px; width: 10px; border-radius: 50%; display: inline-block; margin-right: 5px; }
+        .ok { background: #27ae60; }
+        .pendente { background: #e67e22; }
+
+        .campo-tempo { border-bottom: 2px solid #333; height: 30px; width: 120px; display: inline-block; }
+
+        /* --- MODO IMPRESSÃO (O SEGREDO) --- */
+        @media print {
+            body { background: white; padding: 0; }
+            .no-print { display: none !important; } /* Esconde botões e menu */
+            .container { max-width: 100%; margin: 0; padding: 0; }
+            .tabela-container { box-shadow: none; border-radius: 0; }
+            th { background: #ccc !important; color: black !important; border: 1px solid #000; font-weight: bold; }
+            td { border: 1px solid #000; padding: 8px; font-size: 12pt; color: black; }
+            tr:nth-child(even) { background: white !important; }
+            .campo-tempo { border-bottom: 1px solid #000; width: 150px; }
             
-            /* Escala para caber na tela do celular do admin */
-            transform: scale(0.28); 
-            transform-origin: top center;
-            position: absolute; top: 20px;
+            /* Cabeçalho da Folha */
+            #print-header { display: block !important; text-align: center; margin-bottom: 20px; border-bottom: 2px solid black; padding-bottom: 10px; }
+            #print-header h1 { font-size: 24pt; font-weight: 900; margin: 0; }
+            #print-header p { font-size: 14pt; margin: 5px 0; }
         }
-
-        .header-print { text-align: center; margin-bottom: 60px; }
-        .header-print p { font-size: 50px; color: #ffcc00; font-weight: 700; letter-spacing: 15px; margin-bottom: 10px; }
-        .header-print h1 { font-size: 180px; color: white; font-weight: 900; line-height: 0.8; margin: 0; }
-        
-        .cat-faixa { 
-            background: #ffcc00; color: #001233; font-size: 60px; font-weight: 900; 
-            text-align: center; padding: 30px; margin-bottom: 60px; border-radius: 20px; text-transform: uppercase; 
-        }
-
-        .lista-rank { flex: 1; display: flex; flex-direction: column; gap: 25px; }
-        
-        .linha-rank { 
-            display: flex; align-items: center; 
-            background: rgba(255,255,255,0.05); 
-            padding: 30px 40px; border-radius: 20px; 
-            border-left: 15px solid #ffcc00; 
-        }
-        
-        .pos { font-size: 80px; font-weight: 900; color: #ffcc00; width: 140px; }
-        .info { flex: 1; }
-        .info .nome { display: block; font-size: 55px; font-weight: 800; color: white; text-transform: uppercase; line-height: 1.1; }
-        .info .equipe { font-size: 35px; color: #aaa; text-transform: uppercase; }
-        .tempo { font-size: 60px; font-weight: 900; color: #27ae60; font-family: monospace; }
-
-        .footer-print { margin-top: auto; text-align: center; padding-top: 50px; border-top: 4px solid rgba(255,255,255,0.1); }
-        .footer-print h2 { font-size: 50px; color: #ffcc00; margin-bottom: 20px; }
-        .footer-print span { font-size: 40px; color: white; }
-
-        .btn { width: 100%; padding: 15px; border-radius: 10px; font-weight: bold; border: none; cursor: pointer; color: white; text-transform: uppercase; font-size: 14px; margin-top: 10px; }
-        .btn-green { background: #27ae60; }
-        .btn-gray { background: #555; }
+        #print-header { display: none; } /* Esconde cabeçalho na tela normal */
     </style>
 </head>
 <body>
 
-    <div class="admin-nav">
-        <span><i class="fas fa-user-shield"></i> PAINEL ADM</span>
-        <button onclick="window.location.href='index.html'" style="background:none; border:none; color:white;"><i class="fas fa-sign-out-alt"></i></button>
+    <div id="print-header">
+        <h1>FOLHA DE CRONOMETRAGEM</h1>
+        <p>Categoria: <span id="cat-titulo">TODAS</span></p>
+        <p style="font-size: 10pt;">DOWNHILL PE 2026 - ORGANIZAÇÃO OFICIAL</p>
     </div>
 
-    <div class="tabs">
-        <button class="tab-btn active" onclick="mudarAba('gestao', this)">GESTÃO & CAIXA</button>
-        <button class="tab-btn" onclick="mudarAba('ranking', this)">GERAR RANKING</button>
+    <div class="navbar no-print">
+        <span><i class="fas fa-clipboard-list"></i> GESTÃO DE PROVA</span>
+        <button onclick="window.location.href='dashboard.html'" style="background:none; border:none; color:white; font-size:20px;"><i class="fas fa-home"></i></button>
     </div>
 
     <div class="container">
-
-        <div id="sec-gestao" class="painel-section active">
-            <div class="filtro-etapa">
-                <label>Filtrar Etapa:</label>
-                <select id="select-etapa" onchange="carregarFinanceiro()">
-                    <option value="todos">TODAS AS ETAPAS</option>
-                    <option value="ouricuri">1ª ETAPA - OURICURI</option>
-                    <option value="caruaru">2ª ETAPA - CARUARU</option>
-                </select>
-            </div>
-            <div class="cards-resumo">
-                <div class="kpi-card users"><span class="kpi-label">Inscritos</span><span class="kpi-valor" id="kpi-users">0</span></div>
-                <div class="kpi-card money"><span class="kpi-label">Caixa (R$)</span><span class="kpi-valor" id="kpi-money">R$ 0,00</span></div>
-            </div>
-            <div class="lista-inscritos" id="lista-financeira"></div>
+        <div class="card-controle no-print">
+            <h3>Gerar Lista de Largada</h3>
+            <label>Selecione a Categoria:</label>
+            <select id="filtroCategoria" onchange="filtrarLista()">
+                <option value="todas">-- TODAS AS CATEGORIAS --</option>
+                <option value="ELITE">ELITE</option>
+                <option value="MASTER A">MASTER A</option>
+                <option value="MASTER B">MASTER B</option>
+                <option value="RÍGIDA">RÍGIDA</option>
+                <option value="SUB-30">SUB-30</option>
+                <option value="JUNIOR">JUNIOR</option>
+            </select>
+            <button class="btn-imprimir" onclick="window.print()"><i class="fas fa-print"></i> IMPRIMIR LISTA</button>
         </div>
 
-        <div id="sec-ranking" class="painel-section">
-            <div class="ranking-layout">
-                <div class="controls-card">
-                    <label style="color:#003399; font-weight:bold;">CATEGORIA DO PODIUM:</label>
-                    <select id="cat-select" onchange="atualizarRanking()">
-                        <option value="">-- SELECIONE --</option>
-                        <option value="ELITE">ELITE (Livre)</option>
-                        <option value="MASTER A">MASTER A (30-39)</option>
-                        <option value="MASTER B">MASTER B (40-49)</option>
-                        <option value="RÍGIDA">RÍGIDA (Livre)</option>
-                    </select>
-                    <button class="btn btn-green" onclick="baixarImagem()"><i class="fas fa-download"></i> Baixar Imagem</button>
-                    <button class="btn btn-gray" onclick="window.location.href='dashboard.html'">Voltar ao Menu</button>
-                </div>
-
-                <div class="preview-wrapper">
-                    <div id="area-print">
-                        <div class="header-print">
-                            <p>RANKING 2026</p>
-                            <h1>DH PE</h1>
-                        </div>
-                        
-                        <div class="cat-faixa" id="print-cat">SELECIONE</div>
-                        
-                        <div class="lista-rank" id="lista-rank-container">
-                            </div>
-
-                        <div class="footer-print">
-                            <h2>DOWNHILL PERNAMBUCANO</h2>
-                            <span><i class="fab fa-instagram"></i> @Downhill_Pernambuco</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="tabela-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 50px;">#</th>
+                        <th>PILOTO</th>
+                        <th>CIDADE</th>
+                        <th>PGTO</th>
+                        <th>TEMPO (Manual)</th>
+                    </tr>
+                </thead>
+                <tbody id="lista-corpo">
+                    </tbody>
+            </table>
         </div>
-
     </div>
 
     <script>
-        // --- LÓGICA DE ABAS ---
-        function mudarAba(id, btn) {
-            document.querySelectorAll('.painel-section').forEach(d => d.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('sec-' + id).classList.add('active');
-            btn.classList.add('active');
-        }
-
-        // --- DADOS SIMULADOS (MOCK) ---
-        const inscricoes = [
-            { nome: "Bruno Rocha", cat: "Elite", valor: 120, status: "pago", etapa: "ouricuri" },
-            { nome: "Carlos Eduardo", cat: "Master A", valor: 120, status: "pago", etapa: "ouricuri" },
-            { nome: "Felipe Góes", cat: "Rígida", valor: 120, status: "pendente", etapa: "ouricuri" },
-            { nome: "Diego Santos", cat: "Elite", valor: 120, status: "pago", etapa: "caruaru" }
+        // DADOS REAIS DE EXEMPLO (Adicionei Cidades)
+        const inscritos = [
+            { id: 101, nome: "Bruno Rocha", cat: "ELITE", cidade: "Ouricuri-PE", pago: true },
+            { id: 102, nome: "Lucas Silva", cat: "ELITE", cidade: "Surubim-PE", pago: true },
+            { id: 205, nome: "Carlos Eduardo", cat: "MASTER A", cidade: "Caruaru-PE", pago: true },
+            { id: 208, nome: "André Santos", cat: "MASTER A", cidade: "Recife-PE", pago: false }, // Não pagou
+            { id: 310, nome: "Felipe Góes", cat: "RÍGIDA", cidade: "Petrolina-PE", pago: true },
+            { id: 315, nome: "João Pedro", cat: "RÍGIDA", cidade: "Salgueiro-PE", pago: true },
+            { id: 401, nome: "Maria Clara", cat: "SUB-30", cidade: "Bezerros-PE", pago: true }
         ];
 
-        // --- LÓGICA FINANCEIRA ---
-        function carregarFinanceiro() {
-            const filtro = document.getElementById('select-etapa').value;
-            const lista = document.getElementById('lista-financeira');
-            lista.innerHTML = "";
-            let total = 0, users = 0;
-
-            const filtrados = inscricoes.filter(i => filtro === 'todos' ? true : i.etapa === filtro);
-
-            filtrados.forEach(i => {
-                users++;
-                if(i.status === 'pago') total += i.valor;
-                lista.innerHTML += `
-                    <div class="piloto-row">
-                        <div><strong style="color:#003399;">${i.nome}</strong><br><span style="font-size:11px; color:#666;">${i.cat}</span></div>
-                        <span class="status-badge ${i.status}">${i.status.toUpperCase()}</span>
-                    </div>
-                `;
-            });
-            document.getElementById('kpi-users').innerText = users;
-            document.getElementById('kpi-money').innerText = total.toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
-        }
-
-        // --- LÓGICA RANKING ---
-        const dadosRanking = [
-            { p: "1º", n: "Bruno Rocha", e: "Sertão DH", t: "2:45.120" },
-            { p: "2º", n: "Lucas Silva", e: "Agreste", t: "2:48.345" },
-            { p: "3º", n: "Diego Santos", e: "Caruaru", t: "2:50.010" },
-            { p: "4º", n: "Tiago Melo", e: "Recife", t: "2:55.600" },
-            { p: "5º", n: "Pedro Souza", e: "Gravatá", t: "3:01.220" }
-        ];
-
-        function atualizarRanking() {
-            const cat = document.getElementById('cat-select').value;
-            if(!cat) return;
-            document.getElementById('print-cat').innerText = cat;
+        function filtrarLista() {
+            const cat = document.getElementById('filtroCategoria').value;
+            const tbody = document.getElementById('lista-corpo');
             
-            const lista = document.getElementById('lista-rank-container');
-            lista.innerHTML = "";
+            // Atualiza título da impressão
+            document.getElementById('cat-titulo').innerText = cat === 'todas' ? "GERAL (TODAS)" : cat;
 
-            // Simula dados diferentes (na prática viria do banco)
-            dadosRanking.forEach(d => {
-                lista.innerHTML += `
-                    <div class="linha-rank">
-                        <div class="pos">${d.p}</div>
-                        <div class="info">
-                            <span class="nome">${d.n}</span>
-                            <span class="equipe">${d.e}</span>
-                        </div>
-                        <div class="tempo">${d.t}</div>
-                    </div>
+            tbody.innerHTML = "";
+
+            const listaFiltrada = inscritos.filter(p => cat === 'todas' ? true : p.cat === cat);
+
+            if(listaFiltrada.length === 0) {
+                tbody.innerHTML = "<tr><td colspan='5' style='text-align:center; padding:20px;'>Nenhum piloto nesta categoria.</td></tr>";
+                return;
+            }
+
+            listaFiltrada.forEach(piloto => {
+                const statusIcon = piloto.pago ? 
+                    `<span style="color:green; font-weight:bold;">OK</span>` : 
+                    `<span style="color:red; font-weight:bold;">PENDENTE</span>`;
+
+                // Na coluna TEMPO, deixamos vazio para escrita manual
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${piloto.id}</td>
+                        <td><strong>${piloto.nome}</strong><br><span style="font-size:10px; color:#666;">${piloto.cat}</span></td>
+                        <td>${piloto.cidade}</td>
+                        <td>${statusIcon}</td>
+                        <td><div class="campo-tempo"></div></td>
+                    </tr>
                 `;
             });
         }
 
-        function baixarImagem() {
-            const el = document.getElementById('area-print');
-            // Clona para renderizar sem escala
-            const clone = el.cloneNode(true);
-            clone.style.transform = "none";
-            clone.style.position = "fixed";
-            clone.style.top = "0";
-            clone.style.left = "-9999px";
-            document.body.appendChild(clone);
-
-            html2canvas(clone, { scale: 1, backgroundColor: "#001233", width: 1080, height: 1920 }).then(canvas => {
-                const a = document.createElement('a');
-                a.download = `Ranking-${document.getElementById('cat-select').value}.png`;
-                a.href = canvas.toDataURL('image/png');
-                a.click();
-                document.body.removeChild(clone);
-            });
-        }
-
-        carregarFinanceiro(); // Inicia tabela
+        // Carregar ao iniciar
+        filtrarLista();
     </script>
 </body>
 </html>
