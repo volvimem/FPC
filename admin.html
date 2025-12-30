@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - DH-PE</title>
+    <title>Login - Downhill PE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#003399">
+    <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}</script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { 
@@ -42,9 +45,10 @@
             const cpf = document.getElementById('loginCpf').value;
             const pass = document.getElementById('loginPass').value;
             const salvo = JSON.parse(localStorage.getItem('usuarioPiloto'));
-            if (salvo && salvo.cpf === cpf && salvo.senha === pass) {
+            // Login simples: Se tiver cadastro no celular ou for teste genérico
+            if ((salvo && salvo.cpf === cpf && salvo.senha === pass) || (cpf === '000.000.000-00' && pass === '1234')) {
                 window.location.href = "dashboard.html";
-            } else { alert("CPF ou Senha incorretos!"); }
+            } else { alert("CPF ou Senha incorretos! (Ou cadastro não encontrado neste celular)"); }
         }
         document.getElementById('loginCpf').addEventListener('input', (e) => {
             let v = e.target.value.replace(/\D/g, '');
@@ -53,5 +57,4 @@
         });
     </script>
 </body>
-
 </html>
