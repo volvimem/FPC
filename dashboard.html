@@ -13,14 +13,8 @@
         body { 
             background: linear-gradient(rgba(0, 51, 153, 0.7), rgba(0, 0, 0, 0.8)), 
                         url('https://images.unsplash.com/photo-1544191161-50f6652c0d46?q=80&w=2070&auto=format&fit=crop'); 
-            background-size: cover; 
-            background-position: center;
-            background-attachment: fixed;
-            min-height: 100vh;
-            padding: 40px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            background-size: cover; background-position: center; background-attachment: fixed;
+            min-height: 100vh; padding: 40px 20px; display: flex; flex-direction: column; align-items: center;
         }
         .header-menu { text-align: center; color: white; margin-bottom: 40px; }
         .header-menu h1 { font-size: 32px; font-weight: 900; letter-spacing: 2px; }
@@ -49,49 +43,16 @@
         <h1 id="boas-vindas">DOWNHILL PE</h1>
         <p>Painel do Piloto</p>
     </div>
-
     <div class="menu-grid">
-        <a href="inscricoes.html" class="menu-item highlight">
-            <i class="fas fa-file-signature"></i>
-            <span>Inscrições</span>
-        </a>
-
-        <a href="cirurgia.html" class="menu-item highlight">
-            <i class="fas fa-calendar-check"></i>
-            <span>Plano Cirurgia</span>
-        </a>
-
-        <a href="carteira.html" class="menu-item">
-            <i class="fas fa-id-card"></i>
-            <span>Minha Carteira</span>
-        </a>
-
-        <a href="ranking_card.html" class="menu-item">
-            <i class="fas fa-trophy"></i>
-            <span>Card Ranking</span>
-        </a>
-
-        <a href="#" class="menu-item">
-            <i class="fas fa-stopwatch"></i>
-            <span>Tempos</span>
-        </a>
-
-        <a href="#" class="menu-item">
-            <i class="fas fa-truck-pickup"></i>
-            <span>Transporte</span>
-        </a>
-
-        <a href="#" class="menu-item">
-            <i class="fas fa-handshake"></i>
-            <span>Parcerias</span>
-        </a>
-
-        <a href="admin_login.html" class="menu-item admin-item">
-            <i class="fas fa-user-shield"></i>
-            <span>Área Organizador</span>
-        </a>
+        <a href="inscricoes.html" class="menu-item highlight"><i class="fas fa-file-signature"></i><span>Inscrições</span></a>
+        <a href="cirurgia.html" class="menu-item highlight"><i class="fas fa-calendar-check"></i><span>Plano Cirurgia</span></a>
+        <a href="carteira.html" class="menu-item"><i class="fas fa-id-card"></i><span>Minha Carteira</span></a>
+        <a href="ranking_card.html" class="menu-item"><i class="fas fa-trophy"></i><span>Card Ranking</span></a>
+        <a href="#" class="menu-item"><i class="fas fa-stopwatch"></i><span>Tempos</span></a>
+        <a href="#" class="menu-item"><i class="fas fa-truck-pickup"></i><span>Transporte</span></a>
+        <a href="#" class="menu-item"><i class="fas fa-handshake"></i><span>Parcerias</span></a>
+        <a href="admin_login.html" class="menu-item admin-item"><i class="fas fa-user-shield"></i><span>Área Organizador</span></a>
     </div>
-
     <script>
         const piloto = JSON.parse(localStorage.getItem('usuarioPiloto'));
         if(piloto && piloto.nome) {
