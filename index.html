@@ -17,53 +17,140 @@
             display: flex; justify-content: center; align-items: center; min-height: 100vh;
         }
         .login-box { 
-            background: white; padding: 50px 40px; border-radius: 25px; width: 90%; max-width: 400px; text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4); border-bottom: 8px solid #ffcc00;
+            background: white; padding: 40px 30px; border-radius: 25px; width: 90%; max-width: 400px; text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4); border-bottom: 8px solid #ffcc00; position: relative;
         }
         .icon-bike { font-size: 60px; color: #e63946; margin-bottom: 15px; }
-        h2 { color: #003399; font-size: 28px; font-weight: 900; margin-bottom: 30px; text-transform: uppercase; }
+        h2 { color: #003399; font-size: 28px; font-weight: 900; margin-bottom: 10px; text-transform: uppercase; }
+        p.subtitle { color: #666; font-size: 14px; margin-bottom: 25px; }
+        
         input { width: 100%; padding: 14px; margin-bottom: 15px; border: 2px solid #f0f0f0; border-radius: 12px; outline: none; font-size: 16px; background: #fafafa; }
-        button { width: 100%; padding: 16px; background: #003399; color: white; border: none; border-radius: 12px; font-weight: bold; font-size: 16px; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
-        button:hover { background: #002266; transform: translateY(-2px); }
-        .links { margin-top: 25px; font-size: 14px; color: #666; }
-        a { color: #e63946; text-decoration: none; font-weight: bold; }
+        input:focus { border-color: #003399; background: white; }
+        
+        .btn-entrar { width: 100%; padding: 16px; background: #003399; color: white; border: none; border-radius: 12px; font-weight: bold; font-size: 16px; cursor: pointer; transition: 0.3s; text-transform: uppercase; margin-bottom: 15px; }
+        .btn-entrar:hover { background: #002266; transform: translateY(-2px); }
+
+        /* Botão Google */
+        .btn-google { 
+            width: 100%; padding: 14px; background: white; color: #333; 
+            border: 2px solid #eee; border-radius: 12px; font-weight: bold; font-size: 14px; 
+            cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px;
+            margin-bottom: 20px;
+        }
+        .btn-google img { width: 20px; }
+        .btn-google:hover { background: #f9f9f9; border-color: #ccc; }
+
+        .links { margin-top: 10px; font-size: 14px; color: #666; display: flex; justify-content: space-between; align-items: center; }
+        a { color: #003399; text-decoration: none; font-weight: bold; cursor: pointer; }
+        a:hover { text-decoration: underline; }
+
+        /* Modal de Recuperação */
+        .modal-recuperar {
+            display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: white; border-radius: 25px; flex-direction: column; justify-content: center; padding: 30px; z-index: 10;
+        }
+        .modal-recuperar h3 { color: #003399; margin-bottom: 15px; }
+        .fechar-modal { position: absolute; top: 20px; right: 20px; font-size: 20px; color: #999; cursor: pointer; }
     </style>
 </head>
 <body>
     <div class="login-box">
         <i class="fas fa-bicycle icon-bike"></i>
         <h2>DOWNHILL PE</h2>
+        <p class="subtitle">Acesso ao Portal do Atleta</p>
         
-        <input type="text" id="loginCpf" placeholder="Digite seu CPF">
+        <input type="text" id="loginCpf" placeholder="CPF (Somente números)">
         <input type="password" id="loginPass" placeholder="Sua Senha">
         
-        <button onclick="fazerLogin()">ACESSAR MINHA CONTA</button>
+        <div class="links" style="margin-bottom: 20px;">
+            <a onclick="abrirModalRecuperacao()" style="color: #e63946; font-size: 12px;">Esqueci minha senha</a>
+            <a href="cadastro.html" style="font-size: 12px;">Criar conta</a>
+        </div>
+
+        <button class="btn-entrar" onclick="fazerLogin()">ENTRAR</button>
         
-        <div class="links">
-            <p>Ainda não tens conta? <br> <a href="cadastro.html">Cadastrar Piloto Agora</a></p>
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+            <div style="flex: 1; height: 1px; background: #eee;"></div>
+            <span style="font-size: 12px; color: #999;">OU ENTRE COM</span>
+            <div style="flex: 1; height: 1px; background: #eee;"></div>
+        </div>
+
+        <button class="btn-google" onclick="loginGoogle()">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="G">
+            Google
+        </button>
+
+        <div id="modalRecuperar" class="modal-recuperar">
+            <i class="fas fa-times fechar-modal" onclick="fecharModalRecuperacao()"></i>
+            <h3><i class="fas fa-lock-open"></i> Recuperar Acesso</h3>
+            <p style="font-size:13px; color:#666; margin-bottom:20px;">Para sua segurança, confirme seus dados para ver a senha.</p>
+            
+            <input type="text" id="rec-cpf" placeholder="Seu CPF">
+            <label style="font-size:12px; font-weight:bold; color:#003399; display:block; text-align:left; margin-bottom:5px;">Data de Nascimento:</label>
+            <input type="date" id="rec-nasc">
+            
+            <button class="btn-entrar" onclick="recuperarSenha()" style="background: #27ae60; margin-top:10px;">MOSTRAR SENHA</button>
+            <button class="btn-google" onclick="pedirAjudaZap()" style="border: 2px solid #25d366; color: #25d366;">
+                <i class="fab fa-whatsapp"></i> Pedir ajuda ao Admin
+            </button>
         </div>
     </div>
 
     <script>
+        // --- 1. LOGIN ---
         function fazerLogin() {
             const cpf = document.getElementById('loginCpf').value;
             const pass = document.getElementById('loginPass').value;
             const salvo = JSON.parse(localStorage.getItem('usuarioPiloto'));
             
-            // Permite login com dados salvos OU login de teste genérico
+            // Login de Teste ou Login Real
             if ((salvo && salvo.cpf === cpf && salvo.senha === pass) || (cpf === '000.000.000-00' && pass === '1234')) {
                 window.location.href = "dashboard.html";
             } else { 
-                alert("CPF ou Senha incorretos! (Ou cadastro não encontrado neste celular)"); 
+                alert("CPF ou Senha incorretos!"); 
             }
         }
 
-        // Formata o CPF automaticamente enquanto digita
-        document.getElementById('loginCpf').addEventListener('input', (e) => {
+        // --- 2. RECUPERAÇÃO DE SENHA LOCAL ---
+        function recuperarSenha() {
+            const cpf = document.getElementById('rec-cpf').value;
+            const nasc = document.getElementById('rec-nasc').value;
+            const salvo = JSON.parse(localStorage.getItem('usuarioPiloto'));
+
+            if (salvo && salvo.cpf === cpf && salvo.nascimento === nasc) {
+                alert(`SUA SENHA É: ${salvo.senha}`);
+                fecharModalRecuperacao();
+            } else {
+                alert("Dados não conferem com o cadastro neste aparelho.");
+            }
+        }
+
+        function pedirAjudaZap() {
+            const msg = "Olá Admin, esqueci minha senha do Downhill PE. Pode me ajudar?";
+            window.open(`https://wa.me/5581999999999?text=${encodeURIComponent(msg)}`); // Coloque seu número aqui
+        }
+
+        // --- 3. GOOGLE (SIMULADO) ---
+        function loginGoogle() {
+            alert("A integração com Google requer um servidor configurado. Por enquanto, use o cadastro por CPF.");
+        }
+
+        // --- 4. UTILITÁRIOS ---
+        function abrirModalRecuperacao() {
+            document.getElementById('modalRecuperar').style.display = 'flex';
+        }
+        function fecharModalRecuperacao() {
+            document.getElementById('modalRecuperar').style.display = 'none';
+        }
+
+        // Máscara CPF
+        const mascaraCPF = (e) => {
             let v = e.target.value.replace(/\D/g, '');
             v = v.replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d{1,2})$/, '$1-$2');
             e.target.value = v;
-        });
+        };
+        document.getElementById('loginCpf').addEventListener('input', mascaraCPF);
+        document.getElementById('rec-cpf').addEventListener('input', mascaraCPF);
     </script>
 </body>
 </html>
