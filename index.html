@@ -17,39 +17,67 @@
             display: flex; justify-content: center; align-items: center; min-height: 100vh;
         }
         .login-box { 
-            background: white; padding: 50px 40px; border-radius: 25px; width: 90%; max-width: 400px; text-align: center;
+            background: white; padding: 40px 30px; border-radius: 25px; width: 90%; max-width: 400px; text-align: center;
             box-shadow: 0 20px 40px rgba(0,0,0,0.4); border-bottom: 8px solid #ffcc00;
         }
         .icon-bike { font-size: 60px; color: #e63946; margin-bottom: 15px; }
         h2 { color: #003399; font-size: 28px; font-weight: 900; margin-bottom: 30px; text-transform: uppercase; }
         input { width: 100%; padding: 14px; margin-bottom: 15px; border: 2px solid #f0f0f0; border-radius: 12px; outline: none; font-size: 16px; background: #fafafa; }
-        button { width: 100%; padding: 16px; background: #003399; color: white; border: none; border-radius: 12px; font-weight: bold; font-size: 16px; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
-        button:hover { background: #002266; transform: translateY(-2px); }
-        .links { margin-top: 25px; font-size: 14px; color: #666; }
+        
+        /* Botão Piloto */
+        .btn-entrar { width: 100%; padding: 16px; background: #003399; color: white; border: none; border-radius: 12px; font-weight: bold; font-size: 16px; cursor: pointer; transition: 0.3s; text-transform: uppercase; margin-bottom: 10px; }
+        .btn-entrar:hover { background: #002266; transform: translateY(-2px); }
+
+        /* Botão Admin */
+        .btn-admin { 
+            width: 100%; padding: 12px; background: white; color: #c0392b; 
+            border: 2px solid #c0392b; border-radius: 12px; font-weight: bold; font-size: 14px; 
+            cursor: pointer; transition: 0.3s; text-transform: uppercase; display: flex; 
+            align-items: center; justify-content: center; gap: 8px; margin-top: 15px;
+        }
+        .btn-admin:hover { background: #c0392b; color: white; }
+
+        .links { margin-top: 20px; font-size: 14px; color: #666; }
         a { color: #e63946; text-decoration: none; font-weight: bold; }
+        hr { border: 0; border-top: 1px solid #eee; margin: 20px 0; }
     </style>
 </head>
 <body>
     <div class="login-box">
         <i class="fas fa-bicycle icon-bike"></i>
         <h2>DOWNHILL PE</h2>
+        
         <input type="text" id="loginCpf" placeholder="Digite seu CPF">
         <input type="password" id="loginPass" placeholder="Sua Senha">
-        <button onclick="fazerLogin()">ACESSAR MINHA CONTA</button>
+        <button class="btn-entrar" onclick="fazerLogin()">ACESSAR MINHA CONTA</button>
+        
         <div class="links">
             <p>Ainda não tens conta? <br> <a href="cadastro.html">Cadastrar Piloto Agora</a></p>
         </div>
+
+        <hr>
+
+        <p style="font-size: 11px; color: #999; margin-bottom: 5px;">ÁREA RESTRITA</p>
+        <button class="btn-admin" onclick="window.location.href='admin_login.html'">
+            <i class="fas fa-user-shield"></i> PAINEL ADMINISTRADOR
+        </button>
     </div>
+
     <script>
         function fazerLogin() {
             const cpf = document.getElementById('loginCpf').value;
             const pass = document.getElementById('loginPass').value;
             const salvo = JSON.parse(localStorage.getItem('usuarioPiloto'));
-            // Login simples: Se tiver cadastro no celular ou for teste genérico
+            
+            // Login de Teste ou Login Real
             if ((salvo && salvo.cpf === cpf && salvo.senha === pass) || (cpf === '000.000.000-00' && pass === '1234')) {
                 window.location.href = "dashboard.html";
-            } else { alert("CPF ou Senha incorretos! (Ou cadastro não encontrado neste celular)"); }
+            } else { 
+                alert("CPF ou Senha incorretos! (Ou cadastro não encontrado neste celular)"); 
+            }
         }
+
+        // Máscara de CPF
         document.getElementById('loginCpf').addEventListener('input', (e) => {
             let v = e.target.value.replace(/\D/g, '');
             v = v.replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d{1,2})$/, '$1-$2');
