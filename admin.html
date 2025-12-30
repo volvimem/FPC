@@ -4,58 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestão de Prova - DH PE</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#003399">
-    <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}</script>
+    <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=3');}</script>
     <style>
-        /* ESTILO GERAL (TELA) */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { background: #f4f4f4; color: #333; padding-bottom: 50px; }
-        
-        .no-print { /* Coisas que somem na impressão */ }
-
         .navbar { background: #001233; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #ffcc00; }
         .container { max-width: 900px; margin: 20px auto; padding: 15px; }
-
         .card-controle { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
         .card-controle h3 { color: #003399; margin-bottom: 15px; text-transform: uppercase; }
-        
         select { width: 100%; padding: 12px; border: 2px solid #003399; border-radius: 8px; font-weight: bold; margin-bottom: 10px; font-size: 16px; }
-        
         .btn-imprimir { width: 100%; background: #27ae60; color: white; border: none; padding: 15px; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 16px; text-transform: uppercase; }
-        .btn-voltar { background: #666; margin-top: 10px; }
-
-        /* TABELA DE PILOTOS */
         .tabela-container { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         table { width: 100%; border-collapse: collapse; }
         th { background: #003399; color: white; text-align: left; padding: 12px; font-size: 12px; text-transform: uppercase; }
         td { padding: 12px; border-bottom: 1px solid #eee; font-size: 14px; }
         tr:nth-child(even) { background: #f9f9f9; }
-        
-        .status-bolinha { height: 10px; width: 10px; border-radius: 50%; display: inline-block; margin-right: 5px; }
-        .ok { background: #27ae60; }
-        .pendente { background: #e67e22; }
-
         .campo-tempo { border-bottom: 2px solid #333; height: 30px; width: 120px; display: inline-block; }
 
-        /* --- MODO IMPRESSÃO (O SEGREDO) --- */
         @media print {
             body { background: white; padding: 0; }
-            .no-print { display: none !important; } /* Esconde botões e menu */
+            .no-print { display: none !important; }
             .container { max-width: 100%; margin: 0; padding: 0; }
             .tabela-container { box-shadow: none; border-radius: 0; }
             th { background: #ccc !important; color: black !important; border: 1px solid #000; font-weight: bold; }
             td { border: 1px solid #000; padding: 8px; font-size: 12pt; color: black; }
             tr:nth-child(even) { background: white !important; }
             .campo-tempo { border-bottom: 1px solid #000; width: 150px; }
-            
-            /* Cabeçalho da Folha */
             #print-header { display: block !important; text-align: center; margin-bottom: 20px; border-bottom: 2px solid black; padding-bottom: 10px; }
             #print-header h1 { font-size: 24pt; font-weight: 900; margin: 0; }
             #print-header p { font-size: 14pt; margin: 5px 0; }
         }
-        #print-header { display: none; } /* Esconde cabeçalho na tela normal */
+        #print-header { display: none; }
     </style>
 </head>
 <body>
@@ -98,19 +84,17 @@
                         <th>TEMPO (Manual)</th>
                     </tr>
                 </thead>
-                <tbody id="lista-corpo">
-                    </tbody>
+                <tbody id="lista-corpo"></tbody>
             </table>
         </div>
     </div>
 
     <script>
-        // DADOS REAIS DE EXEMPLO (Adicionei Cidades)
         const inscritos = [
             { id: 101, nome: "Bruno Rocha", cat: "ELITE", cidade: "Ouricuri-PE", pago: true },
             { id: 102, nome: "Lucas Silva", cat: "ELITE", cidade: "Surubim-PE", pago: true },
             { id: 205, nome: "Carlos Eduardo", cat: "MASTER A", cidade: "Caruaru-PE", pago: true },
-            { id: 208, nome: "André Santos", cat: "MASTER A", cidade: "Recife-PE", pago: false }, // Não pagou
+            { id: 208, nome: "André Santos", cat: "MASTER A", cidade: "Recife-PE", pago: false },
             { id: 310, nome: "Felipe Góes", cat: "RÍGIDA", cidade: "Petrolina-PE", pago: true },
             { id: 315, nome: "João Pedro", cat: "RÍGIDA", cidade: "Salgueiro-PE", pago: true },
             { id: 401, nome: "Maria Clara", cat: "SUB-30", cidade: "Bezerros-PE", pago: true }
@@ -119,25 +103,12 @@
         function filtrarLista() {
             const cat = document.getElementById('filtroCategoria').value;
             const tbody = document.getElementById('lista-corpo');
-            
-            // Atualiza título da impressão
             document.getElementById('cat-titulo').innerText = cat === 'todas' ? "GERAL (TODAS)" : cat;
-
             tbody.innerHTML = "";
-
             const listaFiltrada = inscritos.filter(p => cat === 'todas' ? true : p.cat === cat);
-
-            if(listaFiltrada.length === 0) {
-                tbody.innerHTML = "<tr><td colspan='5' style='text-align:center; padding:20px;'>Nenhum piloto nesta categoria.</td></tr>";
-                return;
-            }
-
+            
             listaFiltrada.forEach(piloto => {
-                const statusIcon = piloto.pago ? 
-                    `<span style="color:green; font-weight:bold;">OK</span>` : 
-                    `<span style="color:red; font-weight:bold;">PENDENTE</span>`;
-
-                // Na coluna TEMPO, deixamos vazio para escrita manual
+                const statusIcon = piloto.pago ? `<span style="color:green; font-weight:bold;">OK</span>` : `<span style="color:red; font-weight:bold;">PENDENTE</span>`;
                 tbody.innerHTML += `
                     <tr>
                         <td>${piloto.id}</td>
@@ -149,8 +120,6 @@
                 `;
             });
         }
-
-        // Carregar ao iniciar
         filtrarLista();
     </script>
 </body>
