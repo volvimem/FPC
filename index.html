@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#003399">
-    <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}</script>
+    <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=5');}</script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { 
@@ -20,7 +20,17 @@
             background: white; padding: 40px 30px; border-radius: 25px; width: 90%; max-width: 400px; text-align: center;
             box-shadow: 0 20px 40px rgba(0,0,0,0.4); border-bottom: 8px solid #ffcc00; position: relative;
         }
-        .icon-bike { font-size: 60px; color: #e63946; margin-bottom: 15px; }
+
+        /* Estilo da sua Logo Nova */
+        .img-logo {
+            width: 180px; /* Ajuste o tamanho da sua imagem aqui */
+            height: auto;
+            margin-bottom: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
         h2 { color: #003399; font-size: 28px; font-weight: 900; margin-bottom: 10px; text-transform: uppercase; }
         p.subtitle { color: #666; font-size: 14px; margin-bottom: 25px; }
         
@@ -52,14 +62,11 @@
 </head>
 <body>
     <div class="login-box">
-        <img src="sua-imagem.png" alt="Logo" class="img-logo">
+        <img src="logo.png" alt="Logo Downhill PE" class="img-logo">
+        
         <h2>DOWNHILL PE</h2>
         <p class="subtitle">Acesso ao Portal do Atleta</p>
-        .img-logo {
-    width: 120px; /* Ajuste o tamanho conforme sua imagem */
-    height: auto;
-    margin-bottom: 15px;
-}
+        
         <input type="text" id="loginCpf" placeholder="CPF (Somente números)">
         <input type="password" id="loginPass" placeholder="Sua Senha">
         
@@ -87,13 +94,11 @@
     </div>
 
     <script>
-        // --- 1. LOGIN ---
         function fazerLogin() {
             const cpf = document.getElementById('loginCpf').value;
             const pass = document.getElementById('loginPass').value;
             const salvo = JSON.parse(localStorage.getItem('usuarioPiloto'));
             
-            // Login de Teste ou Login Real
             if ((salvo && salvo.cpf === cpf && salvo.senha === pass) || (cpf === '000.000.000-00' && pass === '1234')) {
                 window.location.href = "dashboard.html";
             } else { 
@@ -101,7 +106,6 @@
             }
         }
 
-        // --- 2. RECUPERAÇÃO DE SENHA ---
         function recuperarSenha() {
             const cpf = document.getElementById('rec-cpf').value;
             const nasc = document.getElementById('rec-nasc').value;
@@ -117,19 +121,12 @@
 
         function pedirAjudaZap() {
             const msg = "Olá Admin, esqueci minha senha do Downhill PE. Pode me ajudar?";
-            // Substitua pelo seu número real se quiser
             window.open(`https://wa.me/5581999999999?text=${encodeURIComponent(msg)}`); 
         }
 
-        // --- 3. UTILITÁRIOS ---
-        function abrirModalRecuperacao() {
-            document.getElementById('modalRecuperar').style.display = 'flex';
-        }
-        function fecharModalRecuperacao() {
-            document.getElementById('modalRecuperar').style.display = 'none';
-        }
+        function abrirModalRecuperacao() { document.getElementById('modalRecuperar').style.display = 'flex'; }
+        function fecharModalRecuperacao() { document.getElementById('modalRecuperar').style.display = 'none'; }
 
-        // Máscara CPF
         const mascaraCPF = (e) => {
             let v = e.target.value.replace(/\D/g, '');
             v = v.replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d{1,2})$/, '$1-$2');
