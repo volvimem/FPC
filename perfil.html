@@ -9,38 +9,28 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { background: #003399; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
         .container { background: white; padding: 30px; border-radius: 20px; width: 100%; max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-        h2 { color: #003399; margin-bottom: 20px; text-align: center; text-transform: uppercase; }
-        .campo { margin-bottom: 15px; }
-        label { display: block; font-size: 12px; font-weight: bold; color: #666; margin-bottom: 5px; }
-        input { width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 10px; font-size: 16px; outline: none; }
+        h2 { color: #003399; margin-bottom: 20px; text-align: center; }
+        input { width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid #eee; border-radius: 10px; font-size: 16px; outline: none; }
         input:focus { border-color: #003399; }
-        .btn-salvar { width: 100%; padding: 15px; background: #27ae60; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 10px; font-size: 16px; }
-        .btn-voltar { width: 100%; padding: 15px; background: #666; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 10px; text-decoration: none; display: block; text-align: center; }
+        .btn-salvar { width: 100%; padding: 15px; background: #27ae60; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; font-size: 16px; }
+        .btn-voltar { display: block; text-align: center; margin-top: 15px; color: #666; text-decoration: none; font-size: 14px; }
     </style>
 </head>
 <body>
 <div class="container">
-    <h2><i class="fas fa-key"></i> Alterar Senha</h2>
+    <h2><i class="fas fa-lock"></i> Nova Senha</h2>
     
-    <div class="campo">
-        <label>Senha Atual:</label>
-        <input type="password" id="senhaAtual" placeholder="Sua senha de hoje">
-    </div>
+    <label style="font-size: 12px; font-weight: bold;">Senha Atual:</label>
+    <input type="password" id="senhaAtual">
 
-    <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+    <label style="font-size: 12px; font-weight: bold;">Nova Senha:</label>
+    <input type="password" id="novaSenha">
 
-    <div class="campo">
-        <label>Nova Senha:</label>
-        <input type="password" id="novaSenha" placeholder="Nova senha">
-    </div>
+    <label style="font-size: 12px; font-weight: bold;">Confirmar Nova Senha:</label>
+    <input type="password" id="confirmaSenha">
 
-    <div class="campo">
-        <label>Confirmar Nova Senha:</label>
-        <input type="password" id="confirmaSenha" placeholder="Repita a nova senha">
-    </div>
-
-    <button class="btn-salvar" onclick="atualizarSenha()">SALVAR NOVA SENHA</button>
-    <a href="dashboard.html" class="btn-voltar">CANCELAR / VOLTAR</a>
+    <button class="btn-salvar" onclick="atualizarSenha()">ATUALIZAR SENHA</button>
+    <a href="dashboard.html" class="btn-voltar">Voltar ao Painel</a>
 </div>
 
 <script>
@@ -49,40 +39,42 @@
         const nova = document.getElementById('novaSenha').value;
         const confirma = document.getElementById('confirmaSenha').value;
         
-        // 1. Puxa o cadastro do navegador
-        const rawData = localStorage.getItem('usuarioPiloto');
+        // Pega os dados do piloto
+        let dadosRaw = localStorage.getItem('usuarioPiloto');
         
-        if (!rawData) {
-            alert("ERRO: Você não tem um cadastro salvo neste celular/navegador. Tente fazer um novo cadastro.");
+        if (!dadosRaw) {
+            alert("Erro crítico: Nenhum cadastro encontrado neste celular. Por favor, faça o cadastro novamente.");
+            window.location.href = "cadastro.html";
             return;
         }
 
-        let dadosPiloto = JSON.parse(rawData);
+        let dadosPiloto = JSON.parse(dadosRaw);
 
-        // 2. Verificações de segurança
-        if (atual === "") { alert("Digite a senha atual."); return; }
-        
+        // LOG DE TESTE (Aparece no console do navegador)
+        console.log("Senha no sistema:", dadosPiloto.senha);
+        console.log("Senha digitada:", atual);
+
         if (atual !== dadosPiloto.senha) {
-            alert("A 'Senha Atual' está errada!");
-            return;
-        }
-
-        if (nova === "" || nova.length < 3) {
-            alert("A nova senha deve ter pelo menos 3 caracteres.");
+            alert("A 'Senha Atual' está incorreta! Verifique se você não errou letras maiúsculas ou minúsculas.");
             return;
         }
 
         if (nova !== confirma) {
-            alert("A nova senha e a confirmação não são iguais!");
+            alert("A nova senha e a confirmação são diferentes!");
             return;
         }
 
-        // 3. Grava a nova senha por cima da antiga
+        if (nova.length < 3) {
+            alert("A nova senha é muito curta!");
+            return;
+        }
+
+        // SALVAMENTO REAL
         dadosPiloto.senha = nova;
         localStorage.setItem('usuarioPiloto', JSON.stringify(dadosPiloto));
 
-        alert("SUCESSO! Sua senha foi alterada.");
-        window.location.href = "dashboard.html";
+        alert("Senha alterada com sucesso! Você será deslogado para testar a nova senha.");
+        window.location.href = "index.html"; // Manda para o login para testar
     }
 </script>
 </body>
