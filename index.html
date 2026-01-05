@@ -4,25 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
+    <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0f1c3f">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    
-    <link rel="manifest" id="my-manifest">
-    <script>
-        const manifest = {
-            "name": "FPC Atleta",
-            "short_name": "FPC",
-            "start_url": ".",
-            "display": "standalone",
-            "background_color": "#0f1c3f",
-            "theme_color": "#0f1c3f",
-            "orientation": "portrait",
-            "icons": [{ "src": "logo-fpc.png", "sizes": "512x512", "type": "image/png" }]
-        };
-        const blob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
-        document.querySelector('#my-manifest').setAttribute('href', URL.createObjectURL(blob));
-    </script>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="FPC Atleta">
     
     <link rel="icon" type="image/png" href="logo-fpc.png">
     <link rel="apple-touch-icon" href="logo-fpc.png">
@@ -51,107 +37,73 @@
             font-family: 'Montserrat', sans-serif;
             background-color: var(--fpc-blue);
             color: var(--text);
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            overflow: hidden; /* Impede scroll na página inteira, apenas dentro do container */
-            display: flex;
-            justify-content: center;
+            margin: 0; padding: 0; height: 100vh;
+            overflow: hidden;
+            display: flex; justify-content: center;
         }
 
-        /* --- SPLASH SCREEN (TELA DE ABERTURA) --- */
+        /* TELA DE ABERTURA (Splash) */
         #splash-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(160deg, var(--fpc-blue) 0%, #000 100%);
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.8s ease-out;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--fpc-blue); z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 0.5s ease-out;
         }
-        
-        .splash-logo {
-            width: 150px;
-            height: 150px;
-            animation: pulseLogo 2s infinite;
-        }
-        
-        @keyframes pulseLogo {
-            0% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(253,208,0,0.2)); }
-            50% { transform: scale(1.1); filter: drop-shadow(0 0 30px rgba(253,208,0,0.6)); }
-            100% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(253,208,0,0.2)); }
-        }
+        .splash-logo { width: 120px; animation: pulse 1.5s infinite; }
 
-        /* --- CONTAINER PRINCIPAL --- */
+        /* CONTAINER APP */
         .container {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             background: linear-gradient(160deg, var(--fpc-blue) 0%, #000 100%);
-            overflow-y: auto; /* Scroll apenas dentro do app */
-            padding: 20px;
-            padding-bottom: 80px; /* Espaço para scroll final */
-            position: relative;
+            overflow-y: auto; padding: 20px; padding-bottom: 80px;
         }
-
-        /* Ajuste para Desktop (apenas se abrir no PC) */
         @media (min-width: 600px) {
-            .container {
-                max-width: 400px;
-                height: 90vh;
-                margin-top: 5vh;
-                border-radius: 20px;
-                border: 1px solid var(--glass-border);
-                box-shadow: 0 0 50px rgba(0,0,0,0.5);
-            }
+            .container { max-width: 400px; height: 90vh; margin-top: 5vh; border-radius: 20px; border: 1px solid var(--glass-border); }
         }
 
         /* HEADER */
-        .app-header { text-align: center; margin: 30px 0 30px 0; }
+        .app-header { text-align: center; margin: 30px 0 20px 0; }
         .logo-area {
-            width: 120px; height: 120px; background: white; border-radius: 50%;
+            width: 100px; height: 100px; background: white; border-radius: 50%;
             margin: 0 auto 15px; display: flex; align-items: center; justify-content: center;
-            border: 4px solid var(--fpc-yellow);
-            box-shadow: 0 0 30px rgba(253, 208, 0, 0.2); overflow: hidden;
+            border: 4px solid var(--fpc-yellow); overflow: hidden;
         }
         .logo-area img { width: 100%; height: 100%; object-fit: cover; }
-        h2 { font-weight: 800; text-transform: uppercase; margin: 0; font-size: 1.8em; letter-spacing: 2px; }
-        .subtitle { font-size: 0.7em; color: var(--fpc-yellow); letter-spacing: 1px; text-transform: uppercase; margin-top: 5px; font-weight: 600; }
+        h2 { font-weight: 800; text-transform: uppercase; margin: 0; font-size: 1.6em; }
+        .subtitle { font-size: 0.7em; color: var(--fpc-yellow); letter-spacing: 1px; text-transform: uppercase; margin-top: 5px; }
 
-        /* INPUTS */
+        /* INPUTS & BOTÕES */
         .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; margin-bottom: 8px; font-size: 0.9em; color: #ccc; margin-left: 5px; font-weight: 600; }
+        .input-group label { display: block; margin-bottom: 5px; font-size: 0.85em; color: #ccc; margin-left: 5px; }
         .input-group input {
-            width: 100%; padding: 16px; border: 1px solid var(--glass-border); border-radius: 12px;
-            background: var(--glass); color: white; box-sizing: border-box; outline: none;
-            transition: 0.3s; font-family: 'Montserrat', sans-serif; font-size: 1rem;
+            width: 100%; padding: 14px; border: 1px solid var(--glass-border); border-radius: 12px;
+            background: var(--glass); color: white; outline: none; font-size: 1rem;
         }
-        .input-group input:focus { border-color: var(--fpc-yellow); background: rgba(255,255,255, 0.05); }
+        .input-group input:focus { border-color: var(--fpc-yellow); background: rgba(255,255,255, 0.1); }
 
-        /* BOTÕES */
         button {
-            width: 100%; padding: 18px;
-            background: linear-gradient(90deg, var(--fpc-yellow), #e6bc00);
+            width: 100%; padding: 16px; background: linear-gradient(90deg, var(--fpc-yellow), #e6bc00);
             border: none; color: var(--fpc-blue); font-weight: 800; border-radius: 12px;
-            cursor: pointer; font-size: 16px; margin-top: 15px; text-transform: uppercase; letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(253, 208, 0, 0.2); transition: transform 0.2s;
+            cursor: pointer; font-size: 1rem; margin-top: 10px; text-transform: uppercase;
         }
-        button:active { transform: scale(0.96); }
         
-        .btn-outline { background: transparent; border: 2px solid var(--fpc-yellow); color: var(--fpc-yellow); box-shadow: none; margin-top: 10px; }
-        
-        /* BOTÃO DE INSTALAÇÃO FLUTUANTE */
+        /* BOTÃO DE INSTALAÇÃO (Destaque) */
         #install-btn {
-            display: none; background: #009640; color: white; margin-bottom: 10px;
-            animation: pulse 2s infinite;
+            display: none; /* Controlado via JS */
+            background: #009640; color: white; margin-bottom: 15px;
+            box-shadow: 0 0 15px rgba(0, 150, 64, 0.5);
+            animation: pulseBtn 2s infinite;
         }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        @keyframes pulseBtn { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        
+        #ios-btn {
+            display: none; background: rgba(255,255,255,0.1); border: 1px solid white; color: white; margin-bottom: 15px;
+        }
 
-        .link { text-align: center; margin-top: 25px; font-size: 0.9em; cursor: pointer; color: #aaa; padding: 10px; }
+        .link { text-align: center; margin-top: 20px; font-size: 0.9em; cursor: pointer; color: #aaa; }
         .link span { color: var(--fpc-yellow); font-weight: bold; }
 
-        /* VIEWS */
+        /* UTILITÁRIOS */
         .view { display: none; animation: fadeIn 0.4s; padding-bottom: 50px; }
         .view.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -159,39 +111,37 @@
         /* MENU GRID */
         .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .menu-item {
-            background: rgba(255,255,255,0.05); padding: 25px 10px; border-radius: 16px;
-            text-align: center; cursor: pointer; border: 1px solid rgba(255,255,255,0.05);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.05); padding: 20px 10px; border-radius: 16px;
+            text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center;
         }
-        .menu-item:active { background: rgba(255,255,255,0.1); transform: scale(0.98); }
-        .menu-item i { font-size: 32px; margin-bottom: 12px; color: var(--fpc-yellow); }
-        .menu-item p { margin: 0; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; }
+        .menu-item i { font-size: 28px; margin-bottom: 10px; color: var(--fpc-yellow); }
+        .menu-item p { margin: 0; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; }
 
-        .partner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
-        .partner-card { background: white; border-radius: 12px; height: 80px; display: flex; align-items: center; justify-content: center; padding: 15px; opacity: 0.95; }
-        .partner-card i { font-size: 2.5em; color: #333; }
+        .dash-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .user-name { font-size: 1.2em; color: var(--fpc-yellow); font-weight: 800; text-transform: uppercase; }
+        
+        /* Modal iOS */
+        #ios-modal {
+            position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:999;
+            display:none; align-items:flex-end;
+        }
+        .ios-content { background:#222; width:100%; padding:20px; border-radius:20px 20px 0 0; text-align:center; }
 
-        .dash-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:25px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.15); margin-top: 10px; }
-        .user-welcome { font-size: 0.85em; color: #ccc; }
-        .user-name { font-size: 1.3em; color: var(--fpc-yellow); font-weight: 800; text-transform: uppercase; }
-
-        .event-card { background: rgba(255,255,255,0.05); border-left: 5px solid var(--fpc-yellow); padding: 20px; border-radius: 10px; margin-bottom: 15px; }
-        .event-card h4 { margin: 0 0 8px 0; color: var(--fpc-yellow); font-size: 1.2em; text-transform: uppercase; }
-
-        /* TICKET */
-        #ticket-area { background: linear-gradient(135deg, var(--fpc-blue) 0%, #000 100%); border: 2px solid var(--fpc-yellow); padding: 25px; border-radius: 18px; text-align: center; margin-bottom: 25px; position: relative; overflow: hidden; }
-        .watermark { position: absolute; opacity: 0.1; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80%; pointer-events: none; filter: grayscale(100%); }
+        /* Ticket e outros */
+        #ticket-area { background: #000; border: 2px solid var(--fpc-yellow); padding: 20px; border-radius: 15px; text-align: center; margin-bottom: 20px; }
+        .partner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .partner-card { background: white; border-radius: 8px; height: 60px; display: flex; align-items: center; justify-content: center; }
+        .partner-card i { color: #333; font-size: 1.5rem; }
     </style>
 </head>
 <body>
 
     <div id="splash-screen">
-        <img src="logo-fpc.png" class="splash-logo" alt="FPC Logo">
-        <h2 style="margin-top:20px; color:white;">F.P.C.</h2>
-        <p style="color: var(--fpc-yellow); font-size: 0.8em; margin-top:5px;">SISTEMA ATLETA</p>
+        <img src="logo-fpc.png" class="splash-logo">
+        <h2 style="color:white; margin-top:20px;">F.P.C.</h2>
     </div>
 
-    <div class="container" id="app-container" style="display:none;">
+    <div class="container" id="app-content" style="display:none;">
         
         <div id="view-login" class="view active">
             <div class="app-header">
@@ -199,6 +149,9 @@
                 <h2>F.P.C.</h2>
                 <div class="subtitle">Federação Pernambucana de Ciclismo</div>
             </div>
+
+            <button id="install-btn" onclick="installApp()">📲 INSTALAR APLICATIVO</button>
+            <button id="ios-btn" onclick="showIOS()">📲 INSTALAR NO IPHONE</button>
 
             <div class="input-group">
                 <label>CPF</label>
@@ -210,34 +163,39 @@
             </div>
             
             <button onclick="fazerLogin()">ENTRAR</button>
-            <button id="install-btn" onclick="installPWA()">📲 INSTALAR APP</button>
-
-            <div class="link" onclick="toggleView('view-recover')">Recuperar Senha</div>
-            <div class="link">Não tem conta? <span onclick="toggleView('view-register')">CADASTRAR</span></div>
             
-            <div style="text-align:center; margin-top:40px;">
-                <small onclick="resetarSistema()" style="color:#444; font-size:0.7em;">v1.0.5 • Resetar Dados</small>
+            <div class="link" onclick="toggleView('view-recover')">Recuperar Senha</div>
+            <div class="link">Não é filiado? <span onclick="toggleView('view-register')">FILIE-SE AGORA</span></div>
+            <div style="text-align:center; margin-top:30px; opacity:0.5;">
+                <small onclick="resetarSistema()">Limpar Dados</small>
+            </div>
+        </div>
+
+        <div id="ios-modal" onclick="this.style.display='none'">
+            <div class="ios-content" onclick="event.stopPropagation()">
+                <h3 style="color:white;">Para Instalar no iPhone:</h3>
+                <p style="color:#ccc;">1. Toque no botão <strong>Compartilhar</strong> abaixo.<br>2. Selecione <strong>"Adicionar à Tela de Início"</strong>.</p>
+                <button onclick="document.getElementById('ios-modal').style.display='none'">ENTENDI</button>
             </div>
         </div>
 
         <div id="view-register" class="view">
-            <h3 style="text-align:center; margin-bottom:20px;">Filiação</h3>
+            <h3 style="text-align:center; margin-bottom:20px;">Nova Filiação</h3>
             <div class="input-group"><label>Nome</label><input type="text" id="reg-name"></div>
             <div class="input-group"><label>Nascimento</label><input type="date" id="reg-birth"></div>
-            <div class="input-group"><label>WhatsApp</label><input type="text" id="reg-phone" oninput="maskPhone(this)"></div>
+            <div class="input-group"><label>Celular</label><input type="text" id="reg-phone" oninput="maskPhone(this)"></div>
             <div class="input-group"><label>CPF</label><input type="text" id="reg-cpf" oninput="maskCPF(this)"></div>
             <div class="input-group"><label>Senha</label><input type="password" id="reg-pass"></div>
-            <div class="input-group"><label>Palavra Segurança</label><input type="text" id="reg-sec-word"></div>
+            <div class="input-group"><label>Palavra Segurança</label><input type="text" id="reg-sec"></div>
             <button onclick="registrarUsuario()">CADASTRAR</button>
             <div class="link" onclick="toggleView('view-login')">Voltar</div>
         </div>
 
         <div id="view-dashboard" class="view">
             <div class="dash-header">
-                <div><span class="user-welcome">Olá,</span><br><span class="user-name" id="user-name-display">Atleta</span></div>
-                <i class="fas fa-sign-out-alt" onclick="logout()" style="color:var(--fpc-red); font-size: 1.4em;"></i>
+                <div><span class="user-name" id="user-name-display">Atleta</span></div>
+                <i class="fas fa-sign-out-alt" onclick="logout()" style="color:var(--fpc-red); font-size:1.2em;"></i>
             </div>
-            <p style="color:#aaa; font-size:0.8em; font-weight:bold; margin-bottom:15px;">MENU PRINCIPAL</p>
             <div class="menu-grid">
                 <div class="menu-item" onclick="abrirModalidade('Downhill')"><i class="fas fa-mountain"></i><p>Downhill</p></div>
                 <div class="menu-item" onclick="abrirModalidade('Speed')"><i class="fas fa-tachometer-alt"></i><p>Speed</p></div>
@@ -250,41 +208,23 @@
             </div>
         </div>
 
-        <div id="view-recover" class="view">
-            <h3 style="text-align:center;">Recuperar</h3>
-            <div id="rec-step-1">
-                <div class="input-group"><label>CPF</label><input type="text" id="rec-cpf" oninput="maskCPF(this)"></div>
-                <button onclick="verificarUsuarioRec()">Buscar</button>
-            </div>
-            <div id="rec-step-2" style="display:none;">
-                <button class="btn-outline" onclick="escolherMetodo('sms')">Via SMS</button>
-                <button class="btn-outline" onclick="escolherMetodo('word')">Palavra Segurança</button>
-            </div>
-            <div id="rec-step-3" style="display:none;">
-                <p id="rec-instruction" style="text-align:center; color:var(--fpc-yellow); margin:15px 0;"></p>
-                <div class="input-group"><input type="text" id="rec-input-validate" style="text-align:center;"></div>
-                <button onclick="finalizarRecuperacao()">Validar</button>
-            </div>
-            <div class="link" onclick="toggleView('view-login')">Cancelar</div>
-        </div>
-
         <div id="view-partners" class="view">
-            <div class="dash-header"><div onclick="toggleView('view-dashboard')"><i class="fas fa-arrow-left"></i> <strong style="color:var(--fpc-yellow);">Parceiros</strong></div></div>
+            <h3 style="text-align:center;">Parceiros</h3>
             <div class="partner-grid">
                 <div class="partner-card"><i class="fas fa-bicycle"></i></div>
                 <div class="partner-card"><i class="fas fa-store"></i></div>
                 <div class="partner-card"><i class="fas fa-cog"></i></div>
-                <div class="partner-card"><i class="fas fa-tools"></i></div>
+                <div class="partner-card"><i class="fas fa-medal"></i></div>
             </div>
             <div class="link" onclick="toggleView('view-dashboard')">Voltar</div>
         </div>
 
         <div id="view-category" class="view">
             <div class="dash-header"><div onclick="toggleView('view-dashboard')"><i class="fas fa-arrow-left"></i> <strong style="color:var(--fpc-yellow);" id="cat-title">...</strong></div></div>
-            <button class="btn-outline" onclick="abrirCalendario()"><i class="far fa-calendar-check"></i> Calendário & Inscrições</button>
-            <button class="btn-outline"><i class="fas fa-id-card"></i> Carteirinha Digital</button>
-            <button class="btn-outline"><i class="fas fa-shield-alt"></i> Seguro Atleta</button>
-            <button class="btn-outline"><i class="fas fa-trophy"></i> Ranking</button>
+            <button class="btn-outline" onclick="abrirCalendario()">Calendário & Inscrições</button>
+            <button class="btn-outline">Carteirinha Digital</button>
+            <button class="btn-outline">Seguro Atleta</button>
+            <button class="btn-outline">Ranking</button>
         </div>
 
         <div id="view-events" class="view">
@@ -293,56 +233,77 @@
         </div>
 
         <div id="view-payment" class="view">
-            <h3 style="text-align:center; color:var(--fpc-yellow);">Pagamento</h3>
-            <div style="background:rgba(255,255,255,0.05); padding:20px; border-radius:12px; margin-bottom:20px;">
-                <p style="color:#aaa; font-size:0.8em; margin:0;">EVENTO</p><strong id="pay-event-name" style="font-size:1.1em; display:block; margin-bottom:10px;">...</strong>
-                <p style="color:#aaa; font-size:0.8em; margin:0;">CATEGORIA</p><strong id="pay-category" style="color:var(--fpc-yellow); font-size:1.1em; display:block; margin-bottom:10px;">...</strong>
-                <div style="border-top:1px dashed #444; padding-top:10px; margin-top:10px; display:flex; justify-content:space-between;"><span>Valor:</span><strong style="color:var(--fpc-green); font-size:1.4em;">R$ 120,00</strong></div>
+            <h3 style="text-align:center;">Pagamento</h3>
+            <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:10px;">
+                <p style="font-size:0.8em; color:#aaa;">EVENTO</p><strong id="pay-event-name" style="color:white;"></strong><br><br>
+                <p style="font-size:0.8em; color:#aaa;">CATEGORIA</p><strong id="pay-category" style="color:var(--fpc-yellow);"></strong>
+                <hr style="border-color:#333;">
+                <div style="display:flex; justify-content:space-between;"><strong style="color:white;">TOTAL</strong><strong style="color:var(--fpc-green);">R$ 120,00</strong></div>
             </div>
-            <div style="text-align:center; margin-bottom:20px;"><p style="margin-bottom:5px;">Chave PIX</p><input type="text" value="00020126360014BR.GOV.BCB.PIX..." style="text-align:center; width:100%; padding:14px; background:rgba(0,0,0,0.3); color:var(--fpc-yellow); border:1px dashed var(--fpc-yellow); border-radius:8px;" readonly></div>
-            <button onclick="gerarConfirmacao()">CONFIRMAR PAGAMENTO</button>
+            <p style="text-align:center; font-size:0.8em; margin-top:20px;">PIX Copia e Cola:</p>
+            <input type="text" value="00020126360014BR.GOV.BCB.PIX..." style="width:100%; padding:10px; background:#222; border:1px dashed #555; color:white; text-align:center;" readonly>
+            <button onclick="gerarConfirmacao()">CONFIRMAR</button>
             <div class="link" onclick="toggleView('view-events')">Cancelar</div>
         </div>
 
         <div id="view-ticket" class="view">
-            <h3 style="text-align:center;">Inscrição Confirmada</h3>
+            <h3 style="text-align:center;">Sucesso!</h3>
             <div id="ticket-area">
-                <img class="watermark" src="logo-fpc.png">
-                <div style="height:6px; display:flex; margin-bottom:15px;"><div style="flex:1; background:var(--fpc-red)"></div><div style="flex:1; background:var(--fpc-yellow)"></div><div style="flex:1; background:var(--fpc-green)"></div></div>
-                <h2 style="margin-bottom:20px;">F.P.C.</h2>
-                <div class="ticket-info"><strong>Atleta</strong> <span id="ticket-name">...</span></div>
-                <div class="ticket-info"><strong>Evento</strong> <span id="ticket-event">...</span></div>
-                <div class="ticket-info"><strong>Categoria</strong> <span id="ticket-cat" style="color:var(--fpc-yellow);">...</span></div>
-                <div style="background:var(--fpc-green); color:white; padding:5px 20px; border-radius:20px; display:inline-block; margin-top:15px; font-weight:bold;">PAGO</div>
+                <img src="logo-fpc.png" style="width:50px; margin-bottom:10px;">
+                <div style="border-bottom:1px dashed #555; margin-bottom:10px; padding-bottom:10px;">
+                    <strong style="color:var(--fpc-yellow);">COMPROVANTE FPC</strong>
+                </div>
+                <p id="ticket-name" style="color:white;"></p>
+                <p id="ticket-event" style="color:#ccc; font-size:0.9em;"></p>
+                <p id="ticket-cat" style="color:var(--fpc-yellow); font-weight:bold;"></p>
+                <div style="background:var(--fpc-green); color:white; padding:5px; border-radius:5px; margin-top:10px; font-size:0.8em;">PAGO</div>
             </div>
-            <button onclick="downloadComprovante()">BAIXAR TICKET</button>
+            <button onclick="downloadComprovante()">BAIXAR IMAGEM</button>
             <div class="link" onclick="toggleView('view-dashboard')">Início</div>
+        </div>
+
+        <div id="view-recover" class="view">
+            <h3 style="text-align:center;">Recuperar</h3>
+            <div id="rec-step-1">
+                <div class="input-group"><label>CPF</label><input type="text" id="rec-cpf" oninput="maskCPF(this)"></div>
+                <button onclick="buscarRecuperacao()">Buscar</button>
+            </div>
+            <div id="rec-step-2" style="display:none;">
+                <p id="rec-hint" style="text-align:center; color:var(--fpc-yellow);"></p>
+                <div class="input-group"><input type="text" id="rec-ans" placeholder="Sua resposta"></div>
+                <button onclick="validarRecuperacao()">Validar</button>
+            </div>
+            <div class="link" onclick="toggleView('view-login')">Cancelar</div>
         </div>
 
     </div>
 
     <script>
-        // === SPLASH SCREEN LOGIC ===
+        // === PWA INSTALAÇÃO ===
+        let deferredPrompt;
         window.addEventListener('load', () => {
+            // Registra Service Worker
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js');
+            }
+            // Animação Splash
             setTimeout(() => {
-                const splash = document.getElementById('splash-screen');
-                const app = document.getElementById('app-container');
-                splash.style.opacity = '0';
-                setTimeout(() => {
-                    splash.style.display = 'none';
-                    app.style.display = 'block';
-                }, 800);
-            }, 2500); // 2.5 segundos de logo
+                document.getElementById('splash-screen').style.opacity = '0';
+                setTimeout(() => { 
+                    document.getElementById('splash-screen').style.display = 'none';
+                    document.getElementById('app-content').style.display = 'block';
+                }, 500);
+            }, 2000);
         });
 
-        // === PWA INSTALL ===
-        let deferredPrompt;
+        // Detecta Android/PC
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
             document.getElementById('install-btn').style.display = 'block';
         });
-        async function installPWA() {
+
+        async function installApp() {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
@@ -351,112 +312,89 @@
             }
         }
 
-        // === SYSTEM LOGIC ===
-        const eventosDownhill = [
-            { id: 1, local: "Ouricuri-PE", data: "25 e 26 de Abril", nome: "DH Ouricuri Challenge" },
-            { id: 2, local: "Caruaru-PE", data: "16 e 17 de Maio", nome: "Caruaru Downhill Cup" },
-            { id: 3, local: "Santa Cruz-PE", data: "29 e 30 de Agosto", nome: "GP Santa Cruz Extreme" },
-            { id: 4, local: "Gravatá-PE", data: "19 e 20 de Setembro", nome: "Gravatá Mountain Race" }
-        ];
-        let eventoSelecionado = null, usuarioLogado = null;
-
-        function calcularCategoria(nasc) {
-            if(!nasc) return "N/A";
-            const idade = new Date().getFullYear() - new Date(nasc).getFullYear();
-            if (idade <= 11) return "Mirim";
-            if (idade <= 14) return "Infanto-Juvenil";
-            if (idade <= 16) return "Juvenil";
-            if (idade <= 18) return "Júnior";
-            if (idade <= 29) return "Sub-30";
-            if (idade <= 34) return "Master A1";
-            if (idade <= 39) return "Master A2";
-            if (idade <= 44) return "Master B1";
-            if (idade <= 49) return "Master B2";
-            if (idade <= 54) return "Master C1";
-            if (idade <= 59) return "Master C2";
-            return "Master D"; 
+        // Detecta iOS
+        const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
+        if (isIos && !window.navigator.standalone) {
+            document.getElementById('ios-btn').style.display = 'block';
         }
+        function showIOS() { document.getElementById('ios-modal').style.display = 'flex'; }
+
+        // === LÓGICA DO APP ===
+        const eventos = [
+            {id:1, nome:"DH Ouricuri", data:"25/26 Abr"}, 
+            {id:2, nome:"Caruaru Downhill", data:"16/17 Mai"},
+            {id:3, nome:"Santa Cruz Extreme", data:"29/30 Ago"},
+            {id:4, nome:"Gravatá Race", data:"19/20 Set"}
+        ];
+        let usuario = null, eventoAtual = null, recUser = null;
 
         function toggleView(id) {
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            document.querySelector('.container').scrollTop = 0;
-            if(id !== 'view-recover') {
-                document.getElementById('rec-step-2').style.display = 'none';
-                document.getElementById('rec-step-3').style.display = 'none';
-                document.getElementById('rec-step-1').style.display = 'block';
-            }
+            window.scrollTo(0,0);
         }
+        function maskCPF(i){i.value=i.value.replace(/\D/g,"").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2");}
+        function maskPhone(i){i.value=i.value.replace(/\D/g,"").replace(/^(\d\d)(\d)/,"($1) $2").replace(/(\d)(\d{4})$/,"$1-$2");}
         
-        function abrirModalidade(n) { document.getElementById('cat-title').innerText = n; toggleView('view-category'); }
-        function abrirCalendario() {
-            const c = document.getElementById('events-container'); c.innerHTML = ""; 
-            eventosDownhill.forEach(ev => {
-                c.innerHTML += `<div class="event-card"><h4>${ev.local}</h4><p>${ev.nome}</p><p>${ev.data}</p><button onclick="iniciarInscricao(${ev.id})" style="width:100%; margin-top:10px; padding:10px; background:#fdd000; color:black; border:none; border-radius:5px; font-weight:bold;">INSCREVER</button></div>`;
-            });
-            toggleView('view-events');
-        }
-        function iniciarInscricao(id) {
-            eventoSelecionado = eventosDownhill.find(e => e.id === id);
-            document.getElementById('pay-event-name').innerText = eventoSelecionado.local;
-            document.getElementById('pay-category').innerText = calcularCategoria(usuarioLogado.nasc);
-            toggleView('view-payment');
-        }
-        function gerarConfirmacao() {
-            document.getElementById('ticket-name').innerText = usuarioLogado.nome;
-            document.getElementById('ticket-event').innerText = eventoSelecionado.local;
-            document.getElementById('ticket-cat').innerText = calcularCategoria(usuarioLogado.nasc);
-            toggleView('view-ticket');
-        }
-        function downloadComprovante() {
-            html2canvas(document.getElementById("ticket-area"), { backgroundColor: "#0f1c3f", scale: 2 }).then(c => {
-                const l = document.createElement("a"); l.download = "Inscricao.png"; l.href = c.toDataURL(); l.click();
-            });
-        }
         function registrarUsuario() {
-            const nome = document.getElementById('reg-name').value;
-            const nasc = document.getElementById('reg-birth').value;
-            const cpf = document.getElementById('reg-cpf').value;
-            const pass = document.getElementById('reg-pass').value;
-            const sec = document.getElementById('reg-sec-word').value;
-            if(!nome || !nasc || !cpf || !pass) return alert("Preencha tudo");
-            let u = JSON.parse(localStorage.getItem('bikeUsers')) || [];
-            u.push({ nome, nasc, cpf, pass, sec });
-            localStorage.setItem('bikeUsers', JSON.stringify(u));
+            const nome=document.getElementById('reg-name').value, cpf=document.getElementById('reg-cpf').value, pass=document.getElementById('reg-pass').value, sec=document.getElementById('reg-sec').value, birth=document.getElementById('reg-birth').value;
+            if(!nome||!cpf||!pass) return alert("Preencha tudo");
+            let db = JSON.parse(localStorage.getItem('bikeUsers')) || [];
+            db.push({nome,cpf,pass,sec,birth});
+            localStorage.setItem('bikeUsers', JSON.stringify(db));
             alert("Sucesso!"); toggleView('view-login');
         }
         function fazerLogin() {
-            const cpf = document.getElementById('login-cpf').value;
-            const pass = document.getElementById('login-pass').value;
-            let u = JSON.parse(localStorage.getItem('bikeUsers')) || [];
-            usuarioLogado = u.find(user => user.cpf === cpf && user.pass === pass);
-            if(usuarioLogado) { document.getElementById('user-name-display').innerText = usuarioLogado.nome.split(' ')[0]; toggleView('view-dashboard'); }
-            else alert("Erro no login");
+            const cpf=document.getElementById('login-cpf').value, pass=document.getElementById('login-pass').value;
+            let db = JSON.parse(localStorage.getItem('bikeUsers')) || [];
+            usuario = db.find(u => u.cpf === cpf && u.pass === pass);
+            if(usuario) { document.getElementById('user-name-display').innerText = usuario.nome.split(' ')[0]; toggleView('view-dashboard'); }
+            else alert("Erro");
         }
-        function resetarSistema(){ localStorage.removeItem('bikeUsers'); location.reload(); }
         function logout(){ location.reload(); }
-        
-        function maskCPF(i){i.value=i.value.replace(/\D/g,"").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2");}
-        function maskPhone(i){i.value=i.value.replace(/\D/g,"").replace(/^(\d\d)(\d)/,"($1) $2").replace(/(\d)(\d{4})$/,"$1-$2");}
+        function resetarSistema(){ localStorage.clear(); location.reload(); }
 
-        // Recuperação Simples
-        let recUser=null, recCode=null;
-        function verificarUsuarioRec(){
-            const cpf = document.getElementById('rec-cpf').value;
-            let u = JSON.parse(localStorage.getItem('bikeUsers')) || [];
-            recUser = u.find(k => k.cpf === cpf);
-            if(recUser) { document.getElementById('rec-step-1').style.display='none'; document.getElementById('rec-step-2').style.display='block'; }
-            else alert("CPF não achado");
+        function abrirModalidade(n) { document.getElementById('cat-title').innerText = n; toggleView('view-category'); }
+        function abrirCalendario() {
+            const c = document.getElementById('events-container'); c.innerHTML="";
+            eventos.forEach(e => c.innerHTML += `<div class="event-card"><h4>${e.nome}</h4><p>${e.data}</p><button onclick="selEvento(${e.id})" style="background:#fdd000;border:none;padding:5px 10px;border-radius:5px;margin-top:5px;">INSCREVER</button></div>`);
+            toggleView('view-events');
         }
-        function escolherMetodo(m){
-            document.getElementById('rec-step-2').style.display='none'; document.getElementById('rec-step-3').style.display='block';
-            if(m==='sms'){ recCode=1234; document.getElementById('rec-instruction').innerText="Código SMS: 1234"; }
-            else { document.getElementById('rec-instruction').innerText="Palavra de Segurança?"; }
+        function selEvento(id) {
+            eventoAtual = eventos.find(e => e.id===id);
+            document.getElementById('pay-event-name').innerText = eventoAtual.nome;
+            document.getElementById('pay-category').innerText = calcularCat(usuario.birth);
+            toggleView('view-payment');
         }
-        function finalizarRecuperacao(){
-            const val = document.getElementById('rec-input-validate').value;
-            if(recCode) { if(val==recCode) alert("Senha: "+recUser.pass); else alert("Erro"); }
-            else { if(val===recUser.sec) alert("Senha: "+recUser.pass); else alert("Erro"); }
+        function calcularCat(d) {
+            const idade = new Date().getFullYear() - new Date(d).getFullYear();
+            if(idade<=18) return "Júnior/Juvenil"; if(idade<=29) return "Sub-30"; return "Master";
+        }
+        function gerarConfirmacao() {
+            document.getElementById('ticket-name').innerText = usuario.nome;
+            document.getElementById('ticket-event').innerText = eventoAtual.nome;
+            document.getElementById('ticket-cat').innerText = calcularCat(usuario.birth);
+            toggleView('view-ticket');
+        }
+        function downloadComprovante() {
+            html2canvas(document.getElementById('ticket-area')).then(c => {
+                const a = document.createElement('a'); a.download='ticket.png'; a.href=c.toDataURL(); a.click();
+            });
+        }
+        
+        function buscarRecuperacao() {
+            const cpf=document.getElementById('rec-cpf').value;
+            let db=JSON.parse(localStorage.getItem('bikeUsers'))||[];
+            recUser=db.find(u=>u.cpf===cpf);
+            if(recUser){
+                document.getElementById('rec-step-1').style.display='none';
+                document.getElementById('rec-step-2').style.display='block';
+                document.getElementById('rec-hint').innerText = "Palavra de Segurança?";
+            } else alert("Não encontrado");
+        }
+        function validarRecuperacao() {
+            if(document.getElementById('rec-ans').value === recUser.sec) alert("Senha: " + recUser.pass);
+            else alert("Erro");
         }
     </script>
 </body>
