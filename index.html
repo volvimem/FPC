@@ -2,322 +2,258 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0f1c3f">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>FPC Mobile V4</title>
     
     <link rel="icon" type="image/png" href="logo-fpc.png">
-    <title>FPC Atleta</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
-    <style>
-        :root {
-            --fpc-blue: #0f1c3f;
-            --fpc-yellow: #fdd000;
-            --glass: rgba(255, 255, 255, 0.08);
-            --border: rgba(255, 255, 255, 0.2);
-            --text: #ffffff;
+    <script>
+        // Isso deleta o "Cache Zumbi" que está travando seu visual antigo
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                    registration.unregister();
+                }
+            });
+            caches.keys().then(function(names) {
+                for (let name of names) caches.delete(name);
+            });
         }
+    </script>
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+    <style>
+        /* RESET TOTAL - MATA QUALQUER MARGEM DE COMPUTADOR */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        html, body {
+            width: 100%;
+            height: 100%;
+            background-color: #0f1c3f;
+            overflow-x: hidden; /* Proíbe rolagem lateral */
+        }
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: var(--fpc-blue);
-            color: var(--text);
-            width: 100%;
-            min-height: 100vh;
-            overflow-x: hidden;
+            color: white;
         }
 
-        /* CONTAINER FLUIDO - OCUPA A TELA TODA */
-        .container {
-            width: 100%;
-            min-height: 100vh;
-            background: linear-gradient(180deg, var(--fpc-blue) 0%, #000 120%);
+        /* CONTAINER QUE OCUPA A TELA TODA */
+        .mobile-container {
+            width: 100vw; /* 100% da largura da tela */
+            min-height: 100vh; /* 100% da altura da tela */
+            background: linear-gradient(180deg, #0f1c3f 0%, #000 100%);
             display: flex;
             flex-direction: column;
-            padding: 25px; /* Espaçamento das bordas */
+            padding: 20px;
         }
 
-        /* SPLASH SCREEN (SEM IMAGEM, SÓ SPINNER) */
-        #splash-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--fpc-blue); z-index: 9999;
-            display: flex; justify-content: center; align-items: center; flex-direction: column;
-            transition: opacity 0.5s;
+        /* HEADER */
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 40px;
+            margin-bottom: 30px;
+            width: 100%;
         }
-        
-        /* Círculo giratório de carregamento */
-        .spinner {
-            width: 50px; height: 50px;
-            border: 5px solid rgba(255,255,255,0.1);
-            border-top: 5px solid var(--fpc-yellow);
+
+        .logo-circle {
+            width: 140px;
+            height: 140px;
+            background: white;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
+            border: 5px solid #fdd000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(253, 208, 0, 0.3);
         }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* HEADER LOGO (Apenas na tela de login) */
-        .app-header { 
-            display: flex; flex-direction: column; align-items: center;
-            margin-top: 40px; margin-bottom: 40px; 
+        .logo-circle img {
+            width: 110%;
+            height: 110%;
+            object-fit: contain;
         }
-        
-        .logo-area {
-            width: 130px; height: 130px; 
-            background: white; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            border: 4px solid var(--fpc-yellow);
-            box-shadow: 0 0 30px rgba(253, 208, 0, 0.2);
-            overflow: hidden; margin-bottom: 15px;
-        }
-        
-        /* Zoom na logo para preencher */
-        .logo-area img { width: 100%; height: 100%; object-fit: contain; transform: scale(1.4); }
-        
-        h2 { font-size: 1.8rem; font-weight: 800; letter-spacing: 1px; }
-        .subtitle { font-size: 0.8rem; color: var(--fpc-yellow); text-transform: uppercase; font-weight: 600; }
 
-        /* FORMULÁRIO FULL WIDTH */
-        .form-area { width: 100%; flex-grow: 1; display: flex; flex-direction: column; }
+        h1 { font-size: 2rem; font-weight: 900; letter-spacing: 2px; text-align: center; margin: 0; }
+        .sub { color: #fdd000; font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; }
+
+        /* INPUTS ESTICADOS */
+        .form-box { width: 100%; }
         
-        .input-group { margin-bottom: 20px; width: 100%; }
-        .input-group label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: #ccc; font-weight: 600; padding-left: 2px; }
+        .field { margin-bottom: 20px; width: 100%; }
+        .field label { display: block; color: #ccc; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; }
         
-        .input-group input {
-            width: 100%; /* Força largura total */
-            height: 55px;
-            padding: 0 20px; 
-            border: 1px solid var(--border); 
+        .field input {
+            width: 100%;
+            height: 60px; /* Bem alto para o dedo */
             border-radius: 12px;
-            background: var(--glass); 
-            color: white; 
-            outline: none; 
-            font-size: 1.1rem; 
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.05);
+            color: white;
+            padding: 0 20px;
+            font-size: 1.2rem; /* Letra grande */
+            outline: none;
         }
-        .input-group input:focus { border-color: var(--fpc-yellow); background: rgba(255,255,255, 0.1); }
+        .field input:focus { border-color: #fdd000; background: rgba(255,255,255,0.1); }
 
-        /* BOTÕES LARGOS */
-        button {
-            width: 100%; /* Força largura total */
-            height: 55px;
-            background: var(--fpc-yellow);
-            border: none; 
-            color: var(--fpc-blue); 
-            font-weight: 800; 
+        /* BOTÃO GIGANTE */
+        .btn-action {
+            width: 100%;
+            height: 60px;
+            background: #fdd000;
+            color: #0f1c3f;
+            border: none;
             border-radius: 12px;
-            font-size: 1rem; 
+            font-size: 1.1rem;
+            font-weight: 900;
             text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            display: flex; align-items: center; justify-content: center; gap: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             margin-top: 10px;
+            cursor: pointer;
         }
-        button:active { transform: scale(0.98); opacity: 0.9; }
-
-        #install-btn {
-            background: #009640; color: white; margin-bottom: 30px; 
-            border: 2px solid #00c753; animation: pulse 2s infinite;
-        }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
-
-        .link { text-align: center; margin-top: 30px; font-size: 0.9rem; color: #aaa; padding: 10px; }
-        .link span { color: var(--fpc-yellow); font-weight: bold; }
-
-        /* TELAS */
-        .view { display: none; width: 100%; animation: fadeIn 0.3s; padding-bottom: 50px; }
-        .view.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* LINQUES */
+        .links-area { margin-top: 30px; text-align: center; }
+        .text-link { color: #aaa; margin-bottom: 15px; font-size: 0.9rem; }
+        .text-link span { color: #fdd000; font-weight: bold; text-decoration: underline; }
 
         /* DASHBOARD GRID */
-        .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; width: 100%; }
-        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
-        .menu-item {
-            background: rgba(255,255,255,0.06); padding: 25px; border-radius: 16px;
-            text-align: center; border: 1px solid rgba(255,255,255,0.05);
+        .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .dash-item {
+            background: rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            aspect-ratio: 1/1; /* Quadrados perfeitos */
+            aspect-ratio: 1; /* Quadrado Perfeito */
         }
-        .menu-item i { font-size: 32px; margin-bottom: 10px; color: var(--fpc-yellow); }
-        .menu-item p { font-size: 0.85rem; font-weight: 700; }
+        .dash-item i { font-size: 40px; color: #fdd000; margin-bottom: 10px; }
+        .dash-item span { font-weight: 700; font-size: 0.9rem; }
 
-        /* MODAL MANUAL */
-        #manual-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 9999; display: none;
-            justify-content: center; align-items: center; padding: 30px;
-        }
+        /* TELAS */
+        .page { display: none; animation: slideUp 0.3s ease-out; width: 100%; }
+        .page.active { display: block; }
+        @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
     </style>
 </head>
 <body>
 
-    <div id="splash-screen">
-        <div class="spinner"></div>
-        <h2 style="color:white; letter-spacing: 3px;">F.P.C.</h2>
-        <p style="color: var(--fpc-yellow); font-size: 0.8rem; margin-top: 5px;">SISTEMA ATLETA</p>
-    </div>
+    <div class="mobile-container">
 
-    <div class="container">
-
-        <div id="view-login" class="view active">
-            <div class="app-header">
-                <div class="logo-area">
-                    <img src="logo-fpc.png" alt="FPC">
+        <div id="pg-login" class="page active">
+            <div class="header">
+                <div class="logo-circle">
+                    <img src="logo-fpc.png" alt="Logo">
                 </div>
-                <h2>F.P.C.</h2>
-                <div class="subtitle">FEDERAÇÃO PERNAMBUCANA</div>
+                <h1>F.P.C.</h1>
+                <div class="sub">SISTEMA ATLETA V4</div>
             </div>
 
-            <div class="form-area">
-                <button id="install-btn" onclick="acaoInstalar()">
-                    <i class="fas fa-download"></i> INSTALAR APP
-                </button>
-
-                <div class="input-group">
+            <div class="form-box">
+                <div class="field">
                     <label>CPF</label>
-                    <input type="tel" id="login-cpf" placeholder="000.000.000-00" oninput="maskCPF(this)">
+                    <input type="tel" id="cpf" placeholder="000.000.000-00" oninput="mask(this)">
                 </div>
-                <div class="input-group">
-                    <label>Senha</label>
-                    <input type="password" id="login-pass">
+                <div class="field">
+                    <label>SENHA</label>
+                    <input type="password" id="pass">
                 </div>
 
-                <button onclick="fazerLogin()">ENTRAR</button>
+                <button class="btn-action" onclick="login()">ENTRAR</button>
 
-                <div class="link" onclick="toggleView('view-recover')">Esqueci minha senha</div>
-                <div class="link" style="margin-top: 10px;">Ainda não tem conta? <span onclick="toggleView('view-register')">CADASTRAR</span></div>
+                <div class="links-area">
+                    <div class="text-link" onclick="mudarTela('pg-recover')">Esqueci minha senha</div>
+                    <div class="text-link" onclick="mudarTela('pg-register')">Novo? <span>CRIAR CONTA</span></div>
+                </div>
             </div>
             
-            <div style="margin-top:auto; padding-top: 30px; opacity: 0.5; text-align: center;">
-                <small onclick="localStorage.clear(); location.reload();">Limpar Dados</small>
-            </div>
+            <p style="text-align:center; color:#555; margin-top:40px; font-size:0.7rem;">
+                Cache Limpo - Visual Mobile
+            </p>
         </div>
 
-        <div id="manual-modal" onclick="this.style.display='none'">
-            <div style="text-align: center;">
-                <i class="fas fa-arrow-up" style="font-size:3rem; color:var(--fpc-yellow); margin-bottom:30px; animation: bounce 1s infinite;"></i>
-                <h3 style="color:white; margin-bottom:20px;">Instalar App</h3>
-                <p style="color:#ccc; font-size:1.1rem; line-height:1.6;">
-                    Para instalar, abra o menu do navegador e toque em:<br><br>
-                    <strong>"Adicionar à Tela Inicial"</strong>
-                </p>
-                <button onclick="document.getElementById('manual-modal').style.display='none'" style="margin-top:30px;">ENTENDI</button>
-            </div>
-        </div>
-        <style>@keyframes bounce { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-10px);} }</style>
-
-        <div id="view-dashboard" class="view">
-            <div class="dash-header">
+        <div id="pg-dash" class="page">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
                 <div>
-                    <span style="color:#ccc; font-size:0.9rem;">Olá,</span><br>
-                    <span style="color:var(--fpc-yellow); font-size:1.5rem; font-weight:800;" id="user-name">Atleta</span>
+                    <div style="color:#ccc; font-size:0.8rem;">Bem-vindo,</div>
+                    <div style="color:#fdd000; font-size:1.5rem; font-weight:900;" id="nomeUser">Atleta</div>
                 </div>
-                <i class="fas fa-sign-out-alt" onclick="location.reload()" style="color:#e30613; font-size:1.5rem;"></i>
+                <i class="fas fa-sign-out-alt" style="color:#e30613; font-size:1.5rem;" onclick="sair()"></i>
             </div>
-            
-            <div class="menu-grid">
-                <div class="menu-item"><i class="fas fa-mountain"></i><p>Downhill</p></div>
-                <div class="menu-item"><i class="fas fa-tachometer-alt"></i><p>Speed</p></div>
-                <div class="menu-item"><i class="fas fa-biking"></i><p>MTB</p></div>
-                <div class="menu-item"><i class="fas fa-bicycle"></i><p>BMX</p></div>
-                <div class="menu-item"><i class="fas fa-handshake"></i><p>Parceiros</p></div>
-                <div class="menu-item"><i class="far fa-newspaper"></i><p>Notícias</p></div>
+
+            <div class="dash-grid">
+                <div class="dash-item"><i class="fas fa-mountain"></i><span>Downhill</span></div>
+                <div class="dash-item"><i class="fas fa-tachometer-alt"></i><span>Speed</span></div>
+                <div class="dash-item"><i class="fas fa-biking"></i><span>MTB</span></div>
+                <div class="dash-item"><i class="fas fa-bicycle"></i><span>BMX</span></div>
+                <div class="dash-item"><i class="far fa-newspaper"></i><span>Notícias</span></div>
+                <div class="dash-item"><i class="fas fa-user-cog"></i><span>Conta</span></div>
             </div>
         </div>
 
-        <div id="view-register" class="view">
-            <div class="app-header">
-                <h2 style="font-size:1.5rem;">NOVA FILIAÇÃO</h2>
-            </div>
-            <div class="form-area">
-                <div class="input-group"><label>Nome Completo</label><input type="text" id="reg-name"></div>
-                <div class="input-group"><label>CPF</label><input type="tel" id="reg-cpf" oninput="maskCPF(this)"></div>
-                <div class="input-group"><label>Senha</label><input type="password" id="reg-pass"></div>
-                <button onclick="registrar()">CADASTRAR</button>
-                <div class="link" onclick="toggleView('view-login')">Voltar</div>
+        <div id="pg-register" class="page">
+            <div class="header"><h1>NOVA CONTA</h1></div>
+            <div class="form-box">
+                <div class="field"><label>Nome</label><input type="text" id="reg-nome"></div>
+                <div class="field"><label>CPF</label><input type="tel" id="reg-cpf" oninput="mask(this)"></div>
+                <div class="field"><label>Senha</label><input type="password" id="reg-pass"></div>
+                <button class="btn-action" onclick="registrar()">CADASTRAR</button>
+                <div class="links-area"><div class="text-link" onclick="mudarTela('pg-login')">Voltar</div></div>
             </div>
         </div>
-
-        <div id="view-recover" class="view">
-            <div class="app-header">
-                <h2 style="font-size:1.5rem;">RECUPERAR</h2>
-            </div>
-            <div class="form-area">
-                <div class="input-group"><label>Seu CPF</label><input type="tel" id="rec-cpf" oninput="maskCPF(this)"></div>
-                <button onclick="alert('Função em desenvolvimento')">BUSCAR CONTA</button>
-                <div class="link" onclick="toggleView('view-login')">Cancelar</div>
+        
+        <div id="pg-recover" class="page">
+            <div class="header"><h1>RECUPERAR</h1></div>
+            <div class="form-box">
+                <div class="field"><label>Seu CPF</label><input type="tel" id="rec-cpf" oninput="mask(this)"></div>
+                <button class="btn-action" onclick="alert('Em breve')">BUSCAR</button>
+                <div class="links-area"><div class="text-link" onclick="mudarTela('pg-login')">Cancelar</div></div>
             </div>
         </div>
 
     </div>
 
     <script>
-        // === SPLASH ===
-        window.addEventListener('load', () => {
-            if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
-            setTimeout(() => {
-                document.getElementById('splash-screen').style.opacity = '0';
-                setTimeout(() => { document.getElementById('splash-screen').style.display = 'none'; }, 500);
-            }, 1500);
-        });
-
-        // === INSTALAÇÃO ===
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-        });
-
-        function acaoInstalar() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
-            } else {
-                document.getElementById('manual-modal').style.display = 'flex';
-            }
-        }
-
-        // === SISTEMA ===
-        function toggleView(id) {
-            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        // SISTEMA SIMPLES
+        function mudarTela(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
         }
 
-        function fazerLogin() {
-            const cpf = document.getElementById('login-cpf').value;
-            const pass = document.getElementById('login-pass').value;
-            let db = JSON.parse(localStorage.getItem('bikeUsers')) || [];
-            let user = db.find(u => u.cpf === cpf && u.pass === pass);
-            
+        function login() {
+            const cpf = document.getElementById('cpf').value;
+            const pass = document.getElementById('pass').value;
+            let db = JSON.parse(localStorage.getItem('users')) || [];
+            let user = db.find(u => u.cpf == cpf && u.pass == pass);
             if(user) {
-                document.getElementById('user-name').innerText = user.nome.split(' ')[0];
-                toggleView('view-dashboard');
-            } else {
-                alert("Dados incorretos.");
-            }
+                document.getElementById('nomeUser').innerText = user.nome.split(' ')[0];
+                mudarTela('pg-dash');
+            } else alert("Erro no login");
         }
 
         function registrar() {
-            const nome = document.getElementById('reg-name').value;
+            const nome = document.getElementById('reg-nome').value;
             const cpf = document.getElementById('reg-cpf').value;
             const pass = document.getElementById('reg-pass').value;
             if(!nome || !cpf || !pass) return alert("Preencha tudo");
             
-            let db = JSON.parse(localStorage.getItem('bikeUsers')) || [];
-            db.push({ nome, cpf, pass });
-            localStorage.setItem('bikeUsers', JSON.stringify(db));
-            alert("Cadastro realizado!");
-            toggleView('view-login');
+            let db = JSON.parse(localStorage.getItem('users')) || [];
+            db.push({nome, cpf, pass});
+            localStorage.setItem('users', JSON.stringify(db));
+            alert("Sucesso!"); mudarTela('pg-login');
         }
 
-        function maskCPF(i){i.value=i.value.replace(/\D/g,"").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2");}
+        function sair() { location.reload(); }
+        function mask(i){i.value=i.value.replace(/\D/g,"").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2");}
     </script>
 </body>
 </html>
