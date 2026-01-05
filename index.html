@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    
-    <title>FPC V6 - ATUALIZADO</title>
+    <title>FPC Atleta V7</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0f1c3f">
@@ -12,23 +11,21 @@
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
-
+    
     <script>
-        // Se a URL não tiver "?v=6", adiciona para forçar o navegador a baixar de novo
-        if (!window.location.search.includes('v=6')) {
-             // Limpa cache antigo antes de recarregar
+        if (!window.location.search.includes('v=7')) {
             if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                    for(let registration of registrations) registration.unregister();
+                navigator.serviceWorker.getRegistrations().then(function(regs) {
+                    for(let reg of regs) reg.unregister();
                 });
             }
-            // Redireciona para a versão nova
-            var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?v=6';
+            var newUrl = window.location.href.split('?')[0] + '?v=7';
             window.location.replace(newUrl);
         }
     </script>
 
     <style>
+        /* RESET */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body {
@@ -37,148 +34,201 @@
             color: white;
             width: 100vw;
             min-height: 100vh;
-            overflow-x: hidden;
             display: flex;
             flex-direction: column;
         }
 
-        .mobile-container {
+        .container {
             flex: 1;
             background: linear-gradient(180deg, #0f1c3f 0%, #000 100%);
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            padding: 20px;
+            align-items: center;
         }
 
         /* HEADER */
-        .header { display: flex; flex-direction: column; align-items: center; margin-top: 40px; margin-bottom: 20px; }
-        
         .logo-circle {
-            width: 130px; height: 130px;
+            width: 120px; height: 120px;
             background: white; border-radius: 50%;
             border: 4px solid #fdd000;
             display: flex; align-items: center; justify-content: center;
-            margin-bottom: 15px; overflow: hidden;
+            margin-top: 30px; margin-bottom: 10px; overflow: hidden;
+            box-shadow: 0 0 30px rgba(253, 208, 0, 0.3);
         }
         .logo-circle img { width: 100%; height: 100%; object-fit: contain; transform: scale(1.4); }
 
-        h1 { font-size: 2rem; font-weight: 900; }
-        .sub { color: #fdd000; font-size: 0.8rem; font-weight: 700; letter-spacing: 2px; }
+        h1 { font-size: 1.8rem; font-weight: 900; margin-bottom: 5px; }
+        .sub { color: #fdd000; font-size: 0.8rem; font-weight: 700; margin-bottom: 30px; letter-spacing: 1px; }
 
-        /* FORMULÁRIO */
-        .form-box { width: 100%; }
-        .field { margin-bottom: 20px; }
-        .field label { display: block; color: #ccc; margin-bottom: 8px; font-weight: 600; }
-        .field input {
-            width: 100%; height: 60px; border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05);
-            color: white; padding: 0 20px; font-size: 1.1rem; outline: none;
+        /* INPUTS */
+        .form-box { width: 100%; max-width: 400px; }
+        .input-group { margin-bottom: 15px; text-align: left; }
+        .input-group label { display: block; color: #ccc; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem; }
+        .input-group input {
+            width: 100%; height: 55px;
+            border-radius: 10px; border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.05); color: white;
+            padding: 0 15px; font-size: 1.1rem; outline: none;
         }
-        .btn-action {
-            width: 100%; height: 60px; background: #fdd000; color: #0f1c3f;
-            border: none; border-radius: 12px; font-size: 1.1rem; font-weight: 900;
-            text-transform: uppercase; margin-top: 10px;
-        }
-        .links-area { margin-top: 30px; text-align: center; }
-        .text-link { color: #aaa; margin-bottom: 15px; font-size: 0.9rem; }
 
-        /* RODAPÉ DE VERSÃO */
-        .version-tag {
-            background: #e30613; color: white; padding: 5px 10px;
-            border-radius: 5px; font-size: 0.7rem; font-weight: bold;
-            margin-top: 10px;
+        /* BOTÕES */
+        .btn {
+            width: 100%; height: 55px; border-radius: 10px; border: none;
+            font-size: 1rem; font-weight: 800; text-transform: uppercase;
+            cursor: pointer; margin-top: 10px;
+        }
+        .btn-primary { background: #fdd000; color: #0f1c3f; box-shadow: 0 4px 15px rgba(253, 208, 0, 0.2); }
+        .btn-outline { 
+            background: transparent; border: 2px solid #fdd000; color: #fdd000; 
+            margin-top: 15px; /* Espaço extra */
         }
 
         /* TELAS */
-        .page { display: none; width: 100%; animation: slideUp 0.3s; }
-        .page.active { display: block; }
-        @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+        .page { display: none; width: 100%; animation: fade 0.3s; flex-direction: column; align-items: center; }
+        .page.active { display: flex; }
+        @keyframes fade { from { opacity:0; } to { opacity:1; } }
 
         /* DASHBOARD */
-        .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
-        .dash-item {
-            background: rgba(255,255,255,0.08); border-radius: 16px; padding: 25px;
-            text-align: center; display: flex; flex-direction: column; align-items: center;
-            justify-content: center; aspect-ratio: 1;
+        .dash-grid { 
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; max-width: 400px; 
         }
-        .dash-item i { font-size: 38px; color: #fdd000; margin-bottom: 10px; }
+        .dash-item {
+            background: rgba(255,255,255,0.1); border-radius: 15px; padding: 20px;
+            text-align: center; display: flex; flex-direction: column; align-items: center;
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="mobile-container">
+    <div class="container">
+
         <div id="pg-login" class="page active">
-            <div class="header">
-                <div class="logo-circle"><img src="logo-fpc.png" alt="Logo"></div>
-                <h1>F.P.C.</h1>
-                <div class="sub">SISTEMA ATLETA</div>
-                <div class="version-tag">VERSÃO 6.0 ATUALIZADA</div>
-            </div>
+            <div class="logo-circle"><img src="logo-fpc.png"></div>
+            <h1>F.P.C.</h1>
+            <div class="sub">SISTEMA ATLETA</div>
 
             <div class="form-box">
-                <div class="field"><label>CPF</label><input type="tel" id="cpf" oninput="mask(this)"></div>
-                <div class="field"><label>SENHA</label><input type="password" id="pass"></div>
-                <button class="btn-action" onclick="login()">ENTRAR</button>
-                <div class="links-area">
-                    <div class="text-link" onclick="mudarTela('pg-register')">CRIAR CONTA</div>
+                <div class="input-group">
+                    <label>CPF</label>
+                    <input type="tel" id="login-cpf" oninput="mask(this)">
                 </div>
+                <div class="input-group">
+                    <label>SENHA</label>
+                    <input type="password" id="login-pass">
+                </div>
+
+                <button class="btn btn-primary" onclick="login()">ENTRAR</button>
+                
+                <div style="text-align:center; margin: 20px 0; color:#aaa; font-size:0.8rem;">ou</div>
+
+                <button class="btn btn-outline" onclick="mudarTela('pg-register')">CRIAR NOVA CONTA</button>
+
+                <p style="text-align:center; margin-top:20px; color:#666; font-size:0.7rem;" onclick="limparTudo()">
+                    Problemas? Toque para Resetar
+                </p>
             </div>
-            
-            <div style="margin-top:auto; text-align:center; padding-top:20px;">
-                <button onclick="limparCache()" style="background:none; border:1px solid #555; color:#aaa; padding:5px 10px; border-radius:20px; font-size:0.7rem;">
-                    <i class="fas fa-sync"></i> Forçar Limpeza
-                </button>
+        </div>
+
+        <div id="pg-register" class="page">
+            <h2 style="margin: 30px 0 20px 0;">NOVA CONTA</h2>
+            <div class="form-box">
+                <div class="input-group">
+                    <label>Nome Completo</label>
+                    <input type="text" id="reg-nome">
+                </div>
+                <div class="input-group">
+                    <label>CPF</label>
+                    <input type="tel" id="reg-cpf" oninput="mask(this)">
+                </div>
+                <div class="input-group">
+                    <label>Crie uma Senha</label>
+                    <input type="password" id="reg-pass">
+                </div>
+
+                <button class="btn btn-primary" onclick="registrar()">SALVAR CADASTRO</button>
+                <button class="btn btn-outline" onclick="mudarTela('pg-login')">VOLTAR</button>
             </div>
         </div>
 
         <div id="pg-dash" class="page">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
-                <div><div style="color:#ccc; font-size:0.8rem;">Olá,</div><div style="color:#fdd000; font-size:1.5rem; font-weight:900;" id="nomeUser">Atleta</div></div>
-                <i class="fas fa-sign-out-alt" style="color:#e30613; font-size:1.5rem;" onclick="sair()"></i>
+            <div style="width:100%; display:flex; justify-content:space-between; align-items:center; margin-bottom:30px; margin-top:20px;">
+                <div>
+                    <span style="color:#ccc; font-size:0.8rem;">Olá,</span><br>
+                    <span style="color:#fdd000; font-size:1.5rem; font-weight:800;" id="user-name">Atleta</span>
+                </div>
+                <i class="fas fa-sign-out-alt" style="font-size:1.5rem; color:#e30613;" onclick="sair()"></i>
             </div>
+
             <div class="dash-grid">
-                <div class="dash-item"><i class="fas fa-mountain"></i><span>Downhill</span></div>
-                <div class="dash-item"><i class="fas fa-tachometer-alt"></i><span>Speed</span></div>
-                <div class="dash-item"><i class="fas fa-biking"></i><span>MTB</span></div>
-                <div class="dash-item"><i class="far fa-newspaper"></i><span>Notícias</span></div>
+                <div class="dash-item"><i class="fas fa-mountain" style="font-size:2rem; color:#fdd000; margin-bottom:10px;"></i><b>Downhill</b></div>
+                <div class="dash-item"><i class="fas fa-tachometer-alt" style="font-size:2rem; color:#fdd000; margin-bottom:10px;"></i><b>Speed</b></div>
+                <div class="dash-item"><i class="fas fa-biking" style="font-size:2rem; color:#fdd000; margin-bottom:10px;"></i><b>MTB</b></div>
+                <div class="dash-item"><i class="far fa-newspaper" style="font-size:2rem; color:#fdd000; margin-bottom:10px;"></i><b>Notícias</b></div>
             </div>
         </div>
-        
-        <div id="pg-register" class="page">
-            <div class="header"><h1>CADASTRAR</h1></div>
-            <div class="form-box">
-                <div class="field"><label>Nome</label><input type="text" id="reg-nome"></div>
-                <div class="field"><label>CPF</label><input type="tel" id="reg-cpf" oninput="mask(this)"></div>
-                <div class="field"><label>Senha</label><input type="password" id="reg-pass"></div>
-                <button class="btn-action" onclick="registrar()">SALVAR</button>
-                <div class="links-area"><div class="text-link" onclick="mudarTela('pg-login')">Voltar</div></div>
-            </div>
-        </div>
+
     </div>
 
     <script>
-        function mudarTela(id) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(id).classList.add('active'); }
-        function login() {
-            const cpf=document.getElementById('cpf').value, pass=document.getElementById('pass').value;
-            let db=JSON.parse(localStorage.getItem('users'))||[];
-            let user=db.find(u=>u.cpf==cpf && u.pass==pass);
-            if(user){ document.getElementById('nomeUser').innerText=user.nome.split(' ')[0]; mudarTela('pg-dash'); }
-            else alert("Erro no login");
+        // --- NAVEGAÇÃO ---
+        function mudarTela(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
         }
+
+        // --- MÁSCARA CPF ---
+        function mask(i){
+            let v = i.value.replace(/\D/g,"");
+            v=v.replace(/(\d{3})(\d)/,"$1.$2");
+            v=v.replace(/(\d{3})(\d)/,"$1.$2");
+            v=v.replace(/(\d{3})(\d{1,2})$/,"$1-$2");
+            i.value = v;
+        }
+
+        // --- SISTEMA DE DADOS ---
         function registrar() {
-            const nome=document.getElementById('reg-nome').value, cpf=document.getElementById('reg-cpf').value, pass=document.getElementById('reg-pass').value;
-            if(!nome||!cpf||!pass) return alert("Preencha tudo");
-            let db=JSON.parse(localStorage.getItem('users'))||[]; db.push({nome,cpf,pass});
-            localStorage.setItem('users', JSON.stringify(db)); alert("Sucesso!"); mudarTela('pg-login');
+            const nome = document.getElementById('reg-nome').value;
+            const cpf = document.getElementById('reg-cpf').value;
+            const pass = document.getElementById('reg-pass').value;
+
+            if(!nome || !cpf || !pass) return alert("Preencha todos os campos!");
+
+            let users = JSON.parse(localStorage.getItem('users_v7')) || [];
+            
+            // Verifica se já existe
+            if(users.find(u => u.cpf === cpf)) return alert("CPF já cadastrado!");
+
+            users.push({ nome, cpf, pass });
+            localStorage.setItem('users_v7', JSON.stringify(users));
+            
+            alert("Cadastro realizado com sucesso!");
+            mudarTela('pg-login');
         }
-        function sair(){ location.reload(); }
-        function mask(i){i.value=i.value.replace(/\D/g,"").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2");}
-        
-        function limparCache() {
-            if('serviceWorker' in navigator) {
-                navigator.serviceWorker.getRegistrations().then(regs => { for(let reg of regs) reg.unregister(); });
+
+        function login() {
+            const cpf = document.getElementById('login-cpf').value;
+            const pass = document.getElementById('login-pass').value;
+            let users = JSON.parse(localStorage.getItem('users_v7')) || [];
+            
+            let user = users.find(u => u.cpf === cpf && u.pass === pass);
+
+            if(user) {
+                document.getElementById('user-name').innerText = user.nome.split(' ')[0];
+                mudarTela('pg-dash');
+            } else {
+                alert("CPF ou Senha incorretos. Verifique se já criou a conta.");
             }
-            window.location.href = window.location.pathname + '?v=' + new Date().getTime();
+        }
+
+        function sair() { location.reload(); }
+        
+        function limparTudo() {
+            if(confirm('Isso vai apagar todos os cadastros do celular. Confirmar?')) {
+                localStorage.clear();
+                location.reload();
+            }
         }
     </script>
 </body>
