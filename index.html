@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>FPC Atleta V7</title>
+    <title>FPC Atleta V8</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0f1c3f">
@@ -13,76 +13,46 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     
     <script>
-        if (!window.location.search.includes('v=7')) {
+        // ANTI-CACHE V8
+        if (!window.location.search.includes('v=8')) {
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.getRegistrations().then(function(regs) {
                     for(let reg of regs) reg.unregister();
                 });
             }
-            var newUrl = window.location.href.split('?')[0] + '?v=7';
+            var newUrl = window.location.href.split('?')[0] + '?v=8';
             window.location.replace(newUrl);
         }
     </script>
 
     <style>
-        /* RESET */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Montserrat', sans-serif; background-color: #0f1c3f; color: white; width: 100vw; min-height: 100vh; display: flex; flex-direction: column; }
+        .container { flex: 1; background: linear-gradient(180deg, #0f1c3f 0%, #000 100%); padding: 20px; display: flex; flex-direction: column; align-items: center; }
         
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #0f1c3f;
-            color: white;
-            width: 100vw;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .container {
-            flex: 1;
-            background: linear-gradient(180deg, #0f1c3f 0%, #000 100%);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* HEADER */
-        .logo-circle {
-            width: 120px; height: 120px;
-            background: white; border-radius: 50%;
-            border: 4px solid #fdd000;
-            display: flex; align-items: center; justify-content: center;
-            margin-top: 30px; margin-bottom: 10px; overflow: hidden;
-            box-shadow: 0 0 30px rgba(253, 208, 0, 0.3);
-        }
+        /* LOGO */
+        .logo-circle { width: 130px; height: 130px; background: white; border-radius: 50%; border: 4px solid #fdd000; display: flex; align-items: center; justify-content: center; margin-top: 30px; margin-bottom: 10px; overflow: hidden; box-shadow: 0 0 30px rgba(253, 208, 0, 0.3); }
         .logo-circle img { width: 100%; height: 100%; object-fit: contain; transform: scale(1.4); }
 
         h1 { font-size: 1.8rem; font-weight: 900; margin-bottom: 5px; }
         .sub { color: #fdd000; font-size: 0.8rem; font-weight: 700; margin-bottom: 30px; letter-spacing: 1px; }
 
-        /* INPUTS */
+        /* FORM */
         .form-box { width: 100%; max-width: 400px; }
-        .input-group { margin-bottom: 15px; text-align: left; }
+        .input-group { margin-bottom: 15px; }
         .input-group label { display: block; color: #ccc; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem; }
-        .input-group input {
-            width: 100%; height: 55px;
-            border-radius: 10px; border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(255,255,255,0.05); color: white;
-            padding: 0 15px; font-size: 1.1rem; outline: none;
-        }
+        .input-group input { width: 100%; height: 58px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: white; padding: 0 15px; font-size: 1.1rem; outline: none; }
 
         /* BOTÕES */
-        .btn {
-            width: 100%; height: 55px; border-radius: 10px; border: none;
-            font-size: 1rem; font-weight: 800; text-transform: uppercase;
-            cursor: pointer; margin-top: 10px;
-        }
-        .btn-primary { background: #fdd000; color: #0f1c3f; box-shadow: 0 4px 15px rgba(253, 208, 0, 0.2); }
-        .btn-outline { 
-            background: transparent; border: 2px solid #fdd000; color: #fdd000; 
-            margin-top: 15px; /* Espaço extra */
-        }
+        .btn { width: 100%; height: 58px; border-radius: 12px; border: none; font-size: 1rem; font-weight: 800; text-transform: uppercase; cursor: pointer; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-primary { background: #fdd000; color: #0f1c3f; }
+        .btn-outline { background: transparent; border: 2px solid #fdd000; color: #fdd000; margin-top: 15px; }
+
+        /* RODAPÉ TÉCNICO */
+        .footer-tech { margin-top: auto; padding: 20px 0; text-align: center; width: 100%; }
+        .version-badge { background: rgba(255,255,255,0.1); color: #aaa; padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; border: 1px solid rgba(255,255,255,0.1); }
+        .refresh-link { display: block; margin-top: 12px; color: #fdd000; font-size: 0.75rem; text-decoration: none; font-weight: 600; cursor: pointer; opacity: 0.8; }
+        .refresh-link:active { opacity: 1; }
 
         /* TELAS */
         .page { display: none; width: 100%; animation: fade 0.3s; flex-direction: column; align-items: center; }
@@ -90,14 +60,9 @@
         @keyframes fade { from { opacity:0; } to { opacity:1; } }
 
         /* DASHBOARD */
-        .dash-grid { 
-            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; max-width: 400px; 
-        }
-        .dash-item {
-            background: rgba(255,255,255,0.1); border-radius: 15px; padding: 20px;
-            text-align: center; display: flex; flex-direction: column; align-items: center;
-        }
-
+        .dash-header { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; margin-top: 10px; }
+        .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
+        .dash-item { background: rgba(255,255,255,0.08); border-radius: 18px; padding: 25px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
     </style>
 </head>
 <body>
@@ -112,7 +77,7 @@
             <div class="form-box">
                 <div class="input-group">
                     <label>CPF</label>
-                    <input type="tel" id="login-cpf" oninput="mask(this)">
+                    <input type="tel" id="login-cpf" placeholder="000.000.000-00" oninput="mask(this)">
                 </div>
                 <div class="input-group">
                     <label>SENHA</label>
@@ -121,64 +86,49 @@
 
                 <button class="btn btn-primary" onclick="login()">ENTRAR</button>
                 
-                <div style="text-align:center; margin: 20px 0; color:#aaa; font-size:0.8rem;">ou</div>
-
                 <button class="btn btn-outline" onclick="mudarTela('pg-register')">CRIAR NOVA CONTA</button>
+            </div>
 
-                <p style="text-align:center; margin-top:20px; color:#666; font-size:0.7rem;" onclick="limparTudo()">
-                    Problemas? Toque para Resetar
-                </p>
+            <div class="footer-tech">
+                <span class="version-badge">VERSÃO 8.0 (OFICIAL)</span>
+                <a class="refresh-link" onclick="forcarUpdate()">
+                    <i class="fas fa-sync-alt"></i> FORÇAR ATUALIZAÇÃO DO APP
+                </a>
             </div>
         </div>
 
         <div id="pg-register" class="page">
-            <h2 style="margin: 30px 0 20px 0;">NOVA CONTA</h2>
+            <h2 style="margin: 30px 0 20px 0;">NOVA FILIAÇÃO</h2>
             <div class="form-box">
-                <div class="input-group">
-                    <label>Nome Completo</label>
-                    <input type="text" id="reg-nome">
-                </div>
-                <div class="input-group">
-                    <label>CPF</label>
-                    <input type="tel" id="reg-cpf" oninput="mask(this)">
-                </div>
-                <div class="input-group">
-                    <label>Crie uma Senha</label>
-                    <input type="password" id="reg-pass">
-                </div>
-
-                <button class="btn btn-primary" onclick="registrar()">SALVAR CADASTRO</button>
+                <div class="input-group"><label>Nome Completo</label><input type="text" id="reg-nome"></div>
+                <div class="input-group"><label>CPF</label><input type="tel" id="reg-cpf" oninput="mask(this)"></div>
+                <div class="input-group"><label>Senha</label><input type="password" id="reg-pass"></div>
+                <button class="btn btn-primary" onclick="registrar()">SALVAR DADOS</button>
                 <button class="btn btn-outline" onclick="mudarTela('pg-login')">VOLTAR</button>
             </div>
         </div>
 
         <div id="pg-dash" class="page">
-            <div style="width:100%; display:flex; justify-content:space-between; align-items:center; margin-bottom:30px; margin-top:20px;">
-                <div>
-                    <span style="color:#ccc; font-size:0.8rem;">Olá,</span><br>
-                    <span style="color:#fdd000; font-size:1.5rem; font-weight:800;" id="user-name">Atleta</span>
-                </div>
-                <i class="fas fa-sign-out-alt" style="font-size:1.5rem; color:#e30613;" onclick="sair()"></i>
+            <div class="dash-header">
+                <div><span style="color:#ccc; font-size:0.8rem;">Bem-vindo,</span><br><span style="color:#fdd000; font-size:1.5rem; font-weight:800;" id="user-name">Atleta</span></div>
+                <i class="fas fa-sign-out-alt" style="font-size:1.6rem; color:#e30613;" onclick="location.reload()"></i>
             </div>
-
             <div class="dash-grid">
-                <div class="dash-item"><i class="fas fa-mountain" style="font-size:2rem; color:#fdd000; margin-bottom:10px;"></i><b>Downhill</b></div>
-                <div class="dash-item"><i class="fas fa-tachometer-alt" style="font-size:2rem; color:#fdd000; margin-bottom:10px;"></i><b>Speed</b></div>
-                <div class="dash-item"><i class="fas fa-biking" style="font-size:2rem; color:#fdd000; margin-bottom:10px;"></i><b>MTB</b></div>
-                <div class="dash-item"><i class="far fa-newspaper" style="font-size:2rem; color:#fdd000; margin-bottom:10px;"></i><b>Notícias</b></div>
+                <div class="dash-item"><i class="fas fa-mountain" style="font-size:2.2rem; color:#fdd000; margin-bottom:10px;"></i><br><b>Downhill</b></div>
+                <div class="dash-item"><i class="fas fa-tachometer-alt" style="font-size:2.2rem; color:#fdd000; margin-bottom:10px;"></i><br><b>Speed</b></div>
+                <div class="dash-item"><i class="fas fa-biking" style="font-size:2.2rem; color:#fdd000; margin-bottom:10px;"></i><br><b>MTB</b></div>
+                <div class="dash-item"><i class="far fa-newspaper" style="font-size:2.2rem; color:#fdd000; margin-bottom:10px;"></i><br><b>Notícias</b></div>
             </div>
         </div>
 
     </div>
 
     <script>
-        // --- NAVEGAÇÃO ---
         function mudarTela(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
         }
 
-        // --- MÁSCARA CPF ---
         function mask(i){
             let v = i.value.replace(/\D/g,"");
             v=v.replace(/(\d{3})(\d)/,"$1.$2");
@@ -187,48 +137,35 @@
             i.value = v;
         }
 
-        // --- SISTEMA DE DADOS ---
+        function forcarUpdate() {
+            if(confirm("Deseja verificar se há uma versão mais nova? O App irá reiniciar.")) {
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.getRegistrations().then(function(regs) {
+                        for(let reg of regs) reg.unregister();
+                    });
+                }
+                window.location.href = window.location.origin + window.location.pathname + '?v=' + new Date().getTime();
+            }
+        }
+
         function registrar() {
-            const nome = document.getElementById('reg-nome').value;
-            const cpf = document.getElementById('reg-cpf').value;
-            const pass = document.getElementById('reg-pass').value;
-
+            const nome = document.getElementById('reg-nome').value, cpf = document.getElementById('reg-cpf').value, pass = document.getElementById('reg-pass').value;
             if(!nome || !cpf || !pass) return alert("Preencha todos os campos!");
-
-            let users = JSON.parse(localStorage.getItem('users_v7')) || [];
-            
-            // Verifica se já existe
-            if(users.find(u => u.cpf === cpf)) return alert("CPF já cadastrado!");
-
+            let users = JSON.parse(localStorage.getItem('users_fpc')) || [];
+            if(users.find(u => u.cpf === cpf)) return alert("CPF já existe!");
             users.push({ nome, cpf, pass });
-            localStorage.setItem('users_v7', JSON.stringify(users));
-            
-            alert("Cadastro realizado com sucesso!");
-            mudarTela('pg-login');
+            localStorage.setItem('users_fpc', JSON.stringify(users));
+            alert("Cadastro realizado!"); mudarTela('pg-login');
         }
 
         function login() {
-            const cpf = document.getElementById('login-cpf').value;
-            const pass = document.getElementById('login-pass').value;
-            let users = JSON.parse(localStorage.getItem('users_v7')) || [];
-            
+            const cpf = document.getElementById('login-cpf').value, pass = document.getElementById('login-pass').value;
+            let users = JSON.parse(localStorage.getItem('users_fpc')) || [];
             let user = users.find(u => u.cpf === cpf && u.pass === pass);
-
             if(user) {
                 document.getElementById('user-name').innerText = user.nome.split(' ')[0];
                 mudarTela('pg-dash');
-            } else {
-                alert("CPF ou Senha incorretos. Verifique se já criou a conta.");
-            }
-        }
-
-        function sair() { location.reload(); }
-        
-        function limparTudo() {
-            if(confirm('Isso vai apagar todos os cadastros do celular. Confirmar?')) {
-                localStorage.clear();
-                location.reload();
-            }
+            } else alert("CPF ou Senha incorretos.");
         }
     </script>
 </body>
