@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DH-PE v23.0 (Master)</title>
+    <title>DH-PE v28.0 (Social)</title>
     
     <link rel="icon" type="image/jpg" href="logo-fp.jpg">
     <link rel="apple-touch-icon" href="logo-fp.jpg">
@@ -23,23 +23,26 @@
         .app-container { width: 100%; max-width: 600px; margin: 0 auto; position: relative; min-height: 100vh; background: white; }
 
         /* GERAL */
-        .btn { width: 100%; padding: 14px; border: none; border-radius: 6px; background: var(--pe-blue); color: white; font-weight: 700; cursor: pointer; margin-top: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; user-select: none; }
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 6px; background: var(--pe-blue); color: white; font-weight: 700; cursor: pointer; margin-top: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); font-size: 14px; text-transform: uppercase; }
         .btn:active { transform: scale(0.97); background: #002a80; }
         .input-group { margin-bottom: 15px; width: 100%; }
         .input-group label { font-size: 11px; font-weight: 800; color: var(--pe-blue); margin-left: 2px; display: block; margin-bottom: 5px; }
         .input-wrapper { display: flex; align-items: center; position: relative; }
         input, select { width: 100%; padding: 12px; border: 2px solid #cbd5e1; border-radius: 8px; background: white; font-size: 14px; color: #1e293b; font-weight: 600; }
         
+        /* OLHO SENHA */
+        .pass-eye { position: absolute; right: 10px; color: #666; cursor: pointer; padding: 5px; font-size: 16px; }
+
         /* TELAS */
         .screen { display: none; flex-direction: column; animation: fade 0.3s; background: var(--bg-body); padding-bottom: 80px; width: 100%; min-height: 100vh; }
         .screen.active { display: flex; }
         
-        /* TELA LOGIN */
+        /* LOGIN */
         #screen-login { height: 100vh; overflow: hidden; position: relative; background: black; padding-bottom: 0; z-index: 2000; }
         .login-bg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('image_1.png') no-repeat center center; background-size: cover; z-index: 1; pointer-events: none; }
         .login-overlay-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 56, 168, 0.9)); z-index: 2; pointer-events: none; }
         .login-content-layer { position: relative; z-index: 100; height: 100%; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px; text-align: center; }
-        .login-content-layer h1 { margin: 0 auto 5px auto; color: white; font-size: 50px; text-shadow: 0 3px 10px rgba(0,0,0,0.5); line-height: 1; font-weight: 900; letter-spacing: -2px; }
+        .login-content-layer h1 { margin: 0 auto 5px auto; color: white; font-size: 50px; text-shadow: 0 3px 10px rgba(0,0,0,0.5); font-weight: 900; letter-spacing: -2px; }
         .login-content-layer p { margin: 0 auto 40px auto; color: rgba(255,255,255,0.9); font-size: 12px; font-weight: bold; letter-spacing: 2px; }
         .login-content-layer .input-group { text-align: left; }
         .login-content-layer input { background: rgba(255, 255, 255, 0.95); border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.2); color: #000; }
@@ -66,6 +69,7 @@
         .card-poster-thumb { width: 100%; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid #eee; margin-bottom: 5px; cursor: zoom-in; }
         .event-price { font-size: 10px; font-weight: 900; color: var(--pe-green); background: #dcfce7; padding: 2px 5px; border-radius: 4px; display: inline-block; margin-bottom: 5px; }
         .btn-insc { background: var(--pe-green); color: white; border: none; padding: 8px; font-size: 10px; font-weight: 800; cursor: pointer; width: 100%; border-radius: 4px; margin-top: auto; }
+        .btn-share { background: #E1306C; color: white; border: none; padding: 8px; font-size: 10px; font-weight: 800; cursor: pointer; width: 100%; border-radius: 4px; margin-top: auto; }
 
         /* RANKING */
         .rank-list-container { background: white; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0; margin: 0 10px; }
@@ -104,6 +108,12 @@
         .status-ok { color: #166534; font-weight: 800; background: #dcfce7; padding: 2px 6px; border-radius: 4px; }
         .stats-box { display: flex; gap: 10px; margin: 10px 0; background: #f0f9ff; padding: 10px; border-radius: 6px; justify-content: space-around; font-size: 10px; font-weight: bold; color: var(--pe-blue); border: 1px solid #bae6fd; }
 
+        /* SHARE INSTAGRAM */
+        .share-card { background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); padding: 30px; border-radius: 15px; color: white; text-align: center; margin-bottom: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .share-card h2 { font-size: 28px; margin-bottom: 10px; font-weight: 900; text-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .share-card p { font-size: 14px; font-weight: 600; margin-bottom: 5px; text-transform: uppercase; }
+        .share-badge { background: white; color: #dc2743; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 12px; margin-top: 15px; display: inline-block; }
+
         /* BARRA INFERIOR */
         .bottom-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 60px; background: white; display: none; justify-content: space-around; align-items: center; border-top: 1px solid #ddd; z-index: 9000; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); }
         .bar-item { flex: 1; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #94a3b8; font-size: 10px; font-weight: 700; cursor: pointer; background: white; }
@@ -123,7 +133,17 @@
         .story-text { font-size: 8px; font-weight: 600; color: white; text-align: center; }
         @keyframes scrollLeft { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
         @keyframes fade { from { opacity:0; } to { opacity:1; } }
-        @media print { body * { visibility: hidden; } #printable-area, #printable-area * { visibility: visible; } #printable-area { position: absolute; left: 0; top: 0; width: 100%; } .btn { display: none; } }
+        
+        /* IMPRESSÃO CONFIGURADA */
+        @media print { 
+            body * { visibility: hidden; } 
+            #printable-area, #printable-area * { visibility: visible; } 
+            #printable-area { position: absolute; left: 0; top: 0; width: 100%; padding: 20px; background:white; }
+            .print-cat-block { margin-bottom: 30px; page-break-inside: avoid; }
+            .print-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+            .print-table th, .print-table td { border: 1px solid #333; padding: 5px; text-align: left; }
+            .print-header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #000; padding-bottom: 10px; }
+        }
 
         /* MODAIS */
         .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index: 200000; display:none; flex-direction:column; align-items:center; justify-content:center; }
@@ -137,6 +157,30 @@
 <div class="toast" id="toast">MSG</div>
 <div id="area-cupom-visual" style="display:none"></div>
 <div id="printable-area" style="display:none; padding:20px;"></div>
+
+<div class="modal-overlay" id="modal-share">
+    <div class="modal-box" style="background:transparent; box-shadow:none; border:none">
+        <div class="share-card">
+            <h2>EU VOU!</h2>
+            <p>DH-PE 2026</p>
+            <p id="share-piloto-name" style="font-size:18px; margin:15px 0">...</p>
+            <p id="share-event-name" style="font-size:12px; opacity:0.9">...</p>
+            <div class="share-badge">INSCRICÃO CONFIRMADA</div>
+        </div>
+        <p style="color:white; font-size:11px; margin-bottom:10px">TIRE UM PRINT E POSTE NO INSTAGRAM!</p>
+        <button class="btn" style="background:white; color:#333" onclick="fecharModal('modal-share')">FECHAR</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modal-print-options">
+    <div class="modal-box">
+        <h3 style="color:var(--pe-blue)">IMPRIMIR LISTA</h3>
+        <button class="btn" onclick="generatePrint('ALL')">TODAS CATEGORIAS (GERAL)</button>
+        <div style="margin:10px 0; border-top:1px solid #eee; padding-top:10px; font-size:10px; font-weight:bold; color:#666">OU POR CATEGORIA:</div>
+        <div id="print-cat-list" style="max-height:200px; overflow-y:auto; display:flex; flex-direction:column; gap:5px;"></div>
+        <button class="btn" style="background:#ddd; color:#333; margin-top:10px" onclick="fecharModal('modal-print-options')">CANCELAR</button>
+    </div>
+</div>
 
 <div class="modal-overlay" id="modal-edit-user">
     <div class="modal-box">
@@ -153,19 +197,30 @@
 
 <div class="modal-overlay" id="modal-poster"><div class="modal-box" style="padding:0; background:black; border:none; width:95%; max-width:400px"><div style="position:relative"><img id="img-poster-view" style="width:100%; display:block"><button onclick="fecharModal('modal-poster')" style="position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.5); color:white; border:none; padding:10px; border-radius:50%; cursor:pointer"><i class="fas fa-times"></i></button></div></div></div>
 <div class="modal-overlay" id="modal-ticket"><div class="modal-box"><h2 style="color:var(--pe-blue); margin-bottom:5px">TICKET CONFIRMADO</h2><div style="width:50px; height:5px; background:var(--pe-grad); margin:0 auto 15px auto"></div><div style="text-align:left; border:1px dashed #ccc; padding:15px; margin-bottom:15px; background:#f9f9f9"><b style="font-size:10px; color:#999">EVENTO:</b><br><span style="font-size:14px; color:var(--pe-blue); font-weight:900" id="tk-evento">...</span><br><br><b style="font-size:10px; color:#999">PILOTO:</b><br><span style="font-size:12px; color:#333; font-weight:bold" id="tk-nome">...</span></div><button class="btn" onclick="imprimirTicket()"><i class="fas fa-print"></i> IMPRIMIR PDF</button><button class="btn" onclick="fecharModal('modal-ticket')" style="background:#ddd; color:#333; margin-top:5px">FECHAR</button></div></div>
-<div class="modal-overlay" id="modal-pix"><div class="modal-box"><h3 style="color:var(--pe-green)"><i class="fas fa-qrcode"></i> PAGAMENTO</h3><p style="font-size:12px; color:#666; margin:5px 0">VALOR: <b style="color:var(--pe-blue)" id="pix-valor-display">R$ 0,00</b></p><div style="background:#f0fdf4; border:1px dashed var(--pe-green); padding:10px; margin:10px 0; font-size:10px; word-break:break-all; font-weight:bold" id="pix-copy">...</div><button class="btn" onclick="copiarPix()" style="background:#64748b; margin-top:0"><i class="far fa-copy"></i> COPIAR</button><hr style="border:0; border-top:1px solid #eee; margin:15px 0"><button class="btn" style="background:#25D366" onclick="confirmarPagamentoZap()"><i class="fab fa-whatsapp"></i> JÁ PAGUEI / ENVIAR</button><button class="btn" style="background:#ddd; color:#333" onclick="fecharModal('modal-pix')">CANCELAR</button></div></div>
+
+<div class="modal-overlay" id="modal-pix">
+    <div class="modal-box">
+        <h3 style="color:var(--pe-green)"><i class="fas fa-qrcode"></i> PAGAMENTO</h3>
+        <p style="font-size:12px; color:#666; margin:5px 0">VALOR: <b style="color:var(--pe-blue)" id="pix-valor-display">R$ 0,00</b></p>
+        <div style="background:#f0fdf4; border:1px dashed var(--pe-green); padding:10px; margin:10px 0; font-size:10px; word-break:break-all; font-weight:bold" id="pix-copy">...</div>
+        <button class="btn" style="margin-top:0; background:#64748b" onclick="copiarPix()"><i class="far fa-copy"></i> COPIAR CÓDIGO</button>
+        <hr style="border:0; border-top:1px solid #eee; margin:15px 0">
+        <button class="btn" style="background:#25D366" onclick="enviarComprovanteWhatsApp()"><i class="fab fa-whatsapp"></i> ENVIAR COMPROVANTE</button>
+        <button class="btn" style="background:var(--pe-blue); margin-top:5px" onclick="confirmarJaPaguei()"><i class="fas fa-check-circle"></i> JÁ PAGUEI (REGISTRAR)</button>
+        <button class="btn" style="background:#ddd; color:#333; margin-top:5px" onclick="fecharModal('modal-pix')">CANCELAR</button>
+    </div>
+</div>
+
 <div class="modal-overlay" id="modal-info"><div class="modal-box"><h3 id="info-title" style="color:var(--pe-blue)">INFO</h3><p id="info-text" style="font-size:13px; color:#555; margin:15px 0; text-align:left">...</p><button class="btn" onclick="fecharModal('modal-info')" style="background:#ddd; color:#333">FECHAR</button></div></div>
 
 <div class="app-container">
     
     <div id="screen-login" class="screen active">
-        <div class="login-bg-layer"></div>
-        <div class="login-overlay-layer"></div>
+        <div class="login-bg-layer"></div><div class="login-overlay-layer"></div>
         <div class="login-content-layer">
-            <h1>DH-PE</h1>
-            <p>CAMPEONATO PERNAMBUCANO</p>
+            <h1>DH-PE</h1><p>CAMPEONATO PERNAMBUCANO</p>
             <div class="input-group"><label>CPF</label><div class="input-wrapper"><input type="tel" id="login-cpf" placeholder="000.000.000-00" oninput="mascaraCPF(this)" maxlength="14"></div></div>
-            <div class="input-group"><label>SENHA</label><div class="input-wrapper"><input type="password" id="login-pass" placeholder="••••"></div></div>
+            <div class="input-group"><label>SENHA</label><div class="input-wrapper"><input type="password" id="login-pass" placeholder="••••"><i class="fas fa-eye pass-eye" onclick="togglePass('login-pass')"></i></div></div>
             <div class="checkbox-wrapper"><input type="checkbox" id="login-remember"> MANTER CONECTADO</div>
             <button id="btn-acessar" class="btn" style="background:var(--pe-yellow); color:var(--pe-blue); font-weight:900;" onclick="fazerLogin()">ACESSAR CONTA</button>
             <button class="btn" onclick="trocarTela('cadastro')" style="background:rgba(255,255,255,0.2); color:white; margin-top:10px; border:1px solid rgba(255,255,255,0.3)">CRIAR CONTA</button>
@@ -174,33 +229,25 @@
     </div>
 
     <div id="screen-cadastro" class="screen">
-        <div style="padding:15px; background:white; border-bottom:1px solid #eee; display:flex; align-items:center; gap:10px">
-            <i class="fas fa-arrow-left" onclick="trocarTela('login')" style="font-size:18px; color:#333; cursor:pointer"></i>
-            <h2 style="color:var(--pe-blue); margin:0; font-size:16px">CADASTRO</h2>
-        </div>
+        <div style="padding:15px; background:white; border-bottom:1px solid #eee; display:flex; align-items:center; gap:10px"><i class="fas fa-arrow-left" onclick="trocarTela('login')" style="font-size:18px; color:#333; cursor:pointer"></i><h2 style="color:var(--pe-blue); margin:0; font-size:16px">CADASTRO</h2></div>
         <div style="width:100%; padding:20px; background:white;">
             <div class="input-group"><label>NOME COMPLETO</label><div class="input-wrapper"><input id="cad-nome" class="uppercase-input"></div></div>
-            <div class="input-group"><label>CPF</label><div class="input-wrapper"><input type="tel" id="cad-cpf" oninput="mascaraCPF(this)"></div></div>
+            <div class="input-group"><label>CPF (COM PONTOS)</label><div class="input-wrapper"><input type="tel" id="cad-cpf" oninput="mascaraCPF(this)" maxlength="14"></div></div>
             <div class="input-group"><label>WHATSAPP</label><div class="input-wrapper"><input type="tel" id="cad-tel" oninput="mascaraTel(this)" maxlength="15"></div></div>
             <div class="input-group"><label>CIDADE</label><div class="input-wrapper"><input id="cad-city" class="uppercase-input"></div></div>
-            <div class="input-group"><label>GÊNERO</label>
-                <select id="cad-gender" onchange="reCalcCat()">
-                    <option value="M">MASCULINO</option>
-                    <option value="F">FEMININO</option>
-                </select>
-            </div>
+            <div class="input-group"><label>GÊNERO</label><select id="cad-gender" onchange="reCalcCat()"><option value="M">MASCULINO</option><option value="F">FEMININO</option></select></div>
             <div class="input-group"><label>DATA NASC.</label><div class="input-wrapper"><input type="date" id="cad-nasc" onchange="reCalcCat()"></div></div>
             <div class="input-group"><label>CATEGORIA</label><div class="input-wrapper"><input id="cad-cat" readonly style="background:#eef2ff; color:#132047; font-weight:900"></div></div>
-            <div class="input-group"><label>SENHA</label><div class="input-wrapper"><input type="password" id="cad-pass"></div></div>
+            <div class="input-group"><label>SENHA</label><div class="input-wrapper"><input type="password" id="cad-pass"><i class="fas fa-eye pass-eye" onclick="togglePass('cad-pass')"></i></div></div>
             <button class="btn" onclick="cadastrar()">CONFIRMAR</button>
         </div>
     </div>
 
     <div id="screen-app" class="screen">
         <div id="main-app-header" class="app-header">
-            <div class="version-badge" onclick="appRefresh()">v23.0</div>
+            <div class="version-badge" onclick="appRefresh()">v28.0</div>
         </div>
-        <div class="video-header"><iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&controls=0&loop=1&playlist=dQw4w9WgXcQ" allow="autoplay; encrypted-media"></iframe></div>
+        <div class="video-header"><iframe id="main-video-iframe" src="" allow="autoplay; encrypted-media"></iframe></div>
         <div class="stories-wrapper"><div class="stories-track" id="stories-list"></div></div>
 
         <div id="cont-calendar" class="c-sec active">
@@ -253,9 +300,10 @@
                 <div class="admin-dashboard-grid" id="adm-menu">
                     <div class="adm-dash-btn" onclick="openAdmSection('events')"><i class="far fa-calendar-plus"></i><span>GERENCIAR EVENTOS</span></div>
                     <div class="adm-dash-btn" onclick="openAdmSection('results')"><i class="fas fa-stopwatch"></i><span>LANÇAR RESULTADOS</span></div>
-                    <div class="adm-dash-btn" onclick="openAdmSection('organizer')"><i class="fas fa-user-plus"></i><span>EQUIPE</span></div>
-                    <div class="adm-dash-btn" onclick="openAdmSection('financial')"><i class="fas fa-file-invoice-dollar"></i><span>LISTA DE ATLETAS</span></div>
-                    <div class="adm-dash-btn" onclick="openAdmSection('users-edit')"><i class="fas fa-user-edit"></i><span>EDITAR ATLETAS</span></div>
+                    <div class="adm-dash-btn" id="btn-menu-org" onclick="openAdmSection('organizer')"><i class="fas fa-users-cog"></i><span>EQUIPE</span></div>
+                    <div class="adm-dash-btn" onclick="openAdmSection('financial')"><i class="fas fa-file-invoice-dollar"></i><span>STATUS DE ATLETAS</span></div>
+                    <div class="adm-dash-btn" onclick="openAdmSection('users-edit')"><i class="fas fa-user-edit"></i><span>ATLETAS</span></div>
+                    <div class="adm-dash-btn" onclick="openAdmSection('config')"><i class="fas fa-cogs"></i><span>CONFIGURAÇÕES</span></div>
                 </div>
 
                 <div id="adm-sec-events" style="display:none">
@@ -285,18 +333,16 @@
                         <b style="color:var(--pe-green); font-size:12px">LANÇAR RESULTADOS</b>
                         <input type="hidden" id="adm-res-index-edit">
                         <input type="hidden" id="adm-res-type-edit">
-                        
                         <select id="adm-res-evt" style="margin-top:5px; font-size:10px; font-weight:bold; color:var(--pe-blue)"><option value="">SELECIONE O EVENTO...</option></select>
                         <div style="display:flex; gap:5px; margin-top:5px">
                             <select id="adm-res-type" style="width:auto"><option value="tempos">TEMPO</option><option value="ranking">RANKING</option></select>
                             <select id="adm-res-id" style="flex:1; font-size:10px"></select>
                         </div>
-                        
                         <div class="smart-search-container" style="margin-top:5px">
                             <input type="text" id="adm-res-search" placeholder="DIGITE NOME, CPF OU CIDADE..." oninput="filterPilots('res')" autocomplete="off">
                             <div id="adm-res-list" class="smart-list"></div>
+                            <input type="hidden" id="adm-res-id"> 
                         </div>
-
                         <input id="adm-res-val" placeholder="00:00.000 / PTS" oninput="maskTimeOrPoints(this)" style="margin-top:5px">
                         <button class="btn" id="btn-save-res" style="width:100%; margin-top:5px; background:var(--pe-green)" onclick="addResult()">LANÇAR</button>
                         <button class="btn" id="btn-cancel-res" style="width:100%; margin-top:5px; background:#999; display:none" onclick="cancelEditRes()">CANCELAR</button>
@@ -308,19 +354,17 @@
                     <button class="btn" style="background:#999; margin-bottom:10px" onclick="backToAdmMenu()">VOLTAR</button>
                     <div style="background:white; border:1px solid #ddd; padding:10px; border-radius:8px;">
                         <b style="color:var(--pe-blue); font-size:12px">CADASTRAR ORGANIZADOR</b>
-                        <div class="smart-search-container" style="margin-top:10px; margin-bottom:10px;">
+                        <div class="smart-search-container" style="margin-top:20px; margin-bottom:10px; border-top:1px solid #eee; padding-top:10px">
                              <label style="font-size:9px; font-weight:bold; color:#666">BUSCAR ATLETA PARA PROMOVER:</label>
                             <input type="text" id="adm-org-search" placeholder="DIGITE NOME DO ATLETA..." oninput="filterPilots('org')" autocomplete="off">
                             <div id="adm-org-list-search" class="smart-list"></div>
                             <input type="hidden" id="adm-org-selected-cpf">
                         </div>
-
-                        <div id="org-perms-area" style="display:none; border-top:1px solid #eee; padding-top:10px">
-                             <p style="font-size:10px;font-weight:bold;margin:0 0 5px 0">PERMISSÃO DE ETAPAS:</p>
-                             <div id="org-events-list" class="perm-list"></div>
-                             <button class="btn" onclick="promoteToOrganizer()">PROMOVER A ORGANIZADOR</button>
+                        <div id="org-perms-area" style="display:none">
+                            <p style="font-size:10px;font-weight:bold;margin:10px 0 5px 0">PERMISSÃO DE ETAPAS:</p>
+                            <div id="org-events-list" class="perm-list"></div>
+                            <button class="btn" style="background:#666; margin-top:10px" onclick="promoteToOrganizer()">PROMOVER SELECIONADO</button>
                         </div>
-                        
                         <div style="margin-top:15px; border-top:1px solid #eee; padding-top:5px">
                             <b style="font-size:10px; color:#666">LISTA DE ORGANIZADORES</b>
                             <div id="adm-list-orgs" style="max-height:150px; overflow-y:auto"></div>
@@ -331,9 +375,12 @@
                 <div id="adm-sec-users-edit" style="display:none">
                     <button class="btn" style="background:#999; margin-bottom:10px" onclick="backToAdmMenu()">VOLTAR</button>
                     <div style="background:white; border:1px solid #ddd; padding:10px; border-radius:8px;">
-                        <b style="color:var(--pe-blue); font-size:12px">BUSCAR ATLETA PARA EDITAR</b>
-                         <div class="smart-search-container" style="margin-top:10px; margin-bottom:10px;">
-                            <input type="text" id="adm-edit-user-search" placeholder="DIGITE NOME, CPF OU CIDADE..." oninput="filterPilots('edit-user')" autocomplete="off">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px">
+                            <b style="color:var(--pe-blue); font-size:12px">ATLETAS (EDITAR)</b>
+                            <button class="btn-icon" onclick="toggleUserSearch()"><i class="fas fa-eye-slash"></i></button>
+                        </div>
+                         <div id="adm-user-search-wrapper" class="smart-search-container" style="margin-top:10px; margin-bottom:10px;">
+                            <input type="text" id="adm-edit-user-search" placeholder="BUSCAR POR NOME, CPF OU CIDADE..." oninput="filterPilots('edit-user')" autocomplete="off">
                             <div id="adm-edit-user-list" class="smart-list"></div>
                         </div>
                         <p style="font-size:10px; color:#999; text-align:center">Clique no nome para abrir edição completa</p>
@@ -343,7 +390,7 @@
                 <div id="adm-sec-financial" style="display:none">
                     <button class="btn" style="background:#999; margin-bottom:10px" onclick="backToAdmMenu()">VOLTAR</button>
                     <div style="background:white; border:1px solid #ddd; padding:10px; border-radius:8px;">
-                        <b style="color:var(--pe-blue); font-size:12px">LISTA DE ATLETAS</b>
+                        <b style="color:var(--pe-blue); font-size:12px">STATUS DE ATLETAS</b>
                         <select id="fin-evt-select" style="margin:10px 0" onchange="renderInscriptions()"><option value="">SELECIONE O EVENTO...</option></select>
                         <div class="stats-box">
                             <span id="stat-total">Total: 0</span>
@@ -356,9 +403,22 @@
                             <button class="btn-mini-adm" style="background:orange;flex:1" onclick="filterFinList('PENDENTE')">PEND</button>
                         </div>
                         <div id="fin-list-container"></div>
-                        <button class="btn" style="margin-top:10px; background:#333" onclick="printInscriptions()"><i class="fas fa-print"></i> IMPRIMIR LISTA</button>
+                        <button class="btn" style="margin-top:10px; background:#333" onclick="openPrintOptions()"><i class="fas fa-print"></i> IMPRIMIR LISTA</button>
                     </div>
                 </div>
+
+                <div id="adm-sec-config" style="display:none">
+                    <button class="btn" style="background:#999; margin-bottom:10px" onclick="backToAdmMenu()">VOLTAR</button>
+                    <div style="background:white; border:1px solid #ddd; padding:10px; border-radius:8px;">
+                        <b style="color:var(--pe-blue); font-size:12px">CONFIGURAÇÕES</b>
+                        <div class="input-group" style="margin-top:15px">
+                            <label>ID VÍDEO YOUTUBE (ex: dQw4w9WgXcQ)</label>
+                            <input id="cfg-video-id">
+                        </div>
+                        <button class="btn" onclick="saveVideoConfig()">SALVAR CONFIGURAÇÃO</button>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -377,44 +437,53 @@
     window.onerror = function(msg, url, line) { alert("ERRO: " + msg + "\nLinha: " + line); return true; };
     function appRefresh() { window.location.reload(true); }
 
-    const DB_KEY = 'dhpe_v23_0_db'; const SESS_KEY = 'dhpe_sess_v23_0'; const REMEMBER_KEY = 'dhpe_remember_token_v230';
-    const ADMIN_CPF = "083.276.324-18"; const ADMIN_PASS = "0800";
+    // --- 1. DEFINIÇÕES GLOBAIS ---
+    const DB_KEY = 'dhpe_v28_0_db'; const SESS_KEY = 'dhpe_sess_v28_0'; const REMEMBER_KEY = 'dhpe_remember_token_v280';
+    const ADMIN_CPF = "083.276.324-18"; const ADMIN_PASS = "0800"; // FORMATADO
 
-    const MOCK_USERS = [
-        {n:"LUCAS BORBA", c:"RECIFE", g:"M"}, {n:"WALLACE MIRANDA", c:"APARECIDA", g:"M"},
-        {n:"MARIA EDUARDA", c:"CARUARU", g:"F"}
-    ];
+    // ADMIN BASE
+    const usersList = [{ nome: "ABRAAO EVERTON LOPES DE ARAUJO", cpf: ADMIN_CPF, pass: ADMIN_PASS, cat: "ORGANIZAÇÃO", tel: "", city: "RECIFE", gender:"M", role: "ADMIN", allowedEvts: [], inscricoes: [] }];
     
-    const usersList = [{ nome: "ADMINISTRADOR", cpf: ADMIN_CPF, pass: ADMIN_PASS, cat: "ORGANIZAÇÃO", tel: "", city: "RECIFE", gender:"M", role: "ADMIN", allowedEvts: [], inscricoes: [] }];
-    const rankingsList = []; const temposList = [];
-    MOCK_USERS.forEach((u, i) => {
-        const fakeCpf = `000.000.00${i}-00`; 
-        const cat = u.g === 'F' ? "FEMININA" : "SUB-30 / ELITE";
-        usersList.push({ nome: u.n, cpf: fakeCpf, pass: "1234", cat: cat, tel: "", city: u.c, gender: u.g, role: "USER", allowedEvts: [], inscricoes: [] });
-    });
-
+    // BANCO ZERADO
     const DEFAULT_DB = {
         users: usersList,
         events: [
             { id:1, d:'25/26', m:'ABR', city:'OURICURI-PE', t:'1ª ETAPA ESTADUAL', val: "100,00", est:true, cbc:false, open:true, img:null },
             { id:2, d:'16/17', m:'MAI', city:'CARUARU-PE', t:'2ª ETAPA ESTADUAL', val: "100,00", est:true, cbc:false, open:true, img:null }
         ],
-        tempos: temposList, ranking: rankingsList,
-        config: { logo: 'logo-fp.jpg' },
+        tempos: [], ranking: [],
+        config: { logo: 'logo-fp.jpg', videoId: 'dQw4w9WgXcQ' },
         stories: [ { title: 'REGRAS', icon: 'fa-book' }, { title: 'MAXXIS', icon: 'fa-star' }, { title: 'FPC', icon: 'fa-flag' } ]
     };
 
-    function cleanCPF(v) { return v ? v : ""; } 
-    function mascaraCPF(i){ i.value=i.value.replace(/\D/g,"").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2"); }
-    function mascaraTel(i) { let v = i.value.replace(/\D/g,""); v = v.replace(/^(\d{2})(\d)/g,"($1) $2"); v = v.replace(/(\d)(\d{4})$/,"$1-$2"); i.value = v; }
+    function cleanCPF(v) { return v ? v.replace(/\D/g, "") : ""; } 
+    
+    function mascaraCPF(i) {
+        let v = i.value.replace(/\D/g, "");
+        if (v.length > 11) v = v.substring(0, 11);
+        i.value = v.replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+    }
+    
+    function mascaraTel(i) {
+        let v = i.value.replace(/\D/g, "");
+        if (v.length > 11) v = v.substring(0, 11);
+        v = v.replace(/^(\d{2})(\d)/g, "($1) $2");
+        v = v.replace(/(\d)(\d{4})$/, "$1-$2");
+        i.value = v;
+    }
+
     function mascaraData(i) { let v = i.value.replace(/\D/g,""); if(v.length > 4) v = v.substring(0,4); if(v.length > 2) v = v.substring(0,2) + '/' + v.substring(2); i.value = v; }
+    function togglePass(id) { const el = document.getElementById(id); el.type = el.type === 'password' ? 'text' : 'password'; }
 
     let db; try { db = JSON.parse(localStorage.getItem(DB_KEY)); if(!db) throw new Error("DB empty"); } catch(e) { db = DEFAULT_DB; saveDB(); }
-    const adminIndex = db.users.findIndex(u => u.cpf === ADMIN_CPF);
+    
+    // Ensure Admin
+    const adminIndex = db.users.findIndex(u => cleanCPF(u.cpf) === cleanCPF(ADMIN_CPF));
     if(adminIndex >= 0) { db.users[adminIndex].role = "ADMIN"; db.users[adminIndex].pass = ADMIN_PASS; } else { db.users.push(DEFAULT_DB.users[0]); }
     saveDB();
 
     let currentTab = 'calendar'; let loggedUser = null;
+    let currentPayId = null;
 
     function saveDB() { localStorage.setItem(DB_KEY, JSON.stringify(db)); }
     function getUser() { return JSON.parse(localStorage.getItem(SESS_KEY)); }
@@ -426,6 +495,10 @@
         if(id === 'app') {
             document.getElementById('main-nav-bar').style.display = 'flex';
             document.getElementById('main-app-header').style.display = 'flex';
+            // Load Video
+            if(db.config && db.config.videoId) {
+                document.getElementById('main-video-iframe').src = `https://www.youtube.com/embed/${db.config.videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${db.config.videoId}`;
+            }
         } else {
             document.getElementById('main-nav-bar').style.display = 'none';
             document.getElementById('main-app-header').style.display = 'none';
@@ -433,6 +506,7 @@
     }
 
     function toggleSearch(id) { const el = document.getElementById('search-box-'+id); el.style.display = el.style.display === 'block' ? 'none' : 'block'; }
+    function toggleUserSearch() { const el = document.getElementById('adm-user-search-wrapper'); el.style.display = el.style.display === 'none' ? 'block' : 'none'; }
 
     function nav(t) {
         if(t === 'adm' && (!loggedUser || (loggedUser.role !== 'ADMIN' && loggedUser.role !== 'ORGANIZER'))) return toast("ACESSO NEGADO");
@@ -468,7 +542,18 @@
             div.innerHTML = db.events.map(e => {
                 const btnPoster = e.img ? `<img src="${e.img}" class="card-poster-thumb" onclick="verCartaz('${e.id}')">` : '';
                 const valShow = e.val ? `<div class="event-price">R$ ${e.val}</div>` : '';
-                return `<div class="event-card ${e.open?'':'closed'}"><div class="event-top"><span class="event-date">${e.d} ${e.m}</span></div><div class="event-body"><div class="event-title">${e.t}</div>${btnPoster}${valShow}<div class="event-city"><i class="fas fa-map-marker-alt"></i> ${e.city}</div><div class="badge-box">${e.est?'<span class="badge b-est">PE</span>':''}${e.cbc?'<span class="badge b-cbc">CBC</span>':''}</div><button class="btn-insc" onclick="iniciarInscricao('${e.id}','${e.t}', '${e.val}')">INSCREVER</button></div></div>`;
+                // Check status
+                let actionBtn = `<button class="btn-insc" onclick="iniciarInscricao('${e.id}','${e.t}', '${e.val}')">INSCREVER</button>`;
+                if(loggedUser) {
+                    const ins = loggedUser.inscricoes.find(i => i.id == e.id);
+                    if(ins && ins.status === 'CONFIRMADO') {
+                        actionBtn = `<button class="btn-share" onclick="openShareModal('${e.t}')"><i class="fab fa-instagram"></i> COMPARTILHAR</button>`;
+                    } else if(ins) {
+                        actionBtn = `<button class="btn-insc" style="background:orange">PENDENTE</button>`;
+                    }
+                }
+
+                return `<div class="event-card ${e.open?'':'closed'}"><div class="event-top"><span class="event-date">${e.d} ${e.m}</span></div><div class="event-body"><div class="event-title">${e.t}</div>${btnPoster}${valShow}<div class="event-city"><i class="fas fa-map-marker-alt"></i> ${e.city}</div><div class="badge-box">${e.est?'<span class="badge b-est">PE</span>':''}${e.cbc?'<span class="badge b-cbc">CBC</span>':''}</div>${actionBtn}</div></div>`;
             }).join('');
         } else if (t === 'tempos' || t === 'ranking') {
             const list = db[t];
@@ -506,6 +591,10 @@
         if(sec === 'users-edit') {
              document.getElementById('adm-sec-users-edit').style.display='block';
         }
+        if(sec === 'config') {
+             document.getElementById('adm-sec-config').style.display='block';
+             document.getElementById('cfg-video-id').value = db.config.videoId || '';
+        }
         if(sec === 'financial') { 
             document.getElementById('adm-sec-financial').style.display='block'; 
             const sel = document.getElementById('fin-evt-select'); 
@@ -520,13 +609,13 @@
     function backToAdmMenu() {
         document.getElementById('adm-sec-events').style.display='none'; document.getElementById('adm-sec-results').style.display='none';
         document.getElementById('adm-sec-organizer').style.display='none'; document.getElementById('adm-sec-financial').style.display='none';
-        document.getElementById('adm-sec-users-edit').style.display='none';
+        document.getElementById('adm-sec-users-edit').style.display='none'; document.getElementById('adm-sec-config').style.display='none';
         document.getElementById('adm-menu').style.display='grid';
     }
 
     function checkAdmPass() { if(document.getElementById('adm-pass-check').value === ADMIN_PASS) { document.getElementById('adm-login-box').style.display='none'; document.getElementById('adm-panel-real').style.display='block'; backToAdmMenu(); } else { toast("SENHA INVÁLIDA"); } }
     
-    // --- SMART SEARCH FOR PILOTS ---
+    // --- SMART SEARCH (ALL USERS) ---
     function filterPilots(ctx) {
         const inputId = ctx === 'res' ? 'adm-res-search' : (ctx === 'org' ? 'adm-org-search' : 'adm-edit-user-search');
         const listId = ctx === 'res' ? 'adm-res-list' : (ctx === 'org' ? 'adm-org-list-search' : 'adm-edit-user-list');
@@ -536,7 +625,9 @@
         listDiv.innerHTML = '';
         if(text.length < 2) { listDiv.style.display = 'none'; return; }
         
-        const filtered = db.users.filter(u => u.role === 'USER' && (u.nome.includes(text) || u.cpf.includes(text) || u.city.includes(text)));
+        // SEARCH ALL (INCLUDING SELF)
+        const filtered = db.users.filter(u => (u.nome.includes(text) || u.cpf.includes(text) || u.city.includes(text)));
+        
         if(filtered.length === 0) { listDiv.style.display='none'; return; }
         
         listDiv.style.display = 'block';
@@ -589,13 +680,6 @@
         }
     }
 
-    function deleteUser(cpf) {
-        if(confirm("TEM CERTEZA? O atleta será excluído permanentemente.")) {
-             const idx = db.users.findIndex(x => x.cpf === cpf);
-             if(idx > -1) { db.users.splice(idx, 1); saveDB(); toast("EXCLUÍDO"); fecharModal('modal-edit-user'); }
-        }
-    }
-
     // --- ORGANIZER LOGIC ---
     function promoteToOrganizer() {
         const cpf = document.getElementById('adm-org-selected-cpf').value;
@@ -621,7 +705,7 @@
             const idx = db.users.findIndex(u => u.cpf === cpf);
             if(idx > -1) {
                 db.users[idx].role = 'USER';
-                db.users[idx].cat = "RÍGIDA";
+                db.users[idx].cat = "RÍGIDA"; // Or Recalc
                 db.users[idx].allowedEvts = [];
                 saveDB(); renderOrgList();
             }
@@ -672,7 +756,6 @@
             }
         });
         
-        // Update stats (Needs event value)
         const evt = db.events.find(e => e.id == evtId);
         const val = evt.val ? parseFloat(evt.val.replace(',','.')) : 0;
         totalMoney = paidCount * val;
@@ -689,11 +772,83 @@
         const ins = u.inscricoes.find(i => i.id == evtId); 
         if(ins) { 
             ins.status = 'CONFIRMADO'; 
-            ins.confirmedBy = loggedUser.nome.split(' ')[0]; // Track who confirmed
+            ins.confirmedBy = loggedUser.nome.split(' ')[0]; 
             saveDB(); renderInscriptions(); toast("CONFIRMADO!"); 
         } 
     }
-    function printInscriptions() { window.print(); }
+
+    // --- PRINT REPORT & OPTIONS ---
+    function openPrintOptions() {
+        const evtId = document.getElementById('fin-evt-select').value;
+        if(!evtId) return toast("SELECIONE O EVENTO");
+        
+        // Get categories from enrolled users
+        let cats = new Set();
+        db.users.forEach(u => {
+            if(u.inscricoes.some(i => i.id == evtId)) cats.add(u.cat);
+        });
+        
+        const listDiv = document.getElementById('print-cat-list');
+        listDiv.innerHTML = Array.from(cats).map(c => 
+            `<button class="btn-mini-adm" style="text-align:left; padding:8px; width:100%" onclick="generatePrint('${c}')">${c}</button>`
+        ).join('');
+        
+        document.getElementById('modal-print-options').style.display = 'flex';
+    }
+
+    function generatePrint(categoryFilter) {
+        const evtId = document.getElementById('fin-evt-select').value;
+        const evt = db.events.find(e => e.id == evtId);
+        
+        let usersIn = [];
+        db.users.forEach(u => {
+            const insc = u.inscricoes.find(i => i.id == evtId);
+            if(insc) {
+                // Filter by Category if needed
+                if(categoryFilter === 'ALL' || u.cat === categoryFilter) {
+                    usersIn.push({ ...u, status: insc.status });
+                }
+            }
+        });
+
+        const grouped = {};
+        usersIn.forEach(u => {
+            if(!grouped[u.cat]) grouped[u.cat] = [];
+            grouped[u.cat].push(u);
+        });
+
+        let html = `<div class="print-header"><h1>${evt.t}</h1><p>RELATÓRIO: ${categoryFilter === 'ALL' ? 'GERAL' : categoryFilter}</p></div>`;
+        
+        for (const cat in grouped) {
+            html += `<div class="print-cat-block"><h3>${cat}</h3>
+            <table class="print-table"><thead><tr><th>NOME</th><th>CIDADE</th><th>CPF</th><th>STATUS</th></tr></thead><tbody>`;
+            grouped[cat].forEach(u => {
+                html += `<tr><td>${u.nome}</td><td>${u.city}</td><td>${u.cpf}</td><td>${u.status}</td></tr>`;
+            });
+            html += `</tbody></table></div>`;
+        }
+        
+        document.getElementById('printable-area').innerHTML = html;
+        fecharModal('modal-print-options');
+        window.print();
+    }
+    
+    // --- SHARE INSTAGRAM ---
+    function openShareModal(evtName) {
+        document.getElementById('share-piloto-name').innerText = loggedUser.nome;
+        document.getElementById('share-event-name').innerText = evtName;
+        document.getElementById('modal-share').style.display = 'flex';
+    }
+
+    // --- VIDEO CONFIG ---
+    function saveVideoConfig() {
+        const vid = document.getElementById('cfg-video-id').value;
+        if(vid) {
+            db.config.videoId = vid;
+            saveDB();
+            toast("VÍDEO ATUALIZADO");
+        }
+    }
     
     function refreshAdmLists() { 
         document.getElementById('adm-list-events').innerHTML = db.events.map((e, i) => `<div class="admin-item-row"><span>${e.t}</span><div class="admin-actions"><button class="btn-mini-adm btn-blue" onclick="editEvent(${e.id})"><i class="fas fa-pen"></i></button><button class="btn-mini-adm btn-red" onclick="delItem('events', ${i})"><i class="fas fa-trash"></i></button></div></div>`).join(''); 
@@ -744,8 +899,33 @@
         db[type][index].status = 'OK'; saveDB(); refreshAdmLists(); toast("APROVADO!");
     }
 
-    function iniciarInscricao(evtId, evtName, val) { if(!loggedUser) return toast("FAÇA LOGIN PRIMEIRO"); currentPayId = { id: parseInt(evtId), name: evtName }; document.getElementById('pix-valor-display').innerText = val ? `R$ ${val}` : "R$ 100,00"; document.getElementById('pix-copy').innerText = "00020126360014BR.GOV.BCB.PIX0114+55819000000005204000053039865802BR5925FPC FEDERACAO PE CICLISMO6006RECIFE62070503***6304E2CA"; document.getElementById('modal-pix').style.display='flex'; }
-    function confirmarPagamentoZap() { if(!loggedUser.inscricoes.some(i => i.id == currentPayId.id)) { loggedUser.inscricoes.push({ id: currentPayId.id, status: 'PENDENTE' }); const idx = db.users.findIndex(x => x.cpf === loggedUser.cpf); if(idx > -1) db.users[idx].inscricoes = loggedUser.inscricoes; saveDB(); localStorage.setItem(SESS_KEY, JSON.stringify(loggedUser)); } window.open(`https://wa.me/5581999999999?text=${encodeURIComponent(`Olá! Sou ${loggedUser.nome}, paguei a inscrição para: ${currentPayId.name}`)}`, '_blank'); fecharModal('modal-pix'); renderContent('calendar'); }
+    function iniciarInscricao(evtId, evtName, val) { 
+        if(!loggedUser) return toast("FAÇA LOGIN PRIMEIRO"); 
+        // Check if already subscribed
+        if(loggedUser.inscricoes.some(i => i.id == evtId)) {
+             return toast("JÁ INSCRITO");
+        }
+        currentPayId = { id: parseInt(evtId), name: evtName }; document.getElementById('pix-valor-display').innerText = val ? `R$ ${val}` : "R$ 100,00"; document.getElementById('pix-copy').innerText = "00020126360014BR.GOV.BCB.PIX0114+55819000000005204000053039865802BR5925FPC FEDERACAO PE CICLISMO6006RECIFE62070503***6304E2CA"; document.getElementById('modal-pix').style.display='flex'; 
+    }
+
+    // PIX ACTIONS
+    function enviarComprovanteWhatsApp() {
+        window.open(`https://wa.me/?text=Olá, segue comprovante de inscrição para: ${currentPayId.name} - Piloto: ${loggedUser.nome}`, '_blank');
+    }
+    
+    function confirmarJaPaguei() {
+        if(!loggedUser.inscricoes.some(i => i.id == currentPayId.id)) { 
+            loggedUser.inscricoes.push({ id: currentPayId.id, status: 'PENDENTE' }); 
+            const idx = db.users.findIndex(x => x.cpf === loggedUser.cpf); 
+            if(idx > -1) db.users[idx].inscricoes = loggedUser.inscricoes;
+            saveDB(); 
+            localStorage.setItem(SESS_KEY, JSON.stringify(loggedUser)); 
+        }
+        fecharModal('modal-pix');
+        toast("REGISTRADO! AGUARDE APROVAÇÃO");
+        renderContent('calendar');
+    }
+
     function verCartaz(id) { const evt = db.events.find(e => e.id == id); if(evt && evt.img) { document.getElementById('img-poster-view').src = evt.img; document.getElementById('modal-poster').style.display = 'flex'; } }
     function fecharModal(id){ document.getElementById(id).style.display='none'; }
     function delItem(col, idx) { if(confirm("APAGAR?")) { db[col].splice(idx, 1); saveDB(); refreshAdmLists(); } }
@@ -764,7 +944,6 @@
                 if(remember) localStorage.setItem(REMEMBER_KEY, cpfRaw + "|" + pass); 
                 initApp(); 
                 
-                // AUTO REDIRECT
                 if(user.role === 'ADMIN' || user.role === 'ORGANIZER') nav('adm');
                 else nav('calendar');
 
@@ -813,7 +992,7 @@
     function initApp() { 
         if(db.config.logo) document.querySelectorAll('.app-logo-img').forEach(el => el.src = db.config.logo);
         renderStories(); trocarTela('app'); 
-        if(loggedUser.role === 'ADMIN' || loggedUser.role === 'ORGANIZER') nav('adm');
+        if(loggedUser && (loggedUser.role === 'ADMIN' || loggedUser.role === 'ORGANIZER')) nav('adm');
         else nav('calendar');
     }
 
