@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DH-PE v54.0 (Fixed & Styled)</title>
+    <title>DH-PE v55.0 (Auto-Save Total)</title>
     
     <link rel="icon" type="image/jpg" href="logo-fp.jpg">
     <link rel="apple-touch-icon" href="logo-fp.jpg">
@@ -122,15 +122,27 @@
         .stats-box { display: flex; gap: 10px; margin: 10px 0; background: #f0f9ff; padding: 10px; border-radius: 6px; justify-content: space-around; font-size: 10px; font-weight: bold; color: var(--pe-blue); border: 1px solid #bae6fd; }
         .wpp-big { font-size: 24px; color: #25D366; vertical-align: middle; margin-left: 5px; }
 
-        /* SHARE CARD */
-        .share-card { background: linear-gradient(180deg, #0038a8 60%, #ffffff 60%); padding: 0; border-radius: 15px; color: white; text-align: center; margin-bottom: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.3); overflow: hidden; position: relative; }
-        .share-header-rainbow { height: 15px; width: 100%; background: linear-gradient(90deg, #d50000 33%, #ffe500 33%, #ffe500 66%, #009b3a 66%); }
+        /* SHARE CARD (PERNAMBUCO STYLE) */
+        .share-card { 
+            background: linear-gradient(180deg, #0038a8 60%, #ffffff 60%); 
+            padding: 0; border-radius: 15px; color: white; text-align: center; margin-bottom: 15px; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3); overflow: hidden; position: relative;
+        }
+        .share-header-rainbow {
+            height: 15px; width: 100%;
+            background: linear-gradient(90deg, #d50000 33%, #ffe500 33%, #ffe500 66%, #009b3a 66%);
+        }
         .share-content-box { padding: 30px 20px; }
         .share-card h2 { font-size: 32px; margin: 0 0 5px 0; font-weight: 900; text-shadow: 2px 2px 0px #000; color: #ffe500; letter-spacing: -1px; }
         .share-card p.sub { font-size: 12px; font-weight: 700; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
         .share-piloto { font-size: 20px; font-weight: 900; margin: 15px 0; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
         .share-event { font-size: 12px; font-weight: bold; color: #0038a8; margin-top: 30px; text-transform: uppercase; }
-        .share-badge { background: #009b3a; color: white; padding: 8px 20px; border-radius: 20px; font-weight: 900; font-size: 12px; margin-top: 15px; display: inline-block; border: 2px solid #ffe500; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        
+        .share-badge { 
+            background: #009b3a; color: white; padding: 8px 20px; border-radius: 20px; 
+            font-weight: 900; font-size: 12px; margin-top: 15px; display: inline-block; 
+            border: 2px solid #ffe500; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
 
         /* BARRA INFERIOR */
         .bottom-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 60px; background: white; display: none; justify-content: space-around; align-items: center; border-top: 1px solid #ddd; z-index: 9000; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); }
@@ -145,7 +157,7 @@
         .checkbox-wrapper { display: flex; align-items: center; gap: 5px; cursor: pointer; }
         @keyframes fade { from { opacity:0; } to { opacity:1; } }
         
-        /* IMPRESSÃO */
+        /* IMPRESSÃO (PLANILHA TÉCNICA E TERMO) */
         @media print { 
             body * { visibility: hidden; } 
             #printable-area, #printable-area * { visibility: visible; } 
@@ -253,7 +265,7 @@
     <div id="screen-app" class="screen">
         <div id="main-app-header" class="app-header">
             <div class="header-logo-text">DH-PE</div>
-            <div class="version-badge" onclick="appRefresh()">v53.0</div>
+            <div class="version-badge" onclick="appRefresh()">v55.0</div>
         </div>
         
         <div id="cont-calendar" class="c-sec active">
@@ -322,30 +334,30 @@
                     <div style="background:white; border:1px solid #ddd; padding:10px; border-radius:8px;">
                         <b style="color:var(--pe-blue); font-size:12px">CRIAR/EDITAR EVENTO</b>
                         <input type="hidden" id="adm-evt-id-edit">
-                        <input id="adm-evt-t" placeholder="NOME DO EVENTO" class="uppercase-input" style="margin-top:5px">
+                        <input id="adm-evt-t" placeholder="NOME DO EVENTO" class="uppercase-input" style="margin-top:5px" oninput="saveEventForm()">
                         
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px; margin-top:5px">
                             <div>
                                 <label style="font-size:9px; font-weight:bold">MÊS</label>
-                                <select id="adm-evt-month"><option value="JAN">JAN</option><option value="FEV">FEV</option><option value="MAR">MAR</option><option value="ABR">ABR</option><option value="MAI">MAI</option><option value="JUN">JUN</option><option value="JUL">JUL</option><option value="AGO">AGO</option><option value="SET">SET</option><option value="OUT">OUT</option><option value="NOV">NOV</option><option value="DEZ">DEZ</option></select>
+                                <select id="adm-evt-month" onchange="saveEventForm()"><option value="JAN">JAN</option><option value="FEV">FEV</option><option value="MAR">MAR</option><option value="ABR">ABR</option><option value="MAI">MAI</option><option value="JUN">JUN</option><option value="JUL">JUL</option><option value="AGO">AGO</option><option value="SET">SET</option><option value="OUT">OUT</option><option value="NOV">NOV</option><option value="DEZ">DEZ</option></select>
                             </div>
                             <div>
                                 <label style="font-size:9px; font-weight:bold">DIAS</label>
-                                <input id="adm-evt-d" placeholder="00/00" oninput="mascaraData(this)" maxlength="5">
+                                <input id="adm-evt-d" placeholder="00/00" oninput="mascaraData(this); saveEventForm()" maxlength="5">
                             </div>
                         </div>
 
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px; margin-top:5px">
-                            <input id="adm-evt-c" placeholder="CIDADE" class="uppercase-input">
-                            <input id="adm-evt-v" placeholder="VALOR (R$)" type="tel">
+                            <input id="adm-evt-c" placeholder="CIDADE" class="uppercase-input" oninput="saveEventForm()">
+                            <input id="adm-evt-v" placeholder="VALOR (R$)" type="tel" oninput="saveEventForm()">
                         </div>
 
                         <div style="margin-top:5px; padding:5px; background:#f0f9ff; border:1px solid #bae6fd; border-radius:4px">
                             <label style="font-size:9px; font-weight:bold">DATA LIMITE INSCRIÇÃO</label>
-                            <input type="date" id="adm-evt-close-date">
+                            <input type="date" id="adm-evt-close-date" onchange="saveEventForm()">
                             <div style="margin-top:5px">
                                 <label style="font-size:9px; font-weight:bold">STATUS ATUAL:</label>
-                                <select id="adm-evt-status"><option value="OPEN">ABERTO</option><option value="CLOSED">ENCERRADO</option></select>
+                                <select id="adm-evt-status" onchange="saveEventForm()"><option value="OPEN">ABERTO</option><option value="CLOSED">ENCERRADO</option></select>
                             </div>
                         </div>
 
@@ -356,8 +368,9 @@
                             <b style="font-size:10px; color:var(--pe-blue)">PONTUAÇÃO (1º ao 20º)</b>
                             <div id="evt-points-grid" style="display:grid; grid-template-columns: repeat(5, 1fr); gap:3px; margin-top:5px"></div>
                         </div>
-                        
+
                         <button class="btn" id="btn-save-event" style="padding:8px; margin:15px 0 0 0" onclick="addEvent()">CADASTRAR EVENTO</button>
+                        <button class="btn" style="background:#ddd; color:#333; margin-top:5px" onclick="clearEventForm()">CANCELAR / LIMPAR</button>
                         <div style="margin-top:10px; border-top:1px solid #eee; padding-top:5px"><p style="font-size:9px; color:#999">LISTA</p><div id="adm-list-events"></div></div>
                     </div>
                     <button class="btn" style="background:#999; margin-top:20px" onclick="backToAdmMenu()">VOLTAR AO MENU</button>
@@ -391,6 +404,7 @@
                 </div>
 
                 <div id="adm-sec-organizer" style="display:none">
+                    <button class="btn" style="background:#999; margin-bottom:10px" onclick="backToAdmMenu()">VOLTAR</button>
                     <div style="background:white; border:1px solid #ddd; padding:10px; border-radius:8px;">
                         <b style="color:var(--pe-blue); font-size:12px">CADASTRAR ORGANIZADOR</b>
                         <div class="smart-search-container" style="margin-top:20px; margin-bottom:10px; border-top:1px solid #eee; padding-top:10px">
@@ -413,6 +427,7 @@
                 </div>
 
                 <div id="adm-sec-users-edit" style="display:none">
+                    <button class="btn" style="background:#999; margin-bottom:10px" onclick="backToAdmMenu()">VOLTAR</button>
                     <div style="background:white; border:1px solid #ddd; padding:10px; border-radius:8px;">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px">
                             <b style="color:var(--pe-blue); font-size:12px">ATLETAS (EDITAR)</b>
@@ -428,6 +443,7 @@
                 </div>
 
                 <div id="adm-sec-financial" style="display:none">
+                    <button class="btn" style="background:#999; margin-bottom:10px" onclick="backToAdmMenu()">VOLTAR</button>
                     <div style="background:white; border:1px solid #ddd; padding:10px; border-radius:8px;">
                         <b style="color:var(--pe-blue); font-size:12px">STATUS DE ATLETAS</b>
                         <select id="fin-evt-select" style="margin:10px 0" onchange="renderInscriptions()"><option value="">SELECIONE O EVENTO...</option></select>
@@ -464,11 +480,12 @@
     window.onerror = function(msg, url, line) { alert("ERRO: " + msg + "\nLinha: " + line); return true; };
     function appRefresh() { window.location.reload(true); }
 
-    const DB_KEY = 'dhpe_v53_0_db'; const SESS_KEY = 'dhpe_sess_v53_0'; const REMEMBER_KEY = 'dhpe_remember_token_v530';
+    const DB_KEY = 'dhpe_v55_0_db'; const SESS_KEY = 'dhpe_sess_v55_0'; const REMEMBER_KEY = 'dhpe_remember_token_v550';
     const ADMIN_CPF = "083.276.324-18"; const ADMIN_PASS = "0800"; 
-    const LAST_TAB_KEY = 'dhpe_last_tab_v53';
-    const LAST_ADM_KEY = 'dhpe_last_adm_v53';
-    const FORM_STATE_KEY = 'dhpe_form_state_v53';
+    const LAST_TAB_KEY = 'dhpe_last_tab_v55';
+    const LAST_ADM_KEY = 'dhpe_last_adm_v55';
+    const FORM_STATE_KEY = 'dhpe_form_state_v55';
+    const EVENT_FORM_KEY = 'dhpe_event_form_v55';
 
     const usersList = [{ nome: "ABRAAO EVERTON LOPES DE ARAUJO", cpf: ADMIN_CPF, pass: ADMIN_PASS, cat: "ORGANIZAÇÃO", tel: "81900000000", city: "RECIFE", gender:"M", role: "ADMIN", allowedEvts: [], inscricoes: [], selfie: null }];
     
@@ -490,7 +507,6 @@
     const adminIndex = db.users.findIndex(u => cleanCPF(u.cpf) === cleanCPF(ADMIN_CPF));
     if(adminIndex >= 0) { db.users[adminIndex].role = "ADMIN"; db.users[adminIndex].pass = ADMIN_PASS; } else { db.users.push(DEFAULT_DB.users[0]); }
     
-    // Migration: Add status/closeDate if missing
     db.events.forEach(e => { if(!e.points || e.points.length < 20) e.points = [...DEFAULT_POINTS]; if(!e.status) e.status = 'OPEN'; });
     saveDB();
 
@@ -500,7 +516,6 @@
     function getUser() { return JSON.parse(localStorage.getItem(SESS_KEY)); }
     function toast(m) { const t=document.getElementById('toast'); t.innerText=m.toUpperCase(); t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
     
-    // 3. COMPRESSAO IMAGEM
     function compressImage(file, maxWidth, callback) {
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -560,10 +575,6 @@
             if(loggedUser.role === 'ADMIN' || loggedUser.role === 'ORGANIZER') { 
                 document.getElementById('adm-login-box').style.display='none'; 
                 document.getElementById('adm-panel-real').style.display='block'; 
-                
-                if(loggedUser.role !== 'ADMIN') document.getElementById('btn-adm-events').style.display = 'none';
-                else document.getElementById('btn-adm-events').style.display = 'flex';
-
                 const lastAdm = localStorage.getItem(LAST_ADM_KEY);
                 if(lastAdm) openAdmSection(lastAdm);
                 else backToAdmMenu(); 
@@ -596,7 +607,6 @@
                 let isClosed = e.status === 'CLOSED';
                 if(e.closeDate && new Date().toISOString().split('T')[0] > e.closeDate) isClosed = true;
 
-                // 1. DATA ENCERRAMENTO VISIVEL
                 let closeDateDisplay = '';
                 if(e.closeDate) {
                     const parts = e.closeDate.split('-');
@@ -670,10 +680,12 @@
         if(sec === 'events') { 
             document.getElementById('adm-sec-events').style.display='block'; 
             refreshAdmLists(); 
-            // 4. RESET FORM EVENT
-            document.getElementById('adm-evt-id-edit').value = '';
-            document.getElementById('btn-save-event').innerText = "CADASTRAR EVENTO";
-            document.getElementById('evt-points-grid').innerHTML = Array(20).fill(0).map((_, i) => `<input type="number" placeholder="${i+1}º" id="pt-${i}" style="text-align:center; font-size:10px; padding:4px;">`).join('');
+            // RESTAURA CAMPOS EVENTO
+            restoreEventForm();
+            // Pontos
+            const savedPoints = JSON.parse(localStorage.getItem(EVENT_FORM_KEY))?.points;
+            const pts = savedPoints || Array(20).fill(0);
+            document.getElementById('evt-points-grid').innerHTML = pts.map((p, i) => `<input type="number" placeholder="${i+1}º" id="pt-${i}" value="${p||''}" style="text-align:center; font-size:10px; padding:4px;">`).join('');
         }
         if(sec === 'results') { 
             document.getElementById('adm-sec-results').style.display='block'; refreshAdmLists(); 
@@ -702,6 +714,7 @@
         }
     }
 
+    // STATE SAVERS
     function saveAdmState() {
         const state = {
             evt: document.getElementById('adm-res-evt').value,
@@ -728,9 +741,51 @@
             if(saved.val) document.getElementById('adm-res-val').value = saved.val;
         }
     }
+    
+    function saveEventForm() {
+        const state = {
+            t: document.getElementById('adm-evt-t').value,
+            m: document.getElementById('adm-evt-month').value,
+            d: document.getElementById('adm-evt-d').value,
+            c: document.getElementById('adm-evt-c').value,
+            v: document.getElementById('adm-evt-v').value,
+            close: document.getElementById('adm-evt-close-date').value,
+            status: document.getElementById('adm-evt-status').value,
+            // nao salvamos pontos aqui pq sao dinamicos, mas ok
+        };
+        localStorage.setItem(EVENT_FORM_KEY, JSON.stringify(state));
+    }
+    
+    function restoreEventForm() {
+        const saved = JSON.parse(localStorage.getItem(EVENT_FORM_KEY));
+        if(saved) {
+            document.getElementById('adm-evt-t').value = saved.t || '';
+            document.getElementById('adm-evt-month').value = saved.m || 'JAN';
+            document.getElementById('adm-evt-d').value = saved.d || '';
+            document.getElementById('adm-evt-c').value = saved.c || '';
+            document.getElementById('adm-evt-v').value = saved.v || '';
+            document.getElementById('adm-evt-close-date').value = saved.close || '';
+            document.getElementById('adm-evt-status').value = saved.status || 'OPEN';
+        }
+    }
+    
+    function clearEventForm() {
+        localStorage.removeItem(EVENT_FORM_KEY);
+        document.getElementById('adm-evt-id-edit').value = '';
+        document.getElementById('adm-evt-t').value = '';
+        document.getElementById('adm-evt-d').value = '';
+        document.getElementById('adm-evt-c').value = '';
+        document.getElementById('adm-evt-v').value = '';
+        document.getElementById('adm-evt-close-date').value = '';
+        document.getElementById('btn-save-event').innerText = 'CADASTRAR EVENTO';
+        document.getElementById('evt-points-grid').innerHTML = Array(20).fill(0).map((_, i) => `<input type="number" placeholder="${i+1}º" id="pt-${i}" style="text-align:center; font-size:10px; padding:4px;">`).join('');
+    }
 
     function backToAdmMenu() {
         localStorage.removeItem(LAST_ADM_KEY);
+        // Clean forms on back
+        clearEventForm();
+        
         document.querySelectorAll('[id^="adm-sub-"]').forEach(e => e.style.display='none'); 
         document.getElementById('adm-sec-events').style.display='none'; document.getElementById('adm-sec-results').style.display='none';
         document.getElementById('adm-sec-organizer').style.display='none'; document.getElementById('adm-sec-financial').style.display='none';
@@ -1013,13 +1068,17 @@
             document.getElementById('adm-evt-v').value = evt.val || ''; 
             document.getElementById('adm-evt-close-date').value = evt.closeDate || '';
             document.getElementById('adm-evt-status').value = evt.status || 'OPEN';
+            
             const pts = evt.points || [50,45,40,35,30,26,24,22,20,18,16,14,12,10,8,6,4,3,2,1];
             document.getElementById('evt-points-grid').innerHTML = pts.map((p, i) => `<input type="number" placeholder="${i+1}º" value="${p}" id="pt-${i}" style="text-align:center; font-size:10px; padding:4px;">`).join('');
             document.getElementById('btn-save-event').innerText = "ATUALIZAR"; 
+            
+            // Auto scroll to form
+            document.querySelector('.admin-dashboard-grid').scrollIntoView();
         } 
     }
 
-    // 2. CORRECAO ERRO LINHA 533 (REFACTORED ADD EVENT)
+    // 2. CORRECAO ERRO AO SALVAR (IMAGEM)
     function addEvent() { 
         const idEdit = document.getElementById('adm-evt-id-edit').value; 
         const t = document.getElementById('adm-evt-t').value.toUpperCase(); 
@@ -1052,14 +1111,7 @@
                     toast("CRIADO"); 
                 } 
                 saveDB(); refreshAdmLists(); 
-                // 4. RESET FORM
-                document.getElementById('adm-evt-t').value=''; 
-                document.getElementById('adm-evt-d').value=''; 
-                document.getElementById('adm-evt-c').value=''; 
-                document.getElementById('adm-evt-v').value=''; 
-                document.getElementById('adm-evt-id-edit').value=''; 
-                document.getElementById('adm-evt-close-date').value='';
-                document.getElementById('btn-save-event').innerText='CADASTRAR EVENTO'; 
+                clearEventForm(); // 4. LIMPAR APOS SALVAR
             } else {
                 toast("PREENCHA OS CAMPOS");
             }
@@ -1206,7 +1258,7 @@
         if(db.config.logo) document.querySelectorAll('.app-logo-img').forEach(el => el.src = db.config.logo);
         trocarTela('app'); 
         
-        const lastTab = localStorage.getItem('last_tab_v52');
+        const lastTab = localStorage.getItem('last_tab_v53');
         if(lastTab) {
             nav(lastTab);
         } else {
