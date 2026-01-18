@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DH-PE v55.0 (Auto-Save Total)</title>
+    <title>DH-PE v56.0 (Image Share)</title>
     
     <link rel="icon" type="image/jpg" href="logo-fp.jpg">
     <link rel="apple-touch-icon" href="logo-fp.jpg">
     <meta name="theme-color" content="#0038a8">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
     <style>
         :root {
             --pe-blue: #0038a8; --pe-yellow: #ffe500; --pe-red: #d50000; --pe-green: #009b3a;
@@ -78,10 +80,8 @@
         .btn-points { background: #64748b; color: white; border: none; padding: 6px; font-size: 9px; font-weight: 800; cursor: pointer; width: 100%; border-radius: 4px; margin-top: 5px; }
         .btn-share { background: #E1306C; color: white; border: none; padding: 8px; font-size: 10px; font-weight: 800; cursor: pointer; width: 100%; border-radius: 4px; margin-top: auto; }
         
-        /* 1. VISUAL DATA ENCERRAMENTO */
         .event-close-date { font-size: 10px; font-weight: 800; color: #d50000; margin-top: 5px; display:block; }
 
-        /* 3. NOVOS ÍCONES/BADGES (ATUALIZADO) */
         .badge-box { display: flex; justify-content: center; gap: 5px; margin: 5px 0; }
         .badge-pe { background: var(--pe-blue); color: white; padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: 900; }
         .badge-cbc { background: var(--pe-yellow); color: var(--pe-blue); padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: 900; }
@@ -122,27 +122,19 @@
         .stats-box { display: flex; gap: 10px; margin: 10px 0; background: #f0f9ff; padding: 10px; border-radius: 6px; justify-content: space-around; font-size: 10px; font-weight: bold; color: var(--pe-blue); border: 1px solid #bae6fd; }
         .wpp-big { font-size: 24px; color: #25D366; vertical-align: middle; margin-left: 5px; }
 
-        /* SHARE CARD (PERNAMBUCO STYLE) */
+        /* SHARE CARD TICKET STYLE */
         .share-card { 
-            background: linear-gradient(180deg, #0038a8 60%, #ffffff 60%); 
-            padding: 0; border-radius: 15px; color: white; text-align: center; margin-bottom: 15px; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3); overflow: hidden; position: relative;
+            background: white; border-radius: 20px; overflow: hidden; position: relative; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); border: 1px solid #ddd;
+            width: 300px; margin: 0 auto; /* Fixed width for canvas */
         }
-        .share-header-rainbow {
-            height: 15px; width: 100%;
-            background: linear-gradient(90deg, #d50000 33%, #ffe500 33%, #ffe500 66%, #009b3a 66%);
-        }
-        .share-content-box { padding: 30px 20px; }
-        .share-card h2 { font-size: 32px; margin: 0 0 5px 0; font-weight: 900; text-shadow: 2px 2px 0px #000; color: #ffe500; letter-spacing: -1px; }
-        .share-card p.sub { font-size: 12px; font-weight: 700; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
-        .share-piloto { font-size: 20px; font-weight: 900; margin: 15px 0; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        .share-event { font-size: 12px; font-weight: bold; color: #0038a8; margin-top: 30px; text-transform: uppercase; }
-        
-        .share-badge { 
-            background: #009b3a; color: white; padding: 8px 20px; border-radius: 20px; 
-            font-weight: 900; font-size: 12px; margin-top: 15px; display: inline-block; 
-            border: 2px solid #ffe500; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
+        .share-top-band { height: 10px; background: linear-gradient(90deg, #d50000 33%, #ffe500 33%, #ffe500 66%, #009b3a 66%); }
+        .share-content-box { padding: 30px 20px; text-align: center; }
+        .share-logo { font-size: 24px; font-weight: 900; color: #0038a8; margin-bottom: 5px; }
+        .share-sub { font-size: 10px; font-weight: 700; color: #666; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; }
+        .share-piloto { font-size: 20px; font-weight: 900; color: #333; margin: 10px 0; border-bottom: 2px dashed #eee; padding-bottom: 10px; }
+        .share-event { font-size: 13px; font-weight: 800; color: #d50000; text-transform: uppercase; }
+        .share-check { margin-top: 15px; display: inline-block; background: #009b3a; color: white; padding: 5px 15px; border-radius: 50px; font-weight: bold; font-size: 11px; }
 
         /* BARRA INFERIOR */
         .bottom-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 60px; background: white; display: none; justify-content: space-around; align-items: center; border-top: 1px solid #ddd; z-index: 9000; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); }
@@ -171,6 +163,7 @@
             .print-header h1 { font-size: 24px; margin: 0; font-weight: 900; text-transform: uppercase; }
             .print-header p { font-size: 14px; margin: 5px 0 0 0; }
             .manual-cell { width: 120px; height: 30px; } 
+
             .termo-container { font-family: 'Arial', sans-serif; line-height: 1.6; color: #000; text-align: justify; padding: 20px; border: 2px solid #000; }
             .termo-title { text-align: center; font-weight: 900; text-transform: uppercase; margin-bottom: 20px; border-bottom: 1px solid #000; padding-bottom: 10px; font-size: 18px; }
             .termo-body { font-size: 12px; margin-bottom: 20px; }
@@ -193,19 +186,19 @@
 <div id="printable-area" style="display:none; padding:20px;"></div>
 
 <div class="modal-overlay" id="modal-share">
-    <div class="modal-box" style="background:transparent; box-shadow:none; border:none; width:auto">
-        <div class="share-card">
-            <div class="share-header-rainbow"></div>
+    <div class="modal-box" style="background:transparent; box-shadow:none; border:none; width:auto; padding:0;">
+        <div id="share-card-content" class="share-card">
+            <div class="share-top-band"></div>
             <div class="share-content-box">
-                <h2>EU VOU!</h2>
-                <p class="sub">CAMPEONATO PERNAMBUCANO DE DOWNHILL</p>
+                <div class="share-logo">DH-PE</div>
+                <div class="share-sub">COMPROVANTE DE INSCRIÇÃO</div>
                 <div id="share-piloto-name" class="share-piloto">NOME PILOTO</div>
-                <div class="share-badge">INSCRIÇÃO CONFIRMADA</div>
                 <div id="share-event-name" class="share-event">NOME DO EVENTO</div>
+                <div class="share-check"><i class="fas fa-check-circle"></i> PRESENÇA CONFIRMADA</div>
             </div>
         </div>
-        <p style="color:white; font-size:11px; margin-bottom:10px">TIRE UM PRINT E POSTE NO INSTAGRAM!</p>
-        <button class="btn" style="background:#E1306C; margin-bottom:5px" onclick="shareNative()">COMPARTILHAR <i class="fas fa-share-alt"></i></button>
+        <p style="color:white; font-size:11px; margin:15px 0; text-shadow:0 1px 2px black">CLIQUE ABAIXO PARA COMPARTILHAR</p>
+        <button class="btn" style="background:#E1306C; margin-bottom:5px" onclick="shareTicketImage()">COMPARTILHAR IMAGEM <i class="fas fa-share-alt"></i></button>
         <button class="btn" style="background:white; color:#333" onclick="fecharModal('modal-share')">FECHAR</button>
     </div>
 </div>
@@ -222,7 +215,7 @@
 <div class="modal-overlay" id="modal-print-options"><div class="modal-box"><h3 style="color:var(--pe-blue)">IMPRIMIR PLANILHA</h3><button class="btn" onclick="generatePrint('ALL')">TODAS CATEGORIAS (GERAL)</button><div style="margin:10px 0; border-top:1px solid #eee; padding-top:10px; font-size:10px; font-weight:bold; color:#666">OU POR CATEGORIA:</div><div id="print-cat-list" style="max-height:200px; overflow-y:auto; display:flex; flex-direction:column; gap:5px;"></div><button class="btn" style="background:#ddd; color:#333; margin-top:10px" onclick="fecharModal('modal-print-options')">CANCELAR</button></div></div>
 <div class="modal-overlay" id="modal-edit-user"><div class="modal-box"><h3 style="color:var(--pe-blue)">EDITAR ATLETA</h3><input type="hidden" id="edit-user-original-cpf"><div class="input-group"><label>NOME</label><input id="edit-user-name" class="uppercase-input"></div><div class="input-group"><label>CIDADE</label><input id="edit-user-city" class="uppercase-input"></div><div class="input-group"><label>CATEGORIA</label><input id="edit-user-cat"></div><div class="input-group"><label>GÊNERO (M/F)</label><input id="edit-user-gender" maxlength="1" class="uppercase-input"></div><button class="btn" onclick="saveUserEdit()">SALVAR ALTERAÇÕES</button><button class="btn" style="background:#ddd; color:#333; margin-top:5px" onclick="fecharModal('modal-edit-user')">CANCELAR</button></div></div>
 <div class="modal-overlay" id="modal-poster"><div class="modal-box" style="padding:0; background:black; border:none; width:95%; max-width:400px"><div style="position:relative"><img id="img-poster-view" style="width:100%; display:block"><button onclick="fecharModal('modal-poster')" style="position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.5); color:white; border:none; padding:10px; border-radius:50%; cursor:pointer"><i class="fas fa-times"></i></button></div></div></div>
-<div class="modal-overlay" id="modal-ticket"><div class="modal-box"><h2 style="color:var(--pe-blue); margin-bottom:5px">TICKET CONFIRMADO</h2><div style="width:50px; height:5px; background:var(--pe-grad); margin:0 auto 15px auto"></div><div style="text-align:left; border:1px dashed #ccc; padding:15px; margin-bottom:15px; background:#f9f9f9"><b style="font-size:10px; color:#999">EVENTO:</b><br><span style="font-size:14px; color:var(--pe-blue); font-weight:900" id="tk-evento">...</span><br><br><b style="font-size:10px; color:#999">PILOTO:</b><br><span style="font-size:12px; color:#333; font-weight:bold" id="tk-nome">...</span></div><button class="btn" onclick="openShareModal(document.getElementById('tk-evento').innerText)"><i class="fab fa-instagram"></i> COMPARTILHAR</button><button class="btn" style="margin-top:5px" onclick="imprimirTicket()"><i class="fas fa-print"></i> IMPRIMIR TICKET</button><button class="btn" style="margin-top:5px; background:#333" onclick="gerarTermo(currentPayId.id)"><i class="fas fa-file-contract"></i> IMPRIMIR TERMO</button><button class="btn" onclick="fecharModal('modal-ticket')" style="background:#ddd; color:#333; margin-top:5px">FECHAR</button></div></div>
+<div class="modal-overlay" id="modal-ticket"><div class="modal-box"><h2 style="color:var(--pe-blue); margin-bottom:5px">TICKET CONFIRMADO</h2><div style="width:50px; height:5px; background:var(--pe-grad); margin:0 auto 15px auto"></div><div style="text-align:left; border:1px dashed #ccc; padding:15px; margin-bottom:15px; background:#f9f9f9"><b style="font-size:10px; color:#999">EVENTO:</b><br><span style="font-size:14px; color:var(--pe-blue); font-weight:900" id="tk-evento">...</span><br><br><b style="font-size:10px; color:#999">PILOTO:</b><br><span style="font-size:12px; color:#333; font-weight:bold" id="tk-nome">...</span></div><button class="btn" onclick="openShareModal(document.getElementById('tk-evento').innerText)"><i class="fab fa-instagram"></i> COMPARTILHAR IMAGEM</button><button class="btn" style="margin-top:5px" onclick="imprimirTicket()"><i class="fas fa-print"></i> IMPRIMIR PDF</button><button class="btn" style="margin-top:5px; background:#333" onclick="gerarTermo(currentPayId.id)"><i class="fas fa-file-contract"></i> IMPRIMIR TERMO</button><button class="btn" onclick="fecharModal('modal-ticket')" style="background:#ddd; color:#333; margin-top:5px">FECHAR</button></div></div>
 <div class="modal-overlay" id="modal-pix"><div class="modal-box"><h3 style="color:var(--pe-green)"><i class="fas fa-qrcode"></i> PAGAMENTO</h3><p style="font-size:12px; color:#666; margin:5px 0">VALOR: <b style="color:var(--pe-blue)" id="pix-valor-display">R$ 0,00</b></p><div style="background:#f0fdf4; border:1px dashed var(--pe-green); padding:10px; margin:10px 0; font-size:10px; word-break:break-all; font-weight:bold" id="pix-copy">...</div><button class="btn" style="margin-top:0; background:#64748b" onclick="copiarPix()"><i class="far fa-copy"></i> COPIAR CÓDIGO</button><hr style="border:0; border-top:1px solid #eee; margin:15px 0"><button class="btn" style="background:#25D366" onclick="enviarComprovanteWhatsApp()"><i class="fab fa-whatsapp"></i> ENVIAR COMPROVANTE</button><button class="btn" style="background:var(--pe-blue); margin-top:5px" onclick="confirmarJaPaguei()"><i class="fas fa-check-circle"></i> JÁ PAGUEI (REGISTRAR)</button><button class="btn" style="background:#ddd; color:#333; margin-top:5px" onclick="fecharModal('modal-pix')">CANCELAR</button></div></div>
 <div class="modal-overlay" id="modal-info"><div class="modal-box"><h3 id="info-title" style="color:var(--pe-blue)">INFO</h3><p id="info-text" style="font-size:13px; color:#555; margin:15px 0; text-align:left">...</p><button class="btn" onclick="fecharModal('modal-info')" style="background:#ddd; color:#333">FECHAR</button></div></div>
 
@@ -265,7 +258,7 @@
     <div id="screen-app" class="screen">
         <div id="main-app-header" class="app-header">
             <div class="header-logo-text">DH-PE</div>
-            <div class="version-badge" onclick="appRefresh()">v55.0</div>
+            <div class="version-badge" onclick="appRefresh()">v56.0</div>
         </div>
         
         <div id="cont-calendar" class="c-sec active">
@@ -404,7 +397,6 @@
                 </div>
 
                 <div id="adm-sec-organizer" style="display:none">
-                    <button class="btn" style="background:#999; margin-bottom:10px" onclick="backToAdmMenu()">VOLTAR</button>
                     <div style="background:white; border:1px solid #ddd; padding:10px; border-radius:8px;">
                         <b style="color:var(--pe-blue); font-size:12px">CADASTRAR ORGANIZADOR</b>
                         <div class="smart-search-container" style="margin-top:20px; margin-bottom:10px; border-top:1px solid #eee; padding-top:10px">
@@ -427,7 +419,6 @@
                 </div>
 
                 <div id="adm-sec-users-edit" style="display:none">
-                    <button class="btn" style="background:#999; margin-bottom:10px" onclick="backToAdmMenu()">VOLTAR</button>
                     <div style="background:white; border:1px solid #ddd; padding:10px; border-radius:8px;">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px">
                             <b style="color:var(--pe-blue); font-size:12px">ATLETAS (EDITAR)</b>
@@ -443,7 +434,6 @@
                 </div>
 
                 <div id="adm-sec-financial" style="display:none">
-                    <button class="btn" style="background:#999; margin-bottom:10px" onclick="backToAdmMenu()">VOLTAR</button>
                     <div style="background:white; border:1px solid #ddd; padding:10px; border-radius:8px;">
                         <b style="color:var(--pe-blue); font-size:12px">STATUS DE ATLETAS</b>
                         <select id="fin-evt-select" style="margin:10px 0" onchange="renderInscriptions()"><option value="">SELECIONE O EVENTO...</option></select>
@@ -480,12 +470,18 @@
     window.onerror = function(msg, url, line) { alert("ERRO: " + msg + "\nLinha: " + line); return true; };
     function appRefresh() { window.location.reload(true); }
 
-    const DB_KEY = 'dhpe_v55_0_db'; const SESS_KEY = 'dhpe_sess_v55_0'; const REMEMBER_KEY = 'dhpe_remember_token_v550';
+    // 4. PERSISTENCIA MASTER (SISTEMA DE MIGRACAO)
+    const DB_KEY = 'dhpe_master_db'; 
+    const SESS_KEY = 'dhpe_sess_master'; 
+    const REMEMBER_KEY = 'dhpe_remember_master';
     const ADMIN_CPF = "083.276.324-18"; const ADMIN_PASS = "0800"; 
-    const LAST_TAB_KEY = 'dhpe_last_tab_v55';
-    const LAST_ADM_KEY = 'dhpe_last_adm_v55';
-    const FORM_STATE_KEY = 'dhpe_form_state_v55';
-    const EVENT_FORM_KEY = 'dhpe_event_form_v55';
+    const LAST_TAB_KEY = 'dhpe_last_tab_master';
+    const LAST_ADM_KEY = 'dhpe_last_adm_master';
+    const FORM_STATE_KEY = 'dhpe_form_master';
+    const EVENT_FORM_KEY = 'dhpe_event_form_master';
+
+    // KEYS ANTIGAS PARA MIGRACAO
+    const OLD_KEYS = ['dhpe_v55_0_db', 'dhpe_v54_0_db', 'dhpe_v53_0_db'];
 
     const usersList = [{ nome: "ABRAAO EVERTON LOPES DE ARAUJO", cpf: ADMIN_CPF, pass: ADMIN_PASS, cat: "ORGANIZAÇÃO", tel: "81900000000", city: "RECIFE", gender:"M", role: "ADMIN", allowedEvts: [], inscricoes: [], selfie: null }];
     
@@ -503,10 +499,28 @@
     function mascaraData(i) { let v = i.value.replace(/\D/g,""); if(v.length > 4) v = v.substring(0,4); if(v.length > 2) v = v.substring(0,2) + '/' + v.substring(2); i.value = v; }
     function togglePass(id) { const el = document.getElementById(id); el.type = el.type === 'password' ? 'text' : 'password'; }
 
-    let db; try { db = JSON.parse(localStorage.getItem(DB_KEY)); if(!db) throw new Error("DB empty"); } catch(e) { db = DEFAULT_DB; saveDB(); }
+    // MIGRATION LOGIC
+    let db = JSON.parse(localStorage.getItem(DB_KEY));
+    if(!db) {
+        // Tenta migrar
+        for(let key of OLD_KEYS) {
+            const oldData = localStorage.getItem(key);
+            if(oldData) {
+                try {
+                    db = JSON.parse(oldData);
+                    console.log("Migrado de " + key);
+                    break;
+                } catch(e) {}
+            }
+        }
+    }
+    if(!db) db = DEFAULT_DB;
+    
+    // Ensure admin exists
     const adminIndex = db.users.findIndex(u => cleanCPF(u.cpf) === cleanCPF(ADMIN_CPF));
     if(adminIndex >= 0) { db.users[adminIndex].role = "ADMIN"; db.users[adminIndex].pass = ADMIN_PASS; } else { db.users.push(DEFAULT_DB.users[0]); }
     
+    // Migrate events structure
     db.events.forEach(e => { if(!e.points || e.points.length < 20) e.points = [...DEFAULT_POINTS]; if(!e.status) e.status = 'OPEN'; });
     saveDB();
 
@@ -532,6 +546,36 @@
                 callback(canvas.toDataURL('image/jpeg', 0.7));
             };
         };
+    }
+
+    // 2. FUNÇÃO SHARE IMAGEM COM HTML2CANVAS
+    function shareTicketImage() {
+        const element = document.querySelector('#share-card-content'); 
+        if(!element) return;
+        
+        toast("GERANDO IMAGEM...");
+        
+        html2canvas(element, { scale: 2, useCORS: true }).then(canvas => {
+            canvas.toBlob(blob => {
+                if (blob) {
+                    const file = new File([blob], "ticket_dhpe.png", { type: "image/png" });
+                    if (navigator.share && navigator.canShare({ files: [file] })) {
+                        navigator.share({
+                            files: [file],
+                            title: 'Meu Ticket DH-PE',
+                            text: 'Confirmei minha presença no Campeonato Pernambucano!'
+                        }).catch(e => console.log('Share falhou', e));
+                    } else {
+                        // Fallback: Download
+                        const a = document.createElement('a');
+                        a.href = canvas.toDataURL("image/png");
+                        a.download = 'ticket_dhpe.png';
+                        a.click();
+                        alert("Imagem salva! Compartilhe manualmente.");
+                    }
+                }
+            });
+        });
     }
 
     function trocarTela(id) { 
@@ -575,6 +619,10 @@
             if(loggedUser.role === 'ADMIN' || loggedUser.role === 'ORGANIZER') { 
                 document.getElementById('adm-login-box').style.display='none'; 
                 document.getElementById('adm-panel-real').style.display='block'; 
+                
+                if(loggedUser.role !== 'ADMIN') document.getElementById('btn-adm-events').style.display = 'none';
+                else document.getElementById('btn-adm-events').style.display = 'flex';
+
                 const lastAdm = localStorage.getItem(LAST_ADM_KEY);
                 if(lastAdm) openAdmSection(lastAdm);
                 else backToAdmMenu(); 
@@ -714,7 +762,6 @@
         }
     }
 
-    // STATE SAVERS
     function saveAdmState() {
         const state = {
             evt: document.getElementById('adm-res-evt').value,
@@ -751,7 +798,6 @@
             v: document.getElementById('adm-evt-v').value,
             close: document.getElementById('adm-evt-close-date').value,
             status: document.getElementById('adm-evt-status').value,
-            // nao salvamos pontos aqui pq sao dinamicos, mas ok
         };
         localStorage.setItem(EVENT_FORM_KEY, JSON.stringify(state));
     }
@@ -783,8 +829,7 @@
 
     function backToAdmMenu() {
         localStorage.removeItem(LAST_ADM_KEY);
-        // Clean forms on back
-        clearEventForm();
+        clearEventForm(); // CLEAN ON BACK
         
         document.querySelectorAll('[id^="adm-sub-"]').forEach(e => e.style.display='none'); 
         document.getElementById('adm-sec-events').style.display='none'; document.getElementById('adm-sec-results').style.display='none';
@@ -1068,17 +1113,13 @@
             document.getElementById('adm-evt-v').value = evt.val || ''; 
             document.getElementById('adm-evt-close-date').value = evt.closeDate || '';
             document.getElementById('adm-evt-status').value = evt.status || 'OPEN';
-            
             const pts = evt.points || [50,45,40,35,30,26,24,22,20,18,16,14,12,10,8,6,4,3,2,1];
             document.getElementById('evt-points-grid').innerHTML = pts.map((p, i) => `<input type="number" placeholder="${i+1}º" value="${p}" id="pt-${i}" style="text-align:center; font-size:10px; padding:4px;">`).join('');
             document.getElementById('btn-save-event').innerText = "ATUALIZAR"; 
-            
-            // Auto scroll to form
             document.querySelector('.admin-dashboard-grid').scrollIntoView();
         } 
     }
 
-    // 2. CORRECAO ERRO AO SALVAR (IMAGEM)
     function addEvent() { 
         const idEdit = document.getElementById('adm-evt-id-edit').value; 
         const t = document.getElementById('adm-evt-t').value.toUpperCase(); 
@@ -1111,7 +1152,7 @@
                     toast("CRIADO"); 
                 } 
                 saveDB(); refreshAdmLists(); 
-                clearEventForm(); // 4. LIMPAR APOS SALVAR
+                clearEventForm(); 
             } else {
                 toast("PREENCHA OS CAMPOS");
             }
