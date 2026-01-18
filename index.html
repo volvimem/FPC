@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DH-PE v47.0 (Auto-Clear & Sort)</title>
+    <title>DH-PE v50.0 (Pro Edition)</title>
     
     <link rel="icon" type="image/jpg" href="logo-fp.jpg">
     <link rel="apple-touch-icon" href="logo-fp.jpg">
@@ -67,6 +67,7 @@
         .card-poster-thumb { width: 100%; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid #eee; margin-bottom: 5px; cursor: zoom-in; }
         .event-price { font-size: 10px; font-weight: 900; color: var(--pe-green); background: #dcfce7; padding: 2px 5px; border-radius: 4px; display: inline-block; margin-bottom: 5px; }
         .btn-insc { background: var(--pe-green); color: white; border: none; padding: 8px; font-size: 10px; font-weight: 800; cursor: pointer; width: 100%; border-radius: 4px; margin-top: auto; }
+        .btn-points { background: #64748b; color: white; border: none; padding: 6px; font-size: 9px; font-weight: 800; cursor: pointer; width: 100%; border-radius: 4px; margin-top: 5px; }
         .btn-share { background: #E1306C; color: white; border: none; padding: 8px; font-size: 10px; font-weight: 800; cursor: pointer; width: 100%; border-radius: 4px; margin-top: auto; }
 
         /* RANKING */
@@ -75,6 +76,7 @@
         .rank-row:nth-child(even) { background: #f8fafc; }
         .rank-pos { width: 25px; font-weight: 900; color: #64748b; font-size: 12px; display: flex; align-items: center; justify-content: center; }
         .rank-name { flex: 1; font-weight: 700; color: #334155; display: flex; flex-direction: column; padding-left: 5px; }
+        .rank-cat { font-size: 9px; color: #666; margin-top: 2px; }
         .rank-val { font-family: monospace; font-weight: 900; color: var(--pe-blue); background: #e0e7ff; padding: 4px 8px; border-radius: 4px; font-size: 11px; }
 
         /* ADMIN */
@@ -139,29 +141,27 @@
         .checkbox-wrapper { display: flex; align-items: center; gap: 5px; cursor: pointer; }
         @keyframes fade { from { opacity:0; } to { opacity:1; } }
         
-        /* IMPRESSÃO (PLANILHA TÉCNICA) */
+        /* IMPRESSÃO (PLANILHA TÉCNICA E TERMO) */
         @media print { 
             body * { visibility: hidden; } 
             #printable-area, #printable-area * { visibility: visible; } 
-            #printable-area { 
-                position: absolute; left: 0; top: 0; width: 100%; padding: 20px; 
-                background: white !important; color: black !important; display: block !important;
-                z-index: 999999;
-            }
-            
+            #printable-area { position: absolute; left: 0; top: 0; width: 100%; padding: 20px; background: white !important; color: black !important; display: block !important; z-index: 999999; }
             .print-cat-block { margin-bottom: 20px; page-break-inside: avoid; border: 1px solid #000; }
             .print-cat-title { background: #333; color: white !important; font-weight: bold; padding: 8px; text-align: center; font-size: 14px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            
             .print-table { width: 100%; border-collapse: collapse; font-size: 12px; font-family: 'Arial', sans-serif; }
             .print-table th, .print-table td { border: 1px solid #000; padding: 8px; text-align: left; }
             .print-table th { background: #eee !important; -webkit-print-color-adjust: exact; font-weight: 800; text-transform: uppercase; }
-            
             .print-header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #000; padding-bottom: 10px; }
             .print-header h1 { font-size: 24px; margin: 0; font-weight: 900; text-transform: uppercase; }
             .print-header p { font-size: 14px; margin: 5px 0 0 0; }
-            
-            /* Células vazias para escrita manual */
             .manual-cell { width: 120px; height: 30px; } 
+
+            .termo-container { font-family: 'Arial', sans-serif; line-height: 1.6; color: #000; text-align: justify; padding: 20px; border: 2px solid #000; }
+            .termo-title { text-align: center; font-weight: 900; text-transform: uppercase; margin-bottom: 20px; border-bottom: 1px solid #000; padding-bottom: 10px; font-size: 18px; }
+            .termo-body { font-size: 12px; margin-bottom: 20px; }
+            .termo-field { margin-bottom: 5px; font-weight: bold; }
+            .termo-sign { margin-top: 50px; border-top: 1px solid #000; width: 60%; margin-left: auto; margin-right: auto; text-align: center; padding-top: 5px; }
+            .termo-obs { font-size: 10px; font-style: italic; margin-top: 20px; text-align: center; }
         }
 
         /* MODAIS */
@@ -195,10 +195,19 @@
     </div>
 </div>
 
+<div class="modal-overlay" id="modal-points">
+    <div class="modal-box">
+        <h3 style="color:var(--pe-blue)">TABELA DE PONTOS</h3>
+        <p style="font-size:11px; color:#666" id="modal-points-subtitle">...</p>
+        <div id="public-points-list" style="margin-top:10px; text-align:left;"></div>
+        <button class="btn" style="background:#ddd; color:#333; margin-top:15px" onclick="fecharModal('modal-points')">FECHAR</button>
+    </div>
+</div>
+
 <div class="modal-overlay" id="modal-print-options"><div class="modal-box"><h3 style="color:var(--pe-blue)">IMPRIMIR PLANILHA</h3><button class="btn" onclick="generatePrint('ALL')">TODAS CATEGORIAS (GERAL)</button><div style="margin:10px 0; border-top:1px solid #eee; padding-top:10px; font-size:10px; font-weight:bold; color:#666">OU POR CATEGORIA:</div><div id="print-cat-list" style="max-height:200px; overflow-y:auto; display:flex; flex-direction:column; gap:5px;"></div><button class="btn" style="background:#ddd; color:#333; margin-top:10px" onclick="fecharModal('modal-print-options')">CANCELAR</button></div></div>
 <div class="modal-overlay" id="modal-edit-user"><div class="modal-box"><h3 style="color:var(--pe-blue)">EDITAR ATLETA</h3><input type="hidden" id="edit-user-original-cpf"><div class="input-group"><label>NOME</label><input id="edit-user-name" class="uppercase-input"></div><div class="input-group"><label>CIDADE</label><input id="edit-user-city" class="uppercase-input"></div><div class="input-group"><label>CATEGORIA</label><input id="edit-user-cat"></div><div class="input-group"><label>GÊNERO (M/F)</label><input id="edit-user-gender" maxlength="1" class="uppercase-input"></div><button class="btn" onclick="saveUserEdit()">SALVAR ALTERAÇÕES</button><button class="btn" style="background:#ddd; color:#333; margin-top:5px" onclick="fecharModal('modal-edit-user')">CANCELAR</button></div></div>
 <div class="modal-overlay" id="modal-poster"><div class="modal-box" style="padding:0; background:black; border:none; width:95%; max-width:400px"><div style="position:relative"><img id="img-poster-view" style="width:100%; display:block"><button onclick="fecharModal('modal-poster')" style="position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.5); color:white; border:none; padding:10px; border-radius:50%; cursor:pointer"><i class="fas fa-times"></i></button></div></div></div>
-<div class="modal-overlay" id="modal-ticket"><div class="modal-box"><h2 style="color:var(--pe-blue); margin-bottom:5px">TICKET CONFIRMADO</h2><div style="width:50px; height:5px; background:var(--pe-grad); margin:0 auto 15px auto"></div><div style="text-align:left; border:1px dashed #ccc; padding:15px; margin-bottom:15px; background:#f9f9f9"><b style="font-size:10px; color:#999">EVENTO:</b><br><span style="font-size:14px; color:var(--pe-blue); font-weight:900" id="tk-evento">...</span><br><br><b style="font-size:10px; color:#999">PILOTO:</b><br><span style="font-size:12px; color:#333; font-weight:bold" id="tk-nome">...</span></div><button class="btn" onclick="openShareModal(document.getElementById('tk-evento').innerText)"><i class="fab fa-instagram"></i> COMPARTILHAR</button><button class="btn" style="margin-top:5px" onclick="imprimirTicket()"><i class="fas fa-print"></i> IMPRIMIR PDF</button><button class="btn" onclick="fecharModal('modal-ticket')" style="background:#ddd; color:#333; margin-top:5px">FECHAR</button></div></div>
+<div class="modal-overlay" id="modal-ticket"><div class="modal-box"><h2 style="color:var(--pe-blue); margin-bottom:5px">TICKET CONFIRMADO</h2><div style="width:50px; height:5px; background:var(--pe-grad); margin:0 auto 15px auto"></div><div style="text-align:left; border:1px dashed #ccc; padding:15px; margin-bottom:15px; background:#f9f9f9"><b style="font-size:10px; color:#999">EVENTO:</b><br><span style="font-size:14px; color:var(--pe-blue); font-weight:900" id="tk-evento">...</span><br><br><b style="font-size:10px; color:#999">PILOTO:</b><br><span style="font-size:12px; color:#333; font-weight:bold" id="tk-nome">...</span></div><button class="btn" onclick="openShareModal(document.getElementById('tk-evento').innerText)"><i class="fab fa-instagram"></i> COMPARTILHAR</button><button class="btn" style="margin-top:5px" onclick="imprimirTicket()"><i class="fas fa-print"></i> IMPRIMIR TICKET</button><button class="btn" style="margin-top:5px; background:#333" onclick="gerarTermo(currentPayId.id)"><i class="fas fa-file-contract"></i> IMPRIMIR TERMO</button><button class="btn" onclick="fecharModal('modal-ticket')" style="background:#ddd; color:#333; margin-top:5px">FECHAR</button></div></div>
 <div class="modal-overlay" id="modal-pix"><div class="modal-box"><h3 style="color:var(--pe-green)"><i class="fas fa-qrcode"></i> PAGAMENTO</h3><p style="font-size:12px; color:#666; margin:5px 0">VALOR: <b style="color:var(--pe-blue)" id="pix-valor-display">R$ 0,00</b></p><div style="background:#f0fdf4; border:1px dashed var(--pe-green); padding:10px; margin:10px 0; font-size:10px; word-break:break-all; font-weight:bold" id="pix-copy">...</div><button class="btn" style="margin-top:0; background:#64748b" onclick="copiarPix()"><i class="far fa-copy"></i> COPIAR CÓDIGO</button><hr style="border:0; border-top:1px solid #eee; margin:15px 0"><button class="btn" style="background:#25D366" onclick="enviarComprovanteWhatsApp()"><i class="fab fa-whatsapp"></i> ENVIAR COMPROVANTE</button><button class="btn" style="background:var(--pe-blue); margin-top:5px" onclick="confirmarJaPaguei()"><i class="fas fa-check-circle"></i> JÁ PAGUEI (REGISTRAR)</button><button class="btn" style="background:#ddd; color:#333; margin-top:5px" onclick="fecharModal('modal-pix')">CANCELAR</button></div></div>
 <div class="modal-overlay" id="modal-info"><div class="modal-box"><h3 id="info-title" style="color:var(--pe-blue)">INFO</h3><p id="info-text" style="font-size:13px; color:#555; margin:15px 0; text-align:left">...</p><button class="btn" onclick="fecharModal('modal-info')" style="background:#ddd; color:#333">FECHAR</button></div></div>
 
@@ -234,12 +243,16 @@
     <div id="screen-app" class="screen">
         <div id="main-app-header" class="app-header">
             <div class="header-logo-text">DH-PE</div>
-            <div class="version-badge" onclick="appRefresh()">v46.0</div>
+            <div class="version-badge" onclick="appRefresh()">v50.0</div>
         </div>
         
         <div id="cont-calendar" class="c-sec active">
-            <div class="section-title">CALENDÁRIO 2026</div>
-            <div id="list-calendar" class="calendar-grid"></div>
+            <div class="section-header-area">
+                 <div class="section-title-row" style="display:flex; justify-content:space-between; align-items:center;">
+                    <div class="section-title">CALENDÁRIO 2026</div>
+                 </div>
+            </div>
+            <div id="list-calendar" class="calendar-grid" style="margin-top:10px;"></div>
         </div>
 
         <div id="cont-tempos" class="c-sec" style="display:none">
@@ -285,7 +298,7 @@
             
             <div id="adm-panel-real" style="display:none">
                 <div class="admin-dashboard-grid" id="adm-menu">
-                    <div class="adm-dash-btn" onclick="openAdmSection('events')"><i class="far fa-calendar-plus"></i><span>GERENCIAR EVENTOS</span></div>
+                    <div id="btn-adm-events" class="adm-dash-btn" onclick="openAdmSection('events')"><i class="far fa-calendar-plus"></i><span>GERENCIAR EVENTOS</span></div>
                     <div class="adm-dash-btn" onclick="openAdmSection('results')"><i class="fas fa-stopwatch"></i><span>LANÇAR RESULTADOS</span></div>
                     <div class="adm-dash-btn" id="btn-menu-org" onclick="openAdmSection('organizer')"><i class="fas fa-users-cog"></i><span>EQUIPE</span></div>
                     <div class="adm-dash-btn" onclick="openAdmSection('financial')"><i class="fas fa-file-invoice-dollar"></i><span>STATUS DE ATLETAS</span></div>
@@ -308,7 +321,13 @@
                         </div>
                         <div style="margin-top:5px"><label style="font-size:9px; font-weight:bold; color:#666">CARTAZ</label><input type="file" id="adm-evt-img" accept="image/*"></div>
                         <div style="display:flex; gap:10px; margin:10px 0; font-size:10px; font-weight:bold"><label><input type="checkbox" id="adm-evt-cb-pe" checked> ESTADUAL</label><label><input type="checkbox" id="adm-evt-cb-cbc"> CBC</label></div>
-                        <button class="btn" id="btn-save-event" style="padding:8px; margin:0" onclick="addEvent()">SALVAR</button>
+                        
+                        <div style="margin-top:10px; border-top:2px dashed #eee; padding-top:10px;">
+                            <b style="font-size:10px; color:var(--pe-blue)">PONTUAÇÃO (1º ao 20º)</b>
+                            <div id="evt-points-grid" style="display:grid; grid-template-columns: repeat(5, 1fr); gap:3px; margin-top:5px"></div>
+                        </div>
+
+                        <button class="btn" id="btn-save-event" style="padding:8px; margin:15px 0 0 0" onclick="addEvent()">SALVAR EVENTO</button>
                         <div style="margin-top:10px; border-top:1px solid #eee; padding-top:5px"><p style="font-size:9px; color:#999">LISTA</p><div id="adm-list-events"></div></div>
                     </div>
                 </div>
@@ -325,16 +344,22 @@
                             <select id="adm-res-id" style="flex:1; font-size:10px" onchange="saveAdmState()"><option value="">⬇ BUSQUE ABAIXO ⬇</option></select>
                         </div>
                         <div class="smart-search-container" style="margin-top:5px; z-index:1000">
-                            <input type="text" id="adm-res-search" placeholder="DIGITE NOME, CPF OU CIDADE..." oninput="filterPilots('res')" autocomplete="off">
+                            <input type="text" id="adm-res-search" placeholder="DIGITE NOME DO PILOTO..." oninput="filterPilots('res')" autocomplete="off">
                             <div id="adm-res-list" class="smart-list"></div>
                         </div>
                         
                         <div style="display:flex; gap:5px; margin-top:5px; position:relative; z-index:1;">
-                            <input id="adm-res-num" placeholder="Nº PLACA" type="tel" style="width:120px; text-align:center;" oninput="saveAdmState()">
-                            <input id="adm-res-val" placeholder="00:00.000 / PTS" oninput="maskTimeOrPoints(this, event); saveAdmState()" style="flex:1">
+                            <div style="flex:0 0 100px;">
+                                <label style="font-size:9px; font-weight:bold">Nº (NUMERAL)</label>
+                                <input id="adm-res-num" type="tel" style="text-align:center;" oninput="saveAdmState()">
+                            </div>
+                            <div style="flex:1;">
+                                <label style="font-size:9px; font-weight:bold">TEMPO (00:00.000)</label>
+                                <input id="adm-res-val" oninput="maskTimeOrPoints(this, event); saveAdmState()">
+                            </div>
                         </div>
 
-                        <button class="btn" id="btn-save-res" style="width:100%; margin-top:5px; background:var(--pe-green)" onclick="addResult()">LANÇAR</button>
+                        <button class="btn" id="btn-save-res" style="width:100%; margin-top:15px; background:var(--pe-green)" onclick="addResult()">LANÇAR</button>
                         <button class="btn" id="btn-cancel-res" style="width:100%; margin-top:5px; background:#999; display:none" onclick="cancelEditRes()">CANCELAR</button>
                         <div style="margin-top:10px; border-top:1px solid #eee; padding-top:5px"><p style="font-size:9px; color:#999">ÚLTIMOS LANÇAMENTOS</p><div id="adm-list-results" style="max-height:150px; overflow-y:auto"></div></div>
                     </div>
@@ -414,17 +439,19 @@
     window.onerror = function(msg, url, line) { alert("ERRO: " + msg + "\nLinha: " + line); return true; };
     function appRefresh() { window.location.reload(true); }
 
-    const DB_KEY = 'dhpe_v46_0_db'; const SESS_KEY = 'dhpe_sess_v46_0'; const REMEMBER_KEY = 'dhpe_remember_token_v460';
+    const DB_KEY = 'dhpe_v50_0_db'; const SESS_KEY = 'dhpe_sess_v50_0'; const REMEMBER_KEY = 'dhpe_remember_token_v500';
     const ADMIN_CPF = "083.276.324-18"; const ADMIN_PASS = "0800"; 
-    const LAST_TAB_KEY = 'dhpe_last_tab_v46';
-    const LAST_ADM_KEY = 'dhpe_last_adm_v46';
-    const FORM_STATE_KEY = 'dhpe_form_state_v46';
+    const LAST_TAB_KEY = 'dhpe_last_tab_v50';
+    const LAST_ADM_KEY = 'dhpe_last_adm_v50';
+    const FORM_STATE_KEY = 'dhpe_form_state_v50';
 
     const usersList = [{ nome: "ABRAAO EVERTON LOPES DE ARAUJO", cpf: ADMIN_CPF, pass: ADMIN_PASS, cat: "ORGANIZAÇÃO", tel: "81900000000", city: "RECIFE", gender:"M", role: "ADMIN", allowedEvts: [], inscricoes: [] }];
     
+    // 20 PONTOS DEFAULT
+    const DEFAULT_POINTS = [50, 45, 40, 35, 30, 26, 24, 22, 20, 18, 16, 14, 12, 10, 8, 6, 4, 3, 2, 1];
     const DEFAULT_DB = {
         users: usersList,
-        events: [{ id:1, d:'25/26', m:'ABR', city:'OURICURI-PE', t:'1ª ETAPA ESTADUAL', val: "100,00", est:true, cbc:false, open:true, img:null }],
+        events: [{ id:1, d:'25/26', m:'ABR', city:'OURICURI-PE', t:'1ª ETAPA ESTADUAL', val: "100,00", est:true, cbc:false, open:true, img:null, points: [...DEFAULT_POINTS] }],
         tempos: [], ranking: [],
         config: { logo: 'logo-fp.jpg' }
     };
@@ -438,6 +465,8 @@
     let db; try { db = JSON.parse(localStorage.getItem(DB_KEY)); if(!db) throw new Error("DB empty"); } catch(e) { db = DEFAULT_DB; saveDB(); }
     const adminIndex = db.users.findIndex(u => cleanCPF(u.cpf) === cleanCPF(ADMIN_CPF));
     if(adminIndex >= 0) { db.users[adminIndex].role = "ADMIN"; db.users[adminIndex].pass = ADMIN_PASS; } else { db.users.push(DEFAULT_DB.users[0]); }
+    // Migrate events to have points
+    db.events.forEach(e => { if(!e.points || e.points.length < 20) e.points = [...DEFAULT_POINTS]; });
     saveDB();
 
     let currentTab = 'calendar'; let currentAdmSection = null; let loggedUser = null; let currentPayId = null;
@@ -487,7 +516,10 @@
             if(loggedUser.role === 'ADMIN' || loggedUser.role === 'ORGANIZER') { 
                 document.getElementById('adm-login-box').style.display='none'; 
                 document.getElementById('adm-panel-real').style.display='block'; 
-                // 2. Restaurar Seção Admin
+                
+                if(loggedUser.role !== 'ADMIN') document.getElementById('btn-adm-events').style.display = 'none';
+                else document.getElementById('btn-adm-events').style.display = 'flex';
+
                 const lastAdm = localStorage.getItem(LAST_ADM_KEY);
                 if(lastAdm) openAdmSection(lastAdm);
                 else backToAdmMenu(); 
@@ -511,15 +543,18 @@
                 const btnPoster = e.img ? `<img src="${e.img}" class="card-poster-thumb" onclick="verCartaz('${e.id}')">` : '';
                 const valShow = e.val ? `<div class="event-price">R$ ${e.val}</div>` : '';
                 let actionBtn = `<button class="btn-insc" onclick="iniciarInscricao('${e.id}','${e.t}', '${e.val}')">INSCREVER</button>`;
+                
+                const btnPoints = `<button class="btn-points" onclick="showPublicPoints(${e.id})">TABELA DE PONTOS</button>`;
+
                 if(loggedUser) {
                     const ins = loggedUser.inscricoes.find(i => i.id == e.id);
                     if(ins && ins.status === 'CONFIRMADO') { actionBtn = `<button class="btn-share" onclick="openShareModal('${e.t}')"><i class="fab fa-instagram"></i> COMPARTILHAR</button>`; } 
                     else if(ins) { actionBtn = `<button class="btn-insc" style="background:orange">PENDENTE</button>`; }
                 }
-                return `<div class="event-card ${e.open?'':'closed'}"><div class="event-top"><span class="event-date">${e.d} ${e.m}</span></div><div class="event-body"><div class="event-title">${e.t}</div>${btnPoster}${valShow}<div class="event-city"><i class="fas fa-map-marker-alt"></i> ${e.city}</div><div class="badge-box">${e.est?'<span class="badge b-est">PE</span>':''}${e.cbc?'<span class="badge b-cbc">CBC</span>':''}</div>${actionBtn}</div></div>`;
+                return `<div class="event-card ${e.open?'':'closed'}"><div class="event-top"><span class="event-date">${e.d} ${e.m}</span></div><div class="event-body"><div class="event-title">${e.t}</div>${btnPoster}${valShow}<div class="event-city"><i class="fas fa-map-marker-alt"></i> ${e.city}</div><div class="badge-box">${e.est?'<span class="badge b-est">PE</span>':''}${e.cbc?'<span class="badge b-cbc">CBC</span>':''}</div>${btnPoints}${actionBtn}</div></div>`;
             }).join('');
         } else if (t === 'tempos' || t === 'ranking') {
-            const list = db[t].filter(i => i.status === 'OK');
+            const list = db[t].filter(i => i.status === 'OK'); 
             const div = document.getElementById('list-'+t);
             const selCat = document.getElementById('filter-cat-'+t);
             const selEvt = document.getElementById('filter-evt-'+t);
@@ -528,16 +563,28 @@
             let filtered = list;
             if(selCat.value !== 'ALL') filtered = filtered.filter(i => i.cat === selCat.value);
             if(selEvt.value !== 'ALL') filtered = filtered.filter(i => i.evtId == selEvt.value);
-            div.innerHTML = filtered.map((r, i) => `<div class="rank-row"><div class="rank-pos">${i+1}</div><div class="rank-name">${r.name}<span class="rank-cat">${r.cat} - ${r.city}</span></div><div class="rank-val">${r.val}</div></div>`).join('');
+            
+            div.innerHTML = filtered.map((r, i) => {
+                // CIDADE NA LISTA
+                const evt = db.events.find(e => e.id == r.evtId);
+                const cityDisplay = evt ? ` - ${evt.city}` : '';
+                return `<div class="rank-row"><div class="rank-pos">${i+1}</div><div class="rank-name">${r.name}<span class="rank-cat">${r.cat}${cityDisplay}</span></div><div class="rank-val">${r.val}</div></div>`;
+            }).join('');
         }
     }
 
     function openAdmSection(sec) {
+        if(sec === 'events' && loggedUser.role !== 'ADMIN') { toast("APENAS ADMIN"); return backToAdmMenu(); }
+
         currentAdmSection = sec;
         localStorage.setItem(LAST_ADM_KEY, sec); 
         
         document.getElementById('adm-menu').style.display = 'none';
-        if(sec === 'events') { document.getElementById('adm-sec-events').style.display='block'; refreshAdmLists(); }
+        if(sec === 'events') { 
+            document.getElementById('adm-sec-events').style.display='block'; 
+            refreshAdmLists(); 
+            document.getElementById('evt-points-grid').innerHTML = Array(20).fill(0).map((_, i) => `<input type="number" placeholder="${i+1}º" id="pt-${i}" style="text-align:center; font-size:10px; padding:4px;">`).join('');
+        }
         if(sec === 'results') { 
             document.getElementById('adm-sec-results').style.display='block'; refreshAdmLists(); 
             const selEvt = document.getElementById('adm-res-evt'); selEvt.innerHTML = '<option value="">SELECIONE EVENTO...</option>' + db.events.map(e => `<option value="${e.id}">${e.t}</option>`).join('');
@@ -561,12 +608,10 @@
             if(loggedUser.role === 'ORGANIZER' && loggedUser.allowedEvts) {
                 availableEvents = db.events.filter(e => loggedUser.allowedEvts.includes(e.id.toString()));
             }
-            // 3. OPÇÃO GERAL NO SELECT
             sel.innerHTML = '<option value="">SELECIONE...</option><option value="ALL">GERAL (TODOS EVENTOS)</option>' + availableEvents.map(e => `<option value="${e.id}">${e.t}</option>`).join(''); 
         }
     }
 
-    // 2. FUNÇÕES DE ESTADO (PERSISTENCIA DE FORMULARIO)
     function saveAdmState() {
         const state = {
             evt: document.getElementById('adm-res-evt').value,
@@ -605,16 +650,34 @@
 
     function checkAdmPass() { if(document.getElementById('adm-pass-check').value === ADMIN_PASS) { document.getElementById('adm-login-box').style.display='none'; document.getElementById('adm-panel-real').style.display='block'; backToAdmMenu(); } else { toast("SENHA INVÁLIDA"); } }
     
+    // RESTRIÇÃO DE PAGAMENTO NA BUSCA
     function filterPilots(ctx, forceShow) {
         const inputId = ctx === 'res' ? 'adm-res-search' : (ctx === 'org' ? 'adm-org-search' : 'adm-edit-user-search');
         const listId = ctx === 'res' ? 'adm-res-list' : (ctx === 'org' ? 'adm-org-list-search' : 'adm-edit-user-list');
         const text = document.getElementById(inputId).value.toUpperCase();
         const listDiv = document.getElementById(listId);
         
+        // Se for RESULTS, precisamos saber o evento selecionado
+        let currentEvtId = null;
+        if(ctx === 'res') {
+            currentEvtId = document.getElementById('adm-res-evt').value;
+            if(!currentEvtId) { listDiv.style.display = 'none'; return; } // Sem evento, sem busca
+        }
+
         listDiv.innerHTML = '';
         if(!forceShow && text.length < 2) { if(ctx!=='edit-user') listDiv.style.display = 'none'; return; }
         
-        const filtered = db.users.filter(u => (u.nome.includes(text) || u.cpf.includes(text) || u.city.includes(text)));
+        const filtered = db.users.filter(u => {
+            const matchesText = (u.nome.includes(text) || u.cpf.includes(text) || u.city.includes(text));
+            if(!matchesText) return false;
+
+            // Restrição de Pagamento
+            if(ctx === 'res') {
+                const insc = u.inscricoes.find(i => i.id == currentEvtId);
+                return insc && insc.status === 'CONFIRMADO';
+            }
+            return true;
+        });
         
         if(filtered.length === 0) { listDiv.style.display='none'; return; }
         
@@ -694,7 +757,6 @@
         let totalCount = 0; let paidCount = 0; let totalMoney = 0;
         let html = '<table class="fin-table"><thead><tr><th>NOME</th><th>STATUS</th><th>AÇÃO</th></tr></thead><tbody>';
         
-        // 4. LÓGICA GERAL (ALL)
         if(evtId === 'ALL') {
              db.users.forEach(u => {
                 u.inscricoes.forEach(ins => {
@@ -744,7 +806,7 @@
         saveDB(); renderInscriptions(); 
     }
 
-    // --- PRINT REPORT (PLANILHA TÉCNICA) ---
+    // --- PRINT REPORT ---
     function openPrintOptions() {
         const evtId = document.getElementById('fin-evt-select').value;
         if(!evtId || evtId === 'ALL') return toast("SELECIONE UM EVENTO ESPECÍFICO");
@@ -757,19 +819,15 @@
     function generatePrint(categoryFilter) {
         const evtId = document.getElementById('fin-evt-select').value;
         const evt = db.events.find(e => e.id == evtId);
-        
         let usersIn = [];
         db.users.forEach(u => { const insc = u.inscricoes.find(i => i.id == evtId); if(insc && (categoryFilter === 'ALL' || u.cat === categoryFilter)) usersIn.push({ ...u, status: insc.status }); });
-        
         const grouped = {};
         usersIn.forEach(u => { if(!grouped[u.cat]) grouped[u.cat] = []; grouped[u.cat].push(u); });
 
         let html = `<div class="print-header"><h1>${evt.t}</h1><p>PLANILHA DE CRONOMETRAGEM - ${categoryFilter === 'ALL' ? 'GERAL' : categoryFilter}</p></div>`;
         for (const cat in grouped) {
             html += `<div class="print-cat-block"><div class="print-cat-title">${cat}</div>
-            <table class="print-table">
-                <thead><tr><th>NOME</th><th>CIDADE</th><th>CATEGORIA</th><th class="manual-cell">Nº</th><th class="manual-cell">TEMPO</th></tr></thead>
-                <tbody>`;
+            <table class="print-table"><thead><tr><th>NOME</th><th>CIDADE</th><th>CATEGORIA</th><th class="manual-cell">Nº</th><th class="manual-cell">TEMPO</th></tr></thead><tbody>`;
             grouped[cat].forEach(u => { html += `<tr><td>${u.nome}</td><td>${u.city}</td><td>${u.cat}</td><td></td><td></td></tr>`; });
             html += `</tbody></table></div>`;
         }
@@ -778,7 +836,6 @@
         window.print();
     }
     
-    // 4. SHARE NATIVE
     function openShareModal(evtName) {
         document.getElementById('share-piloto-name').innerText = loggedUser.nome;
         document.getElementById('share-event-name').innerText = evtName;
@@ -786,14 +843,69 @@
     }
     function shareNative() {
         if (navigator.share) {
-            navigator.share({
-                title: 'Eu Vou! DH-PE',
-                text: `Confirmei minha presença no ${document.getElementById('share-event-name').innerText}!`,
-                url: window.location.href
-            }).catch(console.error);
-        } else {
-            alert("Tire um print da tela para compartilhar!");
+            navigator.share({ title: 'Eu Vou! DH-PE', text: `Confirmei minha presença no ${document.getElementById('share-event-name').innerText}!`, url: window.location.href }).catch(console.error);
+        } else { alert("Tire um print da tela para compartilhar!"); }
+    }
+
+    // 4. RANKING AUTOMATICO
+    function recalcRankingFromTimes(evtId) {
+        db.ranking = db.ranking.filter(r => r.evtId != evtId);
+        const times = db.tempos.filter(t => t.evtId == evtId && t.status === 'OK');
+        const grouped = {};
+        times.forEach(t => { if(!grouped[t.cat]) grouped[t.cat] = []; grouped[t.cat].push(t); });
+        
+        const evt = db.events.find(e => e.id == evtId);
+        const ptsRule = evt.points || [30,25,22,20,18,16,14,12,10,8,6,4,3,2,1,0,0,0,0,0];
+
+        for(let cat in grouped) {
+            grouped[cat].sort((a,b) => a.val.localeCompare(b.val));
+            grouped[cat].forEach((t, index) => {
+                if(index < 20) {
+                    const pts = ptsRule[index] || 0;
+                    if(pts > 0) {
+                        db.ranking.push({ name: t.name, val: pts + ' PTS', cat: cat, city: t.city, evtId: evtId, status: 'OK' });
+                    }
+                }
+            });
         }
+        saveDB();
+    }
+
+    // 5. MODAL PUBLICO PONTOS
+    function showPublicPoints(evtId) {
+        const evt = db.events.find(e => e.id == evtId);
+        const pts = evt.points || [30,25,22,20,18,16,14,12,10,8,6,4,3,2,1,0,0,0,0,0];
+        document.getElementById('modal-points-subtitle').innerText = evt.t;
+        document.getElementById('public-points-list').innerHTML = pts.map((p, i) => `<div style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding:5px;"><b>${i+1}º LUGAR</b> <span>${p} PTS</span></div>`).join('');
+        document.getElementById('modal-points').style.display = 'flex';
+    }
+
+    // 3. TERMO DE RESPONSABILIDADE (COM LOGICA DE MENOR)
+    function gerarTermo(evtId) {
+        const evt = db.events.find(e => e.id == evtId);
+        const user = loggedUser;
+        
+        const isMinor = user.cat.includes("INFANTO") || user.cat.includes("JUVENIL") || user.cat.includes("JUNIOR"); 
+        
+        const content = `
+            <div class="termo-container">
+                <div class="termo-title">TERMO DE RESPONSABILIDADE</div>
+                <div class="termo-body">
+                    Eu, <b>${user.nome}</b>, inscrito no CPF nº <b>${user.cpf}</b>, na categoria <b>${user.cat}</b>, declaro para os devidos fins que:
+                    <br><br>
+                    1. Estou apto fisicamente e mentalmente para participar do evento <b>${evt.t}</b> em <b>${evt.city}</b>.<br>
+                    2. Assumo total responsabilidade por qualquer acidente, lesão ou dano material que venha a sofrer ou causar a terceiros.<br>
+                    3. Isento a organização, patrocinadores e a Federação de qualquer responsabilidade civil ou criminal.<br>
+                    4. Uso obrigatório de equipamentos de segurança (Capacete Integral, etc).
+                </div>
+                <div class="termo-sign">Assinatura do Atleta</div>
+                ${isMinor ? `<div class="termo-body" style="margin-top:30px"><b>AUTORIZAÇÃO PARA MENOR DE IDADE</b><br>Eu, responsável legal pelo atleta acima, autorizo sua participação e assumo todas as responsabilidades citadas.</div><div class="termo-field">Nome do Responsável: __________________________________________________</div><div class="termo-field">CPF do Responsável: __________________________________________________</div><div class="termo-sign">Assinatura do Responsável</div>` : ''}
+                <div class="termo-obs">Data: ____/____/2026 - Entregar assinado na retirada do numeral.</div>
+            </div>
+        `;
+        document.getElementById('printable-area').innerHTML = content;
+        fecharModal('modal-ticket');
+        window.print();
     }
 
     function refreshAdmLists() { 
@@ -806,11 +918,64 @@
         }).join(''); 
     }
 
-    function editEvent(id) { const evt = db.events.find(e => e.id == id); if(evt) { document.getElementById('adm-evt-id-edit').value = evt.id; document.getElementById('adm-evt-t').value = evt.t; document.getElementById('adm-evt-month').value = evt.m; document.getElementById('adm-evt-d').value = evt.d; document.getElementById('adm-evt-c').value = evt.city; document.getElementById('adm-evt-v').value = evt.val || ''; document.getElementById('btn-save-event').innerText = "ATUALIZAR"; } }
-    function addEvent() { const idEdit = document.getElementById('adm-evt-id-edit').value; const t = document.getElementById('adm-evt-t').value.toUpperCase(); const m = document.getElementById('adm-evt-month').value; const d = document.getElementById('adm-evt-d').value; const c = document.getElementById('adm-evt-c').value.toUpperCase(); const v = document.getElementById('adm-evt-v').value; const imgInput = document.getElementById('adm-evt-img'); const save = (imgData) => { if(t && d && c) { if(idEdit) { const idx = db.events.findIndex(e => e.id == idEdit); if(idx > -1) { db.events[idx] = { ...db.events[idx], t, m, d, city:c, val:v }; if(imgData) db.events[idx].img = imgData; toast("ATUALIZADO"); } } else { db.events.push({id:Date.now(), t, d, m, city:c, val:v, est:document.getElementById('adm-evt-cb-pe').checked, cbc:document.getElementById('adm-evt-cb-cbc').checked, open:true, img: imgData}); toast("CRIADO"); } saveDB(); refreshAdmLists(); document.getElementById('adm-evt-t').value=''; document.getElementById('adm-evt-d').value=''; document.getElementById('adm-evt-c').value=''; document.getElementById('adm-evt-v').value=''; document.getElementById('adm-evt-id-edit').value=''; document.getElementById('btn-save-event').innerText='SALVAR'; } }; if(imgInput.files[0]) { const r = new FileReader(); r.onload = (e) => save(e.target.result); r.readAsDataURL(imgInput.files[0]); } else { save(null); } }
+    function editEvent(id) { 
+        const evt = db.events.find(e => e.id == id); 
+        if(evt) { 
+            document.getElementById('adm-evt-id-edit').value = evt.id; 
+            document.getElementById('adm-evt-t').value = evt.t; 
+            document.getElementById('adm-evt-month').value = evt.m; 
+            document.getElementById('adm-evt-d').value = evt.d; 
+            document.getElementById('adm-evt-c').value = evt.city; 
+            document.getElementById('adm-evt-v').value = evt.val || ''; 
+            const pts = evt.points || [30,25,22,20,18,16,14,12,10,8,6,4,3,2,1,0,0,0,0,0];
+            document.getElementById('evt-points-grid').innerHTML = pts.map((p, i) => `<input type="number" placeholder="${i+1}º" value="${p}" id="pt-${i}" style="text-align:center; font-size:10px; padding:4px;">`).join('');
+            document.getElementById('btn-save-event').innerText = "ATUALIZAR"; 
+        } 
+    }
+
+    function addEvent() { 
+        const idEdit = document.getElementById('adm-evt-id-edit').value; 
+        const t = document.getElementById('adm-evt-t').value.toUpperCase(); 
+        const m = document.getElementById('adm-evt-month').value; 
+        const d = document.getElementById('adm-evt-d').value; 
+        const c = document.getElementById('adm-evt-c').value.toUpperCase(); 
+        const v = document.getElementById('adm-evt-v').value; 
+        const imgInput = document.getElementById('adm-evt-img'); 
+        
+        const newPoints = [];
+        for(let i=0; i<20; i++) {
+            const el = document.getElementById(`pt-${i}`);
+            newPoints.push(el && el.value ? parseInt(el.value) : 0);
+        }
+
+        const save = (imgData) => { 
+            if(t && d && c) { 
+                if(idEdit) { 
+                    const idx = db.events.findIndex(e => e.id == idEdit); 
+                    if(idx > -1) { 
+                        db.events[idx] = { ...db.events[idx], t, m, d, city:c, val:v, points: newPoints }; 
+                        if(imgData) db.events[idx].img = imgData; 
+                        toast("ATUALIZADO"); 
+                    } 
+                } else { 
+                    db.events.push({id:Date.now(), t, d, m, city:c, val:v, est:document.getElementById('adm-evt-cb-pe').checked, cbc:document.getElementById('adm-evt-cb-cbc').checked, open:true, img: imgData, points: newPoints}); 
+                    toast("CRIADO"); 
+                } 
+                saveDB(); refreshAdmLists(); 
+                document.getElementById('adm-evt-t').value=''; 
+                document.getElementById('adm-evt-d').value=''; 
+                document.getElementById('adm-evt-c').value=''; 
+                document.getElementById('adm-evt-v').value=''; 
+                document.getElementById('adm-evt-id-edit').value=''; 
+                document.getElementById('btn-save-event').innerText='SALVAR EVENTO'; 
+            } 
+        }; 
+        if(imgInput.files[0]) { const r = new FileReader(); r.onload = (e) => save(e.target.result); r.readAsDataURL(imgInput.files[0]); } else { save(null); } 
+    }
+
     function editResult(type, index) { const res = db[type][index]; if(res) { document.getElementById('adm-res-index-edit').value = index; document.getElementById('adm-res-type-edit').value = type; document.getElementById('adm-res-type').value = type; document.getElementById('adm-res-evt').value = res.evtId; const u = db.users.find(u => u.nome === res.name); if(u) { document.getElementById('adm-res-id').value = u.cpf; document.getElementById('adm-res-search').value = u.nome; } document.getElementById('adm-res-val').value = res.val; document.getElementById('adm-res-num').value = res.num || ''; document.getElementById('btn-save-res').innerText = "ATUALIZAR"; document.getElementById('btn-cancel-res').style.display = 'block'; } }
     function cancelEditRes() { document.getElementById('adm-res-index-edit').value=''; document.getElementById('adm-res-val').value=''; document.getElementById('adm-res-num').value=''; document.getElementById('adm-res-search').value=''; document.getElementById('btn-save-res').innerText='LANÇAR'; document.getElementById('btn-cancel-res').style.display='none'; }
-    // 1. CORREÇÃO DE OBJETO COM NUMERO E RESET
+    
     function addResult() { 
         const idx = document.getElementById('adm-res-index-edit').value; 
         const type = document.getElementById('adm-res-type').value; 
@@ -822,6 +987,11 @@
         if(!evtId || !cpf || !val) return toast("PREENCHA TUDO"); 
         
         const piloto = db.users.find(u => u.cpf === cpf); 
+        
+        if(!idx && db[type].some(x => x.evtId == evtId && x.name == piloto.nome)) {
+            return toast("PILOTO JÁ LANÇADO NESTE EVENTO!");
+        }
+
         const newData = { name: piloto.nome, val: val, num: num, cat: piloto.cat.split('(')[0].trim(), city: piloto.city || 'PE', evtId: evtId, status: loggedUser.role === 'ADMIN' ? 'OK' : 'PENDING' }; 
         
         if(idx) { 
@@ -835,36 +1005,48 @@
         
         if(type === 'tempos') {
              db[type].sort((a,b) => a.val.localeCompare(b.val)); 
+             if(loggedUser.role === 'ADMIN') recalcRankingFromTimes(evtId);
         } else {
              db[type].sort((a,b) => parseInt(b.val) - parseInt(a.val));
         }
 
-        // LIMPAR CAMPOS APÓS LANÇAR
         document.getElementById('adm-res-val').value=''; 
         document.getElementById('adm-res-num').value=''; 
         document.getElementById('adm-res-search').value=''; 
-        document.getElementById('adm-res-id').value=''; 
         document.getElementById('adm-res-id').innerHTML = '<option value="">⬇ BUSQUE ABAIXO ⬇</option>';
+        document.getElementById('adm-res-id').value = '';
         
         saveDB(); 
         refreshAdmLists(); 
         cancelEditRes(); 
     }
 
-    function approveResult(type, index) { db[type][index].status = 'OK'; saveDB(); refreshAdmLists(); toast("APROVADO!"); }
+    function approveResult(type, index) { 
+        db[type][index].status = 'OK'; 
+        if(type === 'tempos') recalcRankingFromTimes(db[type][index].evtId);
+        saveDB(); 
+        refreshAdmLists(); 
+        toast("APROVADO!"); 
+    }
+
     function iniciarInscricao(evtId, evtName, val) { if(!loggedUser) return toast("FAÇA LOGIN PRIMEIRO"); if(loggedUser.inscricoes.some(i => i.id == evtId)) return toast("JÁ INSCRITO"); currentPayId = { id: parseInt(evtId), name: evtName }; document.getElementById('pix-valor-display').innerText = val ? `R$ ${val}` : "R$ 100,00"; document.getElementById('pix-copy').innerText = "00020126360014BR.GOV.BCB.PIX0114+55819000000005204000053039865802BR5925FPC FEDERACAO PE CICLISMO6006RECIFE62070503***6304E2CA"; document.getElementById('modal-pix').style.display='flex'; }
     function enviarComprovanteWhatsApp() { window.open(`https://wa.me/?text=Olá, segue comprovante de inscrição para: ${currentPayId.name} - Piloto: ${loggedUser.nome}`, '_blank'); }
     function confirmarJaPaguei() { if(!loggedUser.inscricoes.some(i => i.id == currentPayId.id)) { loggedUser.inscricoes.push({ id: currentPayId.id, status: 'PENDENTE' }); const idx = db.users.findIndex(x => x.cpf === loggedUser.cpf); if(idx > -1) db.users[idx].inscricoes = loggedUser.inscricoes; saveDB(); localStorage.setItem(SESS_KEY, JSON.stringify(loggedUser)); } fecharModal('modal-pix'); toast("REGISTRADO!"); renderContent('calendar'); }
     function verCartaz(id) { const evt = db.events.find(e => e.id == id); if(evt && evt.img) { document.getElementById('img-poster-view').src = evt.img; document.getElementById('modal-poster').style.display = 'flex'; } }
     function fecharModal(id){ document.getElementById(id).style.display='none'; }
-    function delItem(col, idx) { if(confirm("APAGAR?")) { db[col].splice(idx, 1); saveDB(); refreshAdmLists(); } }
+    function delItem(col, idx) { 
+        if(confirm("APAGAR?")) { 
+            const item = db[col][idx];
+            db[col].splice(idx, 1); 
+            if(col === 'tempos') recalcRankingFromTimes(item.evtId); 
+            saveDB(); 
+            refreshAdmLists(); 
+        } 
+    }
     
-    // 1. MASCARA DELETAR FIX
     function maskTimeOrPoints(i, e) { 
         if(document.getElementById('adm-res-type').value === 'ranking') return; 
-        
-        if(e && e.inputType === 'deleteContentBackward') return; // PERMITE APAGAR
-
+        if(e && e.inputType === 'deleteContentBackward') return; 
         let v = i.value.replace(/\D/g, ""); 
         if (v.length > 7) v = v.substring(0, 7); 
         if (v.length > 5) v = v.substring(0, 5) + "." + v.substring(5); 
@@ -898,8 +1080,7 @@
         if(db.config.logo) document.querySelectorAll('.app-logo-img').forEach(el => el.src = db.config.logo);
         trocarTela('app'); 
         
-        // 2. RESTAURAR ULTIMA ABA
-        const lastTab = localStorage.getItem('last_tab_v46');
+        const lastTab = localStorage.getItem('last_tab_v49');
         if(lastTab) {
             nav(lastTab);
         } else {
